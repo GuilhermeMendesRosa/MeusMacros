@@ -1,23 +1,28 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-audio-transcription',
   templateUrl: './audio-transcription.component.html',
   styleUrls: ['./audio-transcription.component.css'],
+  imports: [
+    NgIf
+  ]
 })
 export class AudioTranscriptionComponent {
   isRecording = false;
   transcription = '';
   recognition: any;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, private router: Router) {
+    // Inicializa o reconhecimento de voz
     if ('webkitSpeechRecognition' in window) {
       this.recognition = new (window as any).webkitSpeechRecognition();
     } else if ('SpeechRecognition' in window) {
       this.recognition = new (window as any).SpeechRecognition();
     } else {
-      alert('Speech recognition not supported in your browser.');
+      alert('Reconhecimento de fala não é suportado neste navegador.');
     }
 
     if (this.recognition) {
@@ -30,20 +35,20 @@ export class AudioTranscriptionComponent {
           transcript += event.results[i][0].transcript;
         }
         this.transcription = transcript.trim();
-        console.log('Transcription:', this.transcription);
+        console.log('Transcrição:', this.transcription);
         this.cdr.detectChanges(); // Atualiza a UI
       };
 
       this.recognition.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
+        console.error('Erro no reconhecimento de fala:', event.error);
       };
 
       this.recognition.onstart = () => {
-        console.log('Speech recognition started.');
+        console.log('Reconhecimento de fala iniciado.');
       };
 
       this.recognition.onend = () => {
-        console.log('Speech recognition ended.');
+        console.log('Reconhecimento de fala finalizado.');
       };
     }
   }
@@ -64,5 +69,13 @@ export class AudioTranscriptionComponent {
   stopRecording() {
     this.isRecording = false;
     if (this.recognition) this.recognition.stop();
+  }
+
+  calculateMacros() {
+    // Aqui você pode adicionar lógica para enviar a transcrição ao back-end, se necessário.
+    console.log('Transcrição enviada:', this.transcription);
+
+    // Redireciona para a tela de exibição dos macronutrientes
+    this.router.navigate(['/generated-macros']);
   }
 }
