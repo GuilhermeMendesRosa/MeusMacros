@@ -1,7 +1,9 @@
 package br.com.roselabs.auth_meus_macros.controllers;
 
 import br.com.roselabs.auth_meus_macros.data.LoginRequestRecord;
+import br.com.roselabs.auth_meus_macros.data.RegisterRequestRecord;
 import br.com.roselabs.auth_meus_macros.services.JWTService;
+import br.com.roselabs.auth_meus_macros.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,7 @@ public class UserController {
 
     private final AuthenticationManager authenticationManager;
     private final JWTService tokenService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequestRecord loginRequest) {
@@ -30,4 +33,11 @@ public class UserController {
 
         return ResponseEntity.ok(token);
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody RegisterRequestRecord registerRequest) {
+        userService.registerUser(registerRequest);
+        return ResponseEntity.ok("User registered successfully");
+    }
+
 }
