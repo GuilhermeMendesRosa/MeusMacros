@@ -35,7 +35,6 @@ export class AudioTranscriptionComponent {
           transcript += event.results[i][0].transcript;
         }
         this.transcription = transcript.trim();
-        console.log('Transcrição:', this.transcription);
         this.cdr.detectChanges(); // Atualiza a UI
       };
 
@@ -63,12 +62,19 @@ export class AudioTranscriptionComponent {
 
   startRecording() {
     this.isRecording = true;
-    if (this.recognition) this.recognition.start();
+    if (this.recognition) {
+      this.transcription = '';  // Limpa qualquer transcrição anterior
+      this.recognition.start();
+    }
   }
 
   stopRecording() {
     this.isRecording = false;
-    if (this.recognition) this.recognition.stop();
+    if (this.recognition) {
+      this.recognition.stop();
+      // Ao parar, o conteúdo total captado até o momento será exibido
+      console.log('Texto completo captado:', this.transcription);
+    }
   }
 
   calculateMacros() {
@@ -76,6 +82,6 @@ export class AudioTranscriptionComponent {
     console.log('Transcrição enviada:', this.transcription);
 
     // Redireciona para a tela de exibição dos macronutrientes
-    this.router.navigate(['/generated-macros']);
+    this.router.navigate(['/generate-macros']);
   }
 }
