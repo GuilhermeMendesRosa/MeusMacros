@@ -1,0 +1,39 @@
+<div id="webcrumbs" class="flex justify-center items-center min-h-screen">
+  <div class="w-[360px] bg-white rounded-lg shadow-lg min-h-[600px]">
+    <header class="bg-primary-500 text-primary-50 text-center p-4 rounded-t-lg">
+      <h1 class="font-title text-2xl">Perfil do Usuário</h1>
+    </header>
+
+    <section class="flex flex-col items-center p-6">
+      <div class="w-[120px] h-[120px] rounded-full overflow-hidden">
+        <img
+          [src]="user.avatar"
+          alt="Avatar"
+          class="object-cover w-full h-full"
+        />
+      </div>
+      <h2 class="text-neutral-950 font-semibold text-xl mt-4">{{ user.nome }}</h2>
+      <p class="text-neutral-500 text-sm">{{ user.email }}</p>
+    </section>
+
+    <section class="flex flex-col items-center p-6">
+      <h3 class="text-neutral-950 font-semibold text-lg mb-4">Informações</h3>
+      <ul class="space-y-4 text-center">
+        <li>
+          <span class="block text-neutral-500">Telefone</span>
+          <span class="block text-neutral-950">{{ user.telefone }}</span>
+        </li>
+        <li>
+          <span class="block text-neutral-500">Data de Nascimento</span>
+          <span class="block text-neutral-950">{{ user.nascimento }}</span>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="p-6">
+      <button class="w-full py-3 bg-primary-500 text-primary-50 rounded-md font-semibold">
+        Editar Perfil
+      </button>
+    </footer>
+  </div>
+</div>
