@@ -82,6 +82,6 @@ export class AudioTranscriptionComponent {
     console.log('Transcrição enviada:', this.transcription);
 
     // Redireciona para a tela de exibição dos macronutrientes
-    this.router.navigate(['/generate-macros']);
+    this.router.navigate(['/generated-macros']);
   }
 }
