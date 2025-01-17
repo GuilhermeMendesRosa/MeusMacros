@@ -16,7 +16,6 @@ public class FoodItem {
     private Double protein;
     private Double carbohydrates;
     private Double fat;
-
     @Enumerated(EnumType.STRING)
     private Unit unit;
 }

@@ -1,5 +1,8 @@
 package br.com.roselabs.food_base_meus_macros.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Unit {
     GRAM("g"),
     MILLILITER("ml");
@@ -10,7 +13,4 @@ public enum Unit {
         this.abbreviation = abbreviation;
     }
 
-    public String getAbbreviation() {
-        return abbreviation;
-    }
 }
