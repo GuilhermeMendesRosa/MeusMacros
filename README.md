@@ -37,5 +37,3 @@
 ## 💡 **Agradecimentos**
 
 Agradecemos a todos que contribuíram para o projeto e ajudaram a torná-lo mais eficiente! 🙏
-
----
