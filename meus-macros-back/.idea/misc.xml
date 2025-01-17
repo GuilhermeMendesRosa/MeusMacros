@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/ai-meus-macros/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-meus-macros/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway-meus-macros/pom.xml" />
+        <option value="$PROJECT_DIR$/discovery-meus-macros/pom.xml" />
+        <option value="$PROJECT_DIR$/food-base-meus-macros/pom.xml" />
+        <option value="$PROJECT_DIR$/macros-calculator-meus-macros/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
