@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResultadosMacronutrientesComponent } from './resultados-macronutrientes.component';
+import { CalculatedMacrosComponent } from './calculated-macros.component';
 
 describe('ResultadosMacronutrientesComponent', () => {
-  let component: ResultadosMacronutrientesComponent;
-  let fixture: ComponentFixture<ResultadosMacronutrientesComponent>;
+  let component: CalculatedMacrosComponent;
+  let fixture: ComponentFixture<CalculatedMacrosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ResultadosMacronutrientesComponent]
+      imports: [CalculatedMacrosComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ResultadosMacronutrientesComponent);
+    fixture = TestBed.createComponent(CalculatedMacrosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

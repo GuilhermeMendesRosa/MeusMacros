@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "macro-calculator": {
+    "meus-macros-front": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/macro-calculator",
+            "outputPath": "dist/meus-macros-front",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "macro-calculator:build:production"
+              "buildTarget": "meus-macros-front:build:production"
             },
             "development": {
-              "buildTarget": "macro-calculator:build:development"
+              "buildTarget": "meus-macros-front:build:development"
             }
           },
           "defaultConfiguration": "development"

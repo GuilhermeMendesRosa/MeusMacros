@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { ApexChart, ApexLegend, ChartComponent } from 'ng-apexcharts'; // Importando os tipos corretos
 
 @Component({
-  selector: 'app-resultados-macronutrientes',
-  templateUrl: './resultados-macronutrientes.component.html',
+  selector: 'app-calculated-macros',
+  templateUrl: './calculated-macros.component.html',
   imports: [
     ChartComponent
   ],
-  styleUrls: ['./resultados-macronutrientes.component.css']
+  styleUrls: ['./calculated-macros.component.css']
 })
-export class ResultadosMacronutrientesComponent {
+export class CalculatedMacrosComponent {
 
   chartOptions = {
     series: [30, 25, 15], // Valores para o gráfico (proteínas, carboidratos, gorduras)

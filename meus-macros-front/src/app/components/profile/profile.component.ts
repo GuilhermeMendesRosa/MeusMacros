@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'app-perfil',
+  selector: 'app-profile',
   imports: [],
-  templateUrl: './perfil.component.html',
-  styleUrl: './perfil.component.css'
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.css'
 })
-export class PerfilComponent {
+export class ProfileComponent {
   user = {
     nome: 'João Silva',
     email: 'joao.silva@email.com',

@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-calcular-macronutrientes',
-  templateUrl: './calcular-macronutrientes.component.html',
-  styleUrls: ['./calcular-macronutrientes.component.css'],
+  selector: 'app-audio-transcription',
+  templateUrl: './audio-transciption.component.html',
+  styleUrls: ['./audio-transciption.component.css'],
   imports: [NgIf]
 })
-export class CalcularMacronutrientesComponent {
+export class AudioTransciptionComponent {
   isRecording = false;
   transcription = '';
   recognition: any;
@@ -80,6 +80,6 @@ export class CalcularMacronutrientesComponent {
     console.log('Transcrição enviada:', this.transcription);
 
     // Redireciona para a tela de exibição dos macronutrientes
-    this.router.navigate(['/resultados']);
+    this.router.navigate(['/calculated-macros']);
   }
 }

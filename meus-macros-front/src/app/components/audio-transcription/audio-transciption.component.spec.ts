@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CalcularMacronutrientesComponent } from './calcular-macronutrientes.component';
+import { AudioTransciptionComponent } from './audio-transciption.component';
 
 describe('CalcularMacronutrientesComponent', () => {
-  let component: CalcularMacronutrientesComponent;
-  let fixture: ComponentFixture<CalcularMacronutrientesComponent>;
+  let component: AudioTransciptionComponent;
+  let fixture: ComponentFixture<AudioTransciptionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CalcularMacronutrientesComponent]
+      imports: [AudioTransciptionComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CalcularMacronutrientesComponent);
+    fixture = TestBed.createComponent(AudioTransciptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
