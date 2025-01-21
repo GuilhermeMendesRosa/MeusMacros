@@ -1,0 +1,1 @@
+CREATE INDEX idx_food_item_name_fulltext ON food_item USING gin(to_tsvector('portuguese', name));

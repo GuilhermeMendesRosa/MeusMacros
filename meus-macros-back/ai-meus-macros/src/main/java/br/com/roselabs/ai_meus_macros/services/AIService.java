@@ -26,44 +26,69 @@ public class AIService {
                   {
                     "name": "Nome do alimento",
                     "unit": "g" ou "ml",
-                    },
                     "portions": Quantidade do alimento em unidades inteiras
                   }
                 ]
                 
-                - A unidade de medida dos alimentos será sempre em **gramas (g)** ou **mililitros (ml)**.
-                - O nome do alimento deve ser uma descrição detalhada do que foi consumido.
-                - A quantidade (portions) será um número inteiro, correspondente à porção informada.
+                **Instruções:**
+                - A unidade de medida dos alimentos deve ser sempre convertida para **gramas (g)** ou **mililitros (ml)**.
+                - Caso o alimento esteja descrito em medidas como "folhas", "fatias", "copos", "bifes", ou similares, você deve estimar e converter essas medidas para gramas (g) ou mililitros (ml).
+                - O nome do alimento deve ser formatado de maneira padronizada e compatível com a **Tabela Brasileira de Composição de Alimentos (TACO)**, para facilitar a pesquisa nessa tabela. Use nomes descritivos e genéricos encontrados na tabela, como "Arroz branco cozido", "Peito de frango grelhado", etc.
+                - A quantidade (portions) deve ser um número inteiro correspondente ao valor convertido para gramas ou mililitros.
                 
-                **Exemplo:**
-                
-                Se a pessoa disser: "Eu comi 150 gramas de arroz, 200 gramas de frango grelhado, uma banana de 120 gramas e bebi 200ml de leite", a resposta deve ser:
-                
+                **Exemplo 1:**
+                Transcrição: "Comi 3 fatias de pão integral, uma folha de alface, 2 copos de água e um bife de 200 gramas."
+                Resposta:
                 [
                   {
-                    "name": "Arroz branco cozido",
+                    "name": "Pão integral",
                     "unit": "g",
-                    "portions": 150
+                    "portions": 75
                   },
                   {
-                    "name": "Peito de frango grelhado",
+                    "name": "Alface crespa",
                     "unit": "g",
-                    "portions": 200
+                    "portions": 10
                   },
                   {
-                    "name": "Banana prata",
-                    "unit": "g",
-                    "portions": 120
-                  },
-                  {
-                    "name": "Leite integral",
+                    "name": "Água potável",
                     "unit": "ml",
+                    "portions": 500
+                  },
+                  {
+                    "name": "Carne bovina grelhada",
+                    "unit": "g",
                     "portions": 200
                   }
                 ]
                 
-                Não forneça explicações ou texto adicional. O retorno deve ser **somente** o JSON.
-                A abbreviation deve ser **somente** g ou ml.
+                **Exemplo 2:**
+                Transcrição: "Tomei um copo de leite e comi uma maçã."
+                Resposta:
+                [
+                  {
+                    "name": "Leite integral",
+                    "unit": "ml",
+                    "portions": 250
+                  },
+                  {
+                    "name": "Maçã vermelha",
+                    "unit": "g",
+                    "portions": 180
+                  }
+                ]
+                
+                **Dicas para formatação do nome do alimento:**
+                - Sempre utilize nomes que estejam de acordo com os padrões da tabela TACO. 
+                - Evite marcas ou descrições subjetivas. 
+                - Exemplo: use "Arroz branco cozido" ao invés de "Arroz da marca XYZ".
+                
+                Certifique-se de estimar medidas com base em quantidades comuns. Por exemplo:
+                - Uma fatia de pão geralmente pesa 25g.
+                - Um copo de água ou leite equivale a 250ml.
+                - Uma folha de alface pesa cerca de 10g.
+                
+                Não forneça explicações ou texto adicional. O retorno deve ser **somente** o JSON no formato especificado acima.
                 
                 Transcrição recebida: """ + transcript + """
                 """;
@@ -71,10 +96,10 @@ public class AIService {
         // Chamar a API do ChatClient e obter a resposta
         String response = chatClient.call(prompt);
 
-
         // Converter a resposta para uma lista de objetos Food
         Gson gson = new Gson();
         return gson.fromJson(response, new TypeToken<List<Food>>() {
         });
     }
+
 }
