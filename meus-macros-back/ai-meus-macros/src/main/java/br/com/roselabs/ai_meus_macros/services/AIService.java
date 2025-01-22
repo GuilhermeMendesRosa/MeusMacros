@@ -3,21 +3,46 @@ package br.com.roselabs.ai_meus_macros.services;
 import br.com.roselabs.ai_meus_macros.data.Food;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import lombok.AllArgsConstructor;
-import org.springframework.ai.openai.OpenAiChatClient;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.document.MetadataMode;
+import org.springframework.ai.embedding.EmbeddingResponse;
+import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.openai.OpenAiChatOptions;
+import org.springframework.ai.openai.OpenAiEmbeddingModel;
+import org.springframework.ai.openai.OpenAiEmbeddingOptions;
+import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.retry.RetryUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class AIService {
 
-    private final OpenAiChatClient chatClient;
+    private final OpenAiChatModel chatModel;
+    private final OpenAiEmbeddingModel embeddingModel;
+
+    public AIService(@Value("${spring.ai.openai.api-key}") String openAiApiKey) {
+        if (openAiApiKey == null || openAiApiKey.isBlank()) {
+            throw new IllegalArgumentException("OpenAI API Key não configurada ou está vazia.");
+        }
+
+        OpenAiApi openAiApi = new OpenAiApi(openAiApiKey);
+        this.chatModel = new OpenAiChatModel(openAiApi, buildChatOptions());
+        this.embeddingModel = new OpenAiEmbeddingModel(
+                openAiApi,
+                MetadataMode.EMBED,
+                OpenAiEmbeddingOptions.builder()
+                        .model("text-embedding-ada-002")
+                        .user("user-6")
+                        .build(),
+                RetryUtils.DEFAULT_RETRY_TEMPLATE);
+    }
 
     public List<Food> convertTranscriptToList(String transcript) {
-        // Montar o prompt para o ChatGPT
-        String prompt = """
+        String promptStr = """
                 **Prompt:**
                 
                 Você vai receber uma string com a transcrição de uma pessoa falando sobre o que ela comeu. A partir dessa transcrição, transforme as informações em um **JSON** no seguinte formato:
@@ -92,14 +117,29 @@ public class AIService {
                 
                 Transcrição recebida: """ + transcript + """
                 """;
+        ChatResponse response = chatModel.call(new Prompt(promptStr));
+        String result = response.getResult().getOutput().getContent();
 
-        // Chamar a API do ChatClient e obter a resposta
-        String response = chatClient.call(prompt);
+        return parseFoodListFromJson(result);
+    }
 
-        // Converter a resposta para uma lista de objetos Food
-        Gson gson = new Gson();
-        return gson.fromJson(response, new TypeToken<List<Food>>() {
-        });
+    private OpenAiChatOptions buildChatOptions() {
+        return OpenAiChatOptions.builder()
+                .model("gpt-4o-mini")
+                .temperature(0.4)
+                .maxTokens(200)
+                .build();
+    }
+
+    private List<Food> parseFoodListFromJson(String json) {
+        return new Gson().fromJson(json, new TypeToken<List<Food>>() {
+        }.getType());
+    }
+
+    private float[] getEmbeddingsByString(String str) {
+        EmbeddingResponse embeddingResponse = this.embeddingModel.embedForResponse(List.of(str));
+        float[] output = embeddingResponse.getResult().getOutput();
+        return output;
     }
 
 }
