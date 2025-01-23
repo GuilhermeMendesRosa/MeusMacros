@@ -47,8 +47,14 @@ public class AIService {
         String prompt = MeusMacrosPrompts.CONVERT_TRANSCRIPT_TO_LIST + transcript;
         ChatResponse response = chatModel.call(new Prompt(prompt));
         String result = response.getResult().getOutput().getContent();
+        List<Food> foods = parseFoodListFromJson(result);
 
-        return parseFoodListFromJson(result);
+        for (Food food : foods) {
+            List<Double> embedding = this.generateEmbedding(food.getName());
+            food.setEmbedding(embedding);
+        }
+
+        return foods;
     }
 
     public List<Double> generateEmbedding(String foodName) {

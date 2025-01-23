@@ -1,10 +1,13 @@
 package br.com.roselabs.food_base_meus_macros.controllers;
 
-import br.com.roselabs.food_base_meus_macros.entities.FoodItem;
+import br.com.roselabs.food_base_meus_macros.dtos.FoodDTO;
+import br.com.roselabs.food_base_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.food_base_meus_macros.services.FoodService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,16 +19,15 @@ public class FoodBaseController {
     private final FoodService foodService;
 
     @PostMapping("/generate-embeddings")
+    @Transactional
     public ResponseEntity<String> generateEmbeddings() {
         foodService.generateEmbeddings();
         return ResponseEntity.ok("Embeddings generated successfully");
     }
 
-    @PostMapping("/find-nearest-neighbors")
-    public ResponseEntity<List<FoodItem>> findNearestNeighbors() {
-        List<Double> carneDePatinhio = foodService.getEmbedding("Carne de patinhio");
-        List<FoodItem> nearestNeighbors = foodService.findNearestNeighbors(carneDePatinhio.toString());
-        return ResponseEntity.ok(nearestNeighbors);
+    @PostMapping("/find-food-items")
+    public ResponseEntity<List<FoodItemDTO>> findFoodItems(@RequestBody List<FoodDTO> foodDTOs) {
+        return ResponseEntity.ok(this.foodService.findFoodItems(foodDTOs));
     }
 
 }

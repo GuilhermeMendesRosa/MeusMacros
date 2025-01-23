@@ -1,6 +1,7 @@
 package br.com.roselabs.macros_calculator_meus_macros.controllers;
 
 import br.com.roselabs.macros_calculator_meus_macros.dtos.FoodDTO;
+import br.com.roselabs.macros_calculator_meus_macros.entities.Meal;
 import br.com.roselabs.macros_calculator_meus_macros.services.CalculationsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,9 @@ public class CalculationsController {
     private final CalculationsService calculationsService;
 
     @PostMapping("/calculate")
-    public ResponseEntity<List<FoodDTO>> calculateMacros(@RequestBody String transcriptFood) {
-        List<FoodDTO> calculated = this.calculationsService.calculate(transcriptFood);
-        return ResponseEntity.ok(calculated);
+    public ResponseEntity<Meal> calculateMacros(@RequestBody String transcriptFood) {
+        Meal meal = this.calculationsService.calculate(transcriptFood);
+        return ResponseEntity.ok(meal);
     }
 
 }

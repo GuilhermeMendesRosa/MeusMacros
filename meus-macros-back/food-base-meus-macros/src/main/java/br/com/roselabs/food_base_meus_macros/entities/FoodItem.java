@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 import java.util.List;
 
 @Entity
+@Table(name = "food_item")
 @Data
 public class FoodItem {
 
