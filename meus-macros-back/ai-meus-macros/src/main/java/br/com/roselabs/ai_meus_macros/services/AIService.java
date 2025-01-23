@@ -17,6 +17,7 @@ import org.springframework.ai.retry.RetryUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,6 +51,16 @@ public class AIService {
         return parseFoodListFromJson(result);
     }
 
+    public List<Double> generateEmbedding(String foodName) {
+        EmbeddingResponse embeddingResponse = this.embeddingModel.embedForResponse(List.of(foodName));
+        float[] output = embeddingResponse.getResult().getOutput();
+        List<Double> embeddings = new ArrayList<>();
+        for (float value : output) {
+            embeddings.add((double) value);
+        }
+        return embeddings;
+    }
+
     private OpenAiChatOptions buildChatOptions() {
         return OpenAiChatOptions.builder()
                 .model("gpt-4o-mini")
@@ -61,12 +72,6 @@ public class AIService {
     private List<Food> parseFoodListFromJson(String json) {
         return new Gson().fromJson(json, new TypeToken<List<Food>>() {
         }.getType());
-    }
-
-    private float[] getEmbeddingsByString(String str) {
-        EmbeddingResponse embeddingResponse = this.embeddingModel.embedForResponse(List.of(str));
-        float[] output = embeddingResponse.getResult().getOutput();
-        return output;
     }
 
 }

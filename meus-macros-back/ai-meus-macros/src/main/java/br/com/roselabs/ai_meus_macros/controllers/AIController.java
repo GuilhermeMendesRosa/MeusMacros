@@ -23,6 +23,12 @@ public class AIController {
         return ResponseEntity.ok(foods);
     }
 
+    @PostMapping("/generate-embedding")
+    public ResponseEntity<List<Double>> generateEmbedding(@RequestBody String foodName) {
+        List<Double> embedding = this.service.generateEmbedding(foodName);
+        return ResponseEntity.ok(embedding);
+    }
+
     @GetMapping("/hello-world")
     public String helloWorld() {
         return "Hello World";
