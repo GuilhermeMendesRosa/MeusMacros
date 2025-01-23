@@ -16,8 +16,10 @@ public class MeusMacrosPrompts {
             **Instruções:**
             - A unidade de medida dos alimentos deve ser sempre convertida para **gramas (g)** ou **mililitros (ml)**.
             - Caso o alimento esteja descrito em medidas como "folhas", "fatias", "copos", "bifes", ou similares, você deve estimar e converter essas medidas para gramas (g) ou mililitros (ml).
-            - O nome do alimento deve ser formatado de maneira padronizada e compatível com a **Tabela Brasileira de Composição de Alimentos (TACO)**, para facilitar a pesquisa nessa tabela. Use nomes descritivos e genéricos encontrados na tabela, como "Arroz branco cozido", "Peito de frango grelhado", etc.
+            - **Sempre** leve em conta os cortes das carnes; se não for informado, escolha o corte mais provável para a receita, sem exceções.
+            - O nome do alimento deve ser formatado de maneira padronizada e compatível com a **Tabela Brasileira de Composição de Alimentos (TACO)**, para facilitar a pesquisa nessa tabela.
             - A quantidade (portions) deve ser um número inteiro correspondente ao valor convertido para gramas ou mililitros.
+            - Considere sempre molhos e formas de preparo; por exemplo, se eu usar manteiga para untar a frigideira, deve contar como alimento, assim como no caso de um bife acebolado, contando a cebola e o azeite.
             
             **Exemplo 1:**
             Transcrição: "Comi 3 fatias de pão integral, uma folha de alface, 2 copos de água e um bife de 200 gramas."
