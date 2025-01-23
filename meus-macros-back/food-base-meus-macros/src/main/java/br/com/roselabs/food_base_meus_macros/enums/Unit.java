@@ -4,13 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum Unit {
-    GRAM("g"),
-    MILLILITER("ml");
-
-    private final String abbreviation;
-
-    Unit(String abbreviation) {
-        this.abbreviation = abbreviation;
-    }
+    g,
+    ml
 
 }

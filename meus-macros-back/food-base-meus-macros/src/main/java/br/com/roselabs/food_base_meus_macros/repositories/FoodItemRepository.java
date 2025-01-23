@@ -11,4 +11,9 @@ public interface FoodItemRepository extends JpaRepository<FoodItem, Long> {
     @Query(nativeQuery = true,
             value = "SELECT * FROM food_item ORDER BY embedding <-> cast(? as vector) LIMIT 3")
     List<FoodItem> findNearestNeighbors(String embedding);
+
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM food_item WHERE embedding = null")
+    List<FoodItem> findFoodsWithouEmbedding();
+
 }
