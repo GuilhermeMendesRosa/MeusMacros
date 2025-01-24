@@ -18,8 +18,8 @@ public class MeusMacrosPrompts {
                - Converta todas as unidades de medida para **gramas (g)** ou **mililitros (ml)**, sempre que possível.
             
             2. **Medidas estimadas**
-               - Para alimentos descritos em medidas como "folhas", "fatias", "copos", "colheres", "xícaras", "bifes", ou similares, estime e converta com base nos valores de referência abaixo:
-            
+               - Para alimentos descritos em medidas como "folhas", "fatias", "copos", "rodelas", "colheres", "xícaras", "bifes", "grãos", "punhados", "dentes", "porções", "pitadas", "tabletes", "gomos", "cubos", "lascas", "filés", "gotas", "pedaços", "toras", "bolas", "fios", "lâminas", "costelas", "quadrados", "galhos", "talos", "pacotes", "poucas" ou similares, estime e converta com base nos valores de referência abaixo:
+               - No caso de vegetais mais pesados (acima de 80g), o usuário provavelmente não irá falar a medida, nesse não considere que ele irá comer inteiro, considere que ele comeu alguma fração.
             ---
             
             **MEDIDAS COMUNS PARA ALIMENTOS**
