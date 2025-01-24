@@ -30,27 +30,21 @@ public class AIService {
     private final OpenAiEmbeddingModel embeddingModel;
 
     public AIService(@Value("${spring.ai.openai.api-key}") String openAiApiKey) {
-        if (openAiApiKey == null || openAiApiKey.isBlank()) {
-            throw new IllegalArgumentException("OpenAI API Key não configurada ou está vazia.");
-        }
-
         OpenAiApi openAiApi = new OpenAiApi(openAiApiKey);
-        this.chatModel = new OpenAiChatModel(openAiApi, buildChatOptions());
-        this.embeddingModel = new OpenAiEmbeddingModel(
-                openAiApi,
-                MetadataMode.EMBED,
-                OpenAiEmbeddingOptions.builder()
-                        .model("text-embedding-ada-002")
-                        .user("user-6")
-                        .build(),
-                RetryUtils.DEFAULT_RETRY_TEMPLATE);
+        this.chatModel = this.buildChatModel(openAiApi);
+        this.embeddingModel = this.buildEmbeddingModel(openAiApi);
     }
 
     public List<Food> convertTranscriptToList(String transcript) throws InterruptedException {
         String prompt = MeusMacrosPrompts.CONVERT_TRANSCRIPT_TO_LIST + transcript;
         ChatResponse response = chatModel.call(new Prompt(prompt));
         String result = response.getResult().getOutput().getContent();
-        List<Food> foods = parseFoodListFromJson(result);
+
+        List<Food> foods = new Gson().fromJson(
+                result,
+                new TypeToken<List<Food>>() {
+                }.getType()
+        );
 
         ExecutorService threadPool = Executors.newCachedThreadPool();
 
@@ -77,17 +71,24 @@ public class AIService {
         return embeddings;
     }
 
-    private OpenAiChatOptions buildChatOptions() {
-        return OpenAiChatOptions.builder()
+    private OpenAiChatModel buildChatModel(OpenAiApi openAiApi) {
+        OpenAiChatOptions chatOptions = OpenAiChatOptions.builder()
                 .model("gpt-4o-mini")
-                .temperature(0.4)
+                .temperature(0.1)
                 .maxTokens(200)
                 .build();
+        return new OpenAiChatModel(openAiApi, chatOptions);
     }
 
-    private List<Food> parseFoodListFromJson(String json) {
-        return new Gson().fromJson(json, new TypeToken<List<Food>>() {
-        }.getType());
+    private OpenAiEmbeddingModel buildEmbeddingModel(OpenAiApi openAiApi) {
+        return new OpenAiEmbeddingModel(
+                openAiApi,
+                MetadataMode.EMBED,
+                OpenAiEmbeddingOptions.builder()
+                        .model("text-embedding-ada-002")
+                        .user("user-6")
+                        .build(),
+                RetryUtils.DEFAULT_RETRY_TEMPLATE);
     }
 
 }
