@@ -1,6 +1,5 @@
-package br.com.roselabs.auth_meus_macros.services;
+package br.com.roselabs.macros_calculator_meus_macros.services;
 
-import br.com.roselabs.auth_meus_macros.entities.User;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -17,19 +16,6 @@ public class JWTService {
 
     @Value("${security.jwt.secret-key}")
     private String secretKey;
-
-    @Value("${security.jwt.expiration-time}")
-    private long jwtExpiration;
-
-    public String generateToken(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-
-        return JWT.create()
-                .withIssuer("meus-macros")
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration))
-                .sign(Algorithm.HMAC256(secretKey));
-    }
 
     public boolean validateToken(String token) {
         try {
