@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class Meal {
+public class MealDTO {
 
     private final List<String> foods = new ArrayList<>();
     private int calories = 0;
@@ -15,7 +15,7 @@ public class Meal {
     private int carbohydrates = 0;
     private int fat = 0;
 
-    public Meal(List<FoodItemDTO> foodItems) {
+    public MealDTO(List<FoodItemDTO> foodItems) {
         for (FoodItemDTO foodItem : foodItems) {
             this.foods.add(String.format("%d%s de %s", foodItem.getPortions(), foodItem.getUnit(), foodItem.getFoodItemName()));
             this.calories += (int) (foodItem.getCalories() * foodItem.getPortions());
