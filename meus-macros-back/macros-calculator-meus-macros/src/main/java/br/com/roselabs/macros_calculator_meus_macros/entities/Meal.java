@@ -9,19 +9,19 @@ import java.util.List;
 @Getter
 public class Meal {
 
-    private List<String> foods = new ArrayList<>();
-    private Double calories = 0.0;
-    private Double protein = 0.0;
-    private Double carbohydrates = 0.0;
-    private Double fat = 0.0;
+    private final List<String> foods = new ArrayList<>();
+    private int calories = 0;
+    private int protein = 0;
+    private int carbohydrates = 0;
+    private int fat = 0;
 
     public Meal(List<FoodItemDTO> foodItems) {
         for (FoodItemDTO foodItem : foodItems) {
             this.foods.add(String.format("%d%s de %s", foodItem.getPortions(), foodItem.getUnit(), foodItem.getFoodItemName()));
-            this.calories += foodItem.getCalories() * foodItem.getPortions();
-            this.protein += foodItem.getProtein() * foodItem.getPortions();
-            this.carbohydrates += foodItem.getCarbohydrates() * foodItem.getPortions();
-            this.fat += foodItem.getFat() * foodItem.getPortions();
+            this.calories += (int) (foodItem.getCalories() * foodItem.getPortions());
+            this.protein += (int) (foodItem.getProtein() * foodItem.getPortions());
+            this.carbohydrates += (int) (foodItem.getCarbohydrates() * foodItem.getPortions());
+            this.fat += (int) (foodItem.getFat() * foodItem.getPortions());
         }
     }
 }

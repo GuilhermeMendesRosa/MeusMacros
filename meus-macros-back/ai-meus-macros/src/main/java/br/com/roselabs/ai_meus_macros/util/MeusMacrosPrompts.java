@@ -27,10 +27,12 @@ public class MeusMacrosPrompts {
             **Grãos, cereais e massas**
             - **Arroz cru (1 colher de sopa):** 20g
             - **Arroz cozido (1 colher de sopa):** 25g
+            - **Arroz cozido (1 colher de restaurante):** 60g
+            - **Arroz cozido (1 colher de grande):** 60g
             - **Arroz cozido (1 xícara):** 150g
-            - **Feijão cozido (1 concha média):** 150g
+            - **Feijão cozido (1 concha média):** 60g
             - **Macarrão cru (1 xícara):** 80g
-            - **Macarrão cozido (1 concha média):** 150g
+            - **Macarrão cozido (1 concha média):** 90g
             - **Aveia em flocos (1 colher de sopa):** 10g
             - **Farinha de trigo (1 colher de sopa):** 10g
             - **Cuscuz cozido (1 colher de sopa):** 20g
@@ -38,8 +40,8 @@ public class MeusMacrosPrompts {
             
             **Carnes e proteínas**
             - **Bife médio (patinho ou alcatra):** 120g
-            - **Peito de frango grelhado (1 filé):** 150g
-            - **Carne moída (1 porção padrão):** 150g
+            - **Peito de frango grelhado (1 filé):** 100g
+            - **Carne moída (1 porção padrão):** 100g
             - **Filé de peixe grelhado (tilápia ou similar):** 120g
             - **Linguiça toscana (1 unidade):** 100g
             - **Ovo médio (com casca):** 50g
