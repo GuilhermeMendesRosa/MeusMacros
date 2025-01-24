@@ -77,17 +77,20 @@ public class AIService {
                 .temperature(0.1)
                 .maxTokens(200)
                 .build();
+
         return new OpenAiChatModel(openAiApi, chatOptions);
     }
 
     private OpenAiEmbeddingModel buildEmbeddingModel(OpenAiApi openAiApi) {
+        OpenAiEmbeddingOptions embeddingOptions = OpenAiEmbeddingOptions.builder()
+                .model("text-embedding-ada-002")
+                .user("user-6")
+                .build();
+
         return new OpenAiEmbeddingModel(
                 openAiApi,
                 MetadataMode.EMBED,
-                OpenAiEmbeddingOptions.builder()
-                        .model("text-embedding-ada-002")
-                        .user("user-6")
-                        .build(),
+                embeddingOptions,
                 RetryUtils.DEFAULT_RETRY_TEMPLATE);
     }
 
