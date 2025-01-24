@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -20,8 +19,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
 
-    private final ApplicationContext applicationContext;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -32,7 +29,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             String username = jwtService.getIssuerFromToken(token);
 
             UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(username, null, null);
+                    new UsernamePasswordAuthenticationToken(username, token, null);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 
@@ -46,4 +43,5 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
 }

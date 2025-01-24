@@ -1,14 +1,11 @@
-package br.com.roselabs.auth_meus_macros.configs;
+package br.com.roselabs.food_base_meus_macros.filters;
 
-import br.com.roselabs.auth_meus_macros.entities.User;
-import br.com.roselabs.auth_meus_macros.services.JWTService;
-import br.com.roselabs.auth_meus_macros.services.UserService;
+import br.com.roselabs.food_base_meus_macros.services.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -22,8 +19,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
 
-    private final ApplicationContext applicationContext;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -33,11 +28,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         if (token != null && jwtService.validateToken(token)) {
             String username = jwtService.getIssuerFromToken(token);
 
-            UserService userDetailsService = applicationContext.getBean(UserService.class);
-            User userDetails = (User) userDetailsService.loadUserByUsername(username);
-
             UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(username, token, null);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 

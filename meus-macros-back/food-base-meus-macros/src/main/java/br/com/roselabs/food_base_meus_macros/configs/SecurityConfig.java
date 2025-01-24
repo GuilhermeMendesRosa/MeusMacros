@@ -1,6 +1,6 @@
-package br.com.roselabs.macros_calculator_meus_macros.configs;
+package br.com.roselabs.food_base_meus_macros.configs;
 
-import br.com.roselabs.macros_calculator_meus_macros.filters.JWTAuthenticationFilter;
+import br.com.roselabs.food_base_meus_macros.filters.JWTAuthenticationFilter;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.AllArgsConstructor;
