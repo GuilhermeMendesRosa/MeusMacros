@@ -6,6 +6,7 @@ import br.com.roselabs.food_base_meus_macros.services.FoodService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,9 +19,9 @@ public class FoodBaseController {
 
     private final FoodService foodService;
 
-    @PostMapping("/generate-embeddings")
+    @GetMapping("/generate-embeddings")
     @Transactional
-    public ResponseEntity<String> generateEmbeddings() {
+    public ResponseEntity<String> generateEmbeddings() throws InterruptedException {
         foodService.generateEmbeddings();
         return ResponseEntity.ok("Embeddings generated successfully");
     }

@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class FoodItemDTO {
+
     private Long id;
     private String name;
     private Double calories;

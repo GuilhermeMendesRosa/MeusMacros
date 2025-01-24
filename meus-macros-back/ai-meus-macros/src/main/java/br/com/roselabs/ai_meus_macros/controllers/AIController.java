@@ -18,7 +18,7 @@ public class AIController {
     private final AIService service;
 
     @PostMapping("/transcript-to-list")
-    public ResponseEntity<List<Food>> convertTranscriptToList(@RequestBody String transcript) {
+    public ResponseEntity<List<Food>> convertTranscriptToList(@RequestBody String transcript) throws InterruptedException {
         List<Food> foods = this.service.convertTranscriptToList(transcript);
         return ResponseEntity.ok(foods);
     }

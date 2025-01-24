@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +23,21 @@ public class FoodService {
     private final FoodItemRepository foodItemRepository;
     private final AIClient aiClient;
 
-    public void generateEmbeddings() {
-        List<FoodItem> byNameContainingCarne = this.foodItemRepository.findFoodsWithoutEmbedding();
-        byNameContainingCarne
-                .forEach(foodItem -> {
-                    List<Double> embedding = getEmbedding(foodItem.getName());
-                    foodItem.setEmbedding(embedding);
-                    this.foodItemRepository.save(foodItem);
-                });
+    public void generateEmbeddings() throws InterruptedException {
+        List<FoodItem> foodsWithoutEmbedding = this.foodItemRepository.findFoodsWithoutEmbedding();
+
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+
+        for (FoodItem foodItem : foodsWithoutEmbedding) {
+            threadPool.execute(() -> {
+                List<Double> embedding = getEmbedding(foodItem.getName());
+                foodItem.setEmbedding(embedding);
+                this.foodItemRepository.save(foodItem);
+            });
+        }
+
+        threadPool.shutdown();
+        threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
     }
 
     private List<Double> getEmbedding(String foodItem) {
@@ -45,4 +56,5 @@ public class FoodService {
 
         return foodItemDTOS;
     }
+
 }
