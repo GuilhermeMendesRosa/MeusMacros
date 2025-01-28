@@ -3,6 +3,8 @@ package br.com.roselabs.ai_meus_macros.services;
 import br.com.roselabs.ai_meus_macros.data.Food;
 import br.com.roselabs.ai_meus_macros.util.MeusMacrosPrompts;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -19,9 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class AIService {
@@ -36,27 +35,27 @@ public class AIService {
     }
 
     public List<Food> convertTranscriptToList(String transcript) throws InterruptedException {
-        String prompt = MeusMacrosPrompts.CONVERT_TRANSCRIPT_TO_LIST + transcript;
-        ChatResponse response = chatModel.call(new Prompt(prompt));
-        String result = response.getResult().getOutput().getContent();
+        JsonObject body = new Gson().fromJson(transcript, JsonObject.class);
+        JsonElement transcriptFood = body.get("transcriptFood");
+
+        String toImprovePrompt = String.format(MeusMacrosPrompts.IMPROVE_TEXT, transcriptFood);
+        ChatResponse toImproveResponse = chatModel.call(new Prompt(toImprovePrompt));
+        String toImproveResult = toImproveResponse.getResult().getOutput().getContent();
+
+        String toConvertPrompt = String.format(MeusMacrosPrompts.CONVERT_TRANSCRIPT_TO_LIST, toImproveResult);
+        ChatResponse toConvertResponse = chatModel.call(new Prompt(toConvertPrompt));
+        String toConvertResult = toConvertResponse.getResult().getOutput().getContent();
 
         List<Food> foods = new Gson().fromJson(
-                result,
+                toConvertResult,
                 new TypeToken<List<Food>>() {
                 }.getType()
         );
 
-        ExecutorService threadPool = Executors.newCachedThreadPool();
-
         for (Food food : foods) {
-            threadPool.execute(() -> {
-                List<Double> embedding = this.generateEmbedding(food.getName());
-                food.setEmbedding(embedding);
-            });
+            List<Double> embedding = this.generateEmbedding(food.getName());
+            food.setEmbedding(embedding);
         }
-
-        threadPool.shutdown();
-        threadPool.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
 
         return foods;
     }
@@ -75,7 +74,7 @@ public class AIService {
         OpenAiChatOptions chatOptions = OpenAiChatOptions.builder()
                 .model("gpt-4o-mini")
                 .temperature(0.1)
-                .maxTokens(200)
+                .maxTokens(300)
                 .build();
 
         return new OpenAiChatModel(openAiApi, chatOptions);
