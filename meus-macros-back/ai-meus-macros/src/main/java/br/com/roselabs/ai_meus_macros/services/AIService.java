@@ -117,4 +117,12 @@ public class AIService {
                 embeddingOptions,
                 RetryUtils.DEFAULT_RETRY_TEMPLATE);
     }
+
+    public String choose(String json) {
+        String toImprovePrompt = String.format(MeusMacrosPrompts.CHOOSE, json);
+        ChatResponse toImproveResponse = chatModel.call(new Prompt(toImprovePrompt));
+        String toImproveResult = toImproveResponse.getResult().getOutput().getContent();
+
+        return toImproveResult;
+    }
 }

@@ -5,6 +5,8 @@ import br.com.roselabs.food_base_meus_macros.dtos.FoodDTO;
 import br.com.roselabs.food_base_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.food_base_meus_macros.entities.FoodItem;
 import br.com.roselabs.food_base_meus_macros.repositories.FoodItemRepository;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,11 +57,24 @@ public class FoodService {
 
         for (FoodDTO foodDTO : foodDTOs) {
             logger.debug("Searching for nearest neighbor for food: {}", foodDTO.getName());
-            Optional<FoodItem> foodItemOptional = this.foodItemRepository.findNearestNeighbors(
+            List<FoodItem> foodItems = this.foodItemRepository.findNearestNeighbors(
                     foodDTO.getEmbedding().toString());
 
-            if (foodItemOptional.isPresent()) {
-                FoodItem foodItem = foodItemOptional.get();
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("foodItems", new Gson().toJson(foodItems));
+            jsonObject.addProperty("userInput", foodDTO.getName());
+
+            String chosenId = this.aiClient.chooseId(new Gson().toJson(jsonObject));
+
+            FoodItem foodItem = null;
+
+            for (FoodItem foodItem1 : foodItems) {
+                if (chosenId.equals(foodItem1.getId().toString())) {
+                    foodItem = foodItem1;
+                }
+            }
+
+            if (foodItem != null) {
                 foodItemDTOS.add(new FoodItemDTO(foodItem, foodDTO.getPortions()));
                 logger.info("Found nearest neighbor for food: {} -> {}", foodDTO.getName(), foodItem.getName());
             } else {

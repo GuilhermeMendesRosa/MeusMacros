@@ -31,6 +31,11 @@ public class AIController {
         return ResponseEntity.ok(embedding);
     }
 
+    @PostMapping("/choose")
+    public ResponseEntity<String> choose(@RequestBody String json) {
+        return ResponseEntity.ok(this.service.choose(json));
+    }
+
     @PostMapping("/find-food-items")
     public ResponseEntity<List<FoodItemDTO>> findFoodItems(@RequestBody List<FoodDTO> foodDTOs) {
         return ResponseEntity.ok(this.service.findFoodItems(foodDTOs));

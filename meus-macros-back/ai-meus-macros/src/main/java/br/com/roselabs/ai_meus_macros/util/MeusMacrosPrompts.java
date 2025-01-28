@@ -210,5 +210,12 @@ public class MeusMacrosPrompts {
                         JSON BASE: %s
             """;
 
+    public static final String CHOOSE = """
+            Com base no userInput, qual é o o foodItem mais coerente?
+            ME RETORNE SOMENTE O ID e nada mais.
+            
+            %s
+            """;
+
 
 }
