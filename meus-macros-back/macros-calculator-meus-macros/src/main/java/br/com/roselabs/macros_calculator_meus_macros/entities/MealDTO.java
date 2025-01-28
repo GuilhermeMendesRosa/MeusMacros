@@ -17,7 +17,7 @@ public class MealDTO {
 
     public MealDTO(List<FoodItemDTO> foodItems) {
         for (FoodItemDTO foodItem : foodItems) {
-            this.foods.add(String.format("%d%s de %s", foodItem.getPortions(), foodItem.getUnit(), foodItem.getFoodItemName()));
+            this.foods.add(String.format("%d%s de %s", foodItem.getPortions(), foodItem.getUnit(), foodItem.getName()));
             this.calories += (int) (foodItem.getCalories() * foodItem.getPortions());
             this.protein += (int) (foodItem.getProtein() * foodItem.getPortions());
             this.carbohydrates += (int) (foodItem.getCarbohydrates() * foodItem.getPortions());

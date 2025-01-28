@@ -60,7 +60,7 @@ public class FoodService {
 
             if (foodItemOptional.isPresent()) {
                 FoodItem foodItem = foodItemOptional.get();
-                foodItemDTOS.add(new FoodItemDTO(foodItem, foodDTO.getName(), foodDTO.getPortions()));
+                foodItemDTOS.add(new FoodItemDTO(foodItem, foodDTO.getPortions()));
                 logger.info("Found nearest neighbor for food: {} -> {}", foodDTO.getName(), foodItem.getName());
             } else {
                 logger.warn("No nearest neighbor found for food: {}", foodDTO.getName());

@@ -1,6 +1,8 @@
 package br.com.roselabs.ai_meus_macros.services;
 
 import br.com.roselabs.ai_meus_macros.data.Food;
+import br.com.roselabs.ai_meus_macros.dtos.FoodDTO;
+import br.com.roselabs.ai_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.ai_meus_macros.util.MeusMacrosPrompts;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -38,26 +40,49 @@ public class AIService {
         JsonObject body = new Gson().fromJson(transcript, JsonObject.class);
         JsonElement transcriptFood = body.get("transcriptFood");
 
-        String toImprovePrompt = String.format(MeusMacrosPrompts.IMPROVE_TEXT, transcriptFood);
+        String toImprovePrompt = String.format(MeusMacrosPrompts.FIRST_STEP, transcriptFood);
         ChatResponse toImproveResponse = chatModel.call(new Prompt(toImprovePrompt));
         String toImproveResult = toImproveResponse.getResult().getOutput().getContent();
 
-        String toConvertPrompt = String.format(MeusMacrosPrompts.CONVERT_TRANSCRIPT_TO_LIST, toImproveResult);
+        String toConvertPrompt = String.format(MeusMacrosPrompts.SECOND_STEP, toImproveResult);
         ChatResponse toConvertResponse = chatModel.call(new Prompt(toConvertPrompt));
         String toConvertResult = toConvertResponse.getResult().getOutput().getContent();
 
+        String thirdPrompt = String.format(MeusMacrosPrompts.THIRD_STEP, toConvertResult);
+        ChatResponse thirdResponse = chatModel.call(new Prompt(thirdPrompt));
+        String thirdResult = thirdResponse.getResult().getOutput().getContent();
+
         List<Food> foods = new Gson().fromJson(
-                toConvertResult,
+                thirdResult,
                 new TypeToken<List<Food>>() {
                 }.getType()
         );
 
         for (Food food : foods) {
-            List<Double> embedding = this.generateEmbedding(food.getName());
-            food.setEmbedding(embedding);
+            if (food.getInNatura()) {
+                List<Double> embedding = this.generateEmbedding(food.getName());
+                food.setEmbedding(embedding);
+            }
         }
 
         return foods;
+    }
+
+    public List<FoodItemDTO> findFoodItems(List<FoodDTO> foodDTOs) {
+        Gson gson = new Gson();
+
+
+        String toImprovePrompt = String.format(MeusMacrosPrompts.CALCULATE, gson.toJson(foodDTOs));
+        ChatResponse toImproveResponse = chatModel.call(new Prompt(toImprovePrompt));
+        String toImproveResult = toImproveResponse.getResult().getOutput().getContent();
+
+        List<FoodItemDTO> foodItemDTOS = new Gson().fromJson(
+                toImproveResult,
+                new TypeToken<List<FoodItemDTO>>() {
+                }.getType()
+        );
+
+        return foodItemDTOS;
     }
 
     public List<Double> generateEmbedding(String foodName) {
@@ -92,5 +117,4 @@ public class AIService {
                 embeddingOptions,
                 RetryUtils.DEFAULT_RETRY_TEMPLATE);
     }
-
 }

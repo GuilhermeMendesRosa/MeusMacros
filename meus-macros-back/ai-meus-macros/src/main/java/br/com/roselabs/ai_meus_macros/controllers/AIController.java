@@ -1,6 +1,8 @@
 package br.com.roselabs.ai_meus_macros.controllers;
 
 import br.com.roselabs.ai_meus_macros.data.Food;
+import br.com.roselabs.ai_meus_macros.dtos.FoodDTO;
+import br.com.roselabs.ai_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.ai_meus_macros.services.AIService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,11 @@ public class AIController {
     public ResponseEntity<List<Double>> generateEmbedding(@RequestBody String foodName) {
         List<Double> embedding = this.service.generateEmbedding(foodName);
         return ResponseEntity.ok(embedding);
+    }
+
+    @PostMapping("/find-food-items")
+    public ResponseEntity<List<FoodItemDTO>> findFoodItems(@RequestBody List<FoodDTO> foodDTOs) {
+        return ResponseEntity.ok(this.service.findFoodItems(foodDTOs));
     }
 
     @GetMapping("/hello-world")

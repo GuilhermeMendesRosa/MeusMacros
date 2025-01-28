@@ -10,6 +10,7 @@ public class Food {
     private String name;
     private String unit;
     private Integer portions;
+    private Boolean inNatura;
     private List<Double> embedding;
 
 }

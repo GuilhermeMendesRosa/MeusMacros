@@ -8,6 +8,7 @@ import br.com.roselabs.macros_calculator_meus_macros.entities.MealDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,8 +20,36 @@ public class CalculationsService {
 
     public MealDTO calculate(String transcriptFood) {
         List<FoodDTO> foodDTOS = this.aiClient.convertTranscriptToList(transcriptFood);
-        List<FoodItemDTO> foodItemDTOs = this.foodBaseClient.findFoodItems(foodDTOS);
-        MealDTO mealDTO = new MealDTO(foodItemDTOs);
+
+        List<FoodDTO> foodItemDTOsInNatura = new ArrayList<>();
+        List<FoodDTO> foodItemDTOsNotInNatura = new ArrayList<>();
+
+        for (FoodDTO foodDTO : foodDTOS) {
+            if (foodDTO.getInNatura()) {
+                foodItemDTOsInNatura.add(foodDTO);
+            } else {
+                foodItemDTOsNotInNatura.add(foodDTO);
+            }
+        }
+
+
+        List<FoodItemDTO> foodBaseClientFoodItems = new ArrayList<>();
+        List<FoodItemDTO> aiClientFoodItems = new ArrayList<>();
+
+        if (!foodItemDTOsInNatura.isEmpty()) {
+            foodBaseClientFoodItems = this.foodBaseClient.findFoodItems(foodItemDTOsInNatura);
+        }
+
+        if (!foodItemDTOsNotInNatura.isEmpty()) {
+            aiClientFoodItems = this.aiClient.findFoodItems(foodItemDTOsNotInNatura);
+        }
+
+        List<FoodItemDTO> combinedFoodItems = new ArrayList<>();
+
+        combinedFoodItems.addAll(foodBaseClientFoodItems);
+        combinedFoodItems.addAll(aiClientFoodItems);
+
+        MealDTO mealDTO = new MealDTO(combinedFoodItems);
 
         return mealDTO;
     }
