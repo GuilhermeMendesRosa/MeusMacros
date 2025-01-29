@@ -1,6 +1,8 @@
 package br.com.roselabs.ai_meus_macros.controllers;
 
 import br.com.roselabs.ai_meus_macros.data.Food;
+import br.com.roselabs.ai_meus_macros.data.Transcript;
+import br.com.roselabs.ai_meus_macros.dtos.ChooseDTO;
 import br.com.roselabs.ai_meus_macros.dtos.FoodDTO;
 import br.com.roselabs.ai_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.ai_meus_macros.services.AIService;
@@ -17,12 +19,10 @@ import java.util.List;
 @AllArgsConstructor
 public class AIController {
 
-    //TODO parâmetros - criar objetos
-
     private final AIService service;
 
     @PostMapping("/transcript-to-list")
-    public ResponseEntity<List<Food>> convertTranscriptToList(@RequestBody String transcript) throws InterruptedException {
+    public ResponseEntity<List<Food>> convertTranscriptToList(@RequestBody Transcript transcript) throws InterruptedException {
         List<Food> foods = this.service.convertTranscriptToList(transcript);
         return ResponseEntity.ok(foods);
     }
@@ -34,8 +34,8 @@ public class AIController {
     }
 
     @PostMapping("/choose")
-    public ResponseEntity<String> choose(@RequestBody String json) {
-        return ResponseEntity.ok(this.service.choose(json));
+    public ResponseEntity<String> choose(@RequestBody ChooseDTO chooseDTO) {
+        return ResponseEntity.ok(this.service.choose(chooseDTO));
     }
 
     @PostMapping("/find-food-items")

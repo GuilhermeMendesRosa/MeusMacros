@@ -1,5 +1,6 @@
 package br.com.roselabs.macros_calculator_meus_macros.controllers;
 
+import br.com.roselabs.macros_calculator_meus_macros.dtos.TranscriptDTO;
 import br.com.roselabs.macros_calculator_meus_macros.entities.MealDTO;
 import br.com.roselabs.macros_calculator_meus_macros.services.CalculationsService;
 import lombok.AllArgsConstructor;
@@ -15,8 +16,8 @@ public class CalculationsController {
     private final CalculationsService calculationsService;
 
     @PostMapping("/calculate")
-    public ResponseEntity<MealDTO> calculateMacros(@RequestBody String transcriptFood) {
-        MealDTO mealDTO = this.calculationsService.calculate(transcriptFood);
+    public ResponseEntity<MealDTO> calculateMacros(@RequestBody TranscriptDTO transcriptDTO) {
+        MealDTO mealDTO = this.calculationsService.calculate(transcriptDTO);
         return ResponseEntity.ok(mealDTO);
     }
 

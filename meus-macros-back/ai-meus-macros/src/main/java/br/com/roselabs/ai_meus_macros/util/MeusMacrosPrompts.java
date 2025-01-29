@@ -18,6 +18,7 @@ public class MeusMacrosPrompts {
                - Fontes primárias: Tabela TACO, USDA FoodData Central ou informações oficiais do fabricante
                - Se os dados exatos não forem encontrados, usar médias de alimentos similares e adicionar um campo "obs" com "*Valores estimados"
                - Manter a estrutura original do JSON
+               - As calorias, proteínas que você deve fornecer são referentes a 1g ou 1ml DO alimento **SEMPRE**, a portions é referente a quantidade que o usuário consumiu, PRESTE MUITA ATENÇÃO NISSO
             
             Exemplo de saída esperada:
             [
@@ -33,7 +34,7 @@ public class MeusMacrosPrompts {
             ]
             
             
-            Não forneça explicações ou texto adicional. O retorno deve ser **somente** o json no formato esperado. Não coloque nenhum "```json" no retorno
+            Não forneça explicações ou texto adicional. O retorno deve ser **somente** o json no formato esperado. Não coloque nenhum "```json" no retorno nunca
                         JSON BASE: %s
             """;
 
@@ -44,7 +45,7 @@ public class MeusMacrosPrompts {
             %s
             """;
 
-    public static final String INICIAL_PROCESSING = """
+    public static final String INITIAL_PROCESSING = """
             ### **Prompt para Processamento Inicial**
             
             **Contexto:** 
@@ -92,7 +93,7 @@ public class MeusMacrosPrompts {
             **Saída Esperada:** 
             [
               {"item": "arroz", "quantidade": "indefinido", "unidade": "indefinido"},
-              {"item": "carne", "quantidade": "indefinido", "unidade": "indefinido"}
+              {"item": "carne bovina", "quantidade": "indefinido", "unidade": "indefinido"}
             ]
             
             ---
@@ -117,24 +118,34 @@ public class MeusMacrosPrompts {
             {"item": "pizza", "quantidade": "1", "unidade": "pedaço", "observação": "pedaço pode variar em tamanho."}
             
             ---
-            Aqui está o texto do usuário: %s
+            Não coloque nenhum "```json" no retorno nunca. Aqui está o texto do usuário: %s
             """;
 
     public static final String NORMALIZATION_PROCESSING = """
             ### **Prompt para Normalização (Atualizado)**
             
             **Contexto:** 
-            Você é um assistente especializado em processar descrições de alimentos consumidos e normalizá-las em uma estrutura padronizada. Seu objetivo é converter uma entrada de alimentos com quantidade e unidade em um objeto JSON que siga o formato especificado. Use o banco de dados TACO como referência para determinar se um alimento é genérico e amplamente consumido no Brasil. Sempre normalize a unidade para "g" (gramas) ou "ml" (mililitros), pois essas são as unidades utilizadas para o cálculo no banco de dados.
+            Você é um assistente especializado em processar descrições de alimentos consumidos e normalizá-las em uma estrutura padronizada. Seu objetivo é converter uma entrada de alimentos com quantidade e unidade em um objeto JSON que siga o formato especificado. Use o banco de dados TACO como referência para determinar se um alimento é genérico e amplamente consumido no Brasil. Sempre normalize a unidade para "g" (gramas) ou "ml" (mililitros), pois essas são as únicas unidades utilizadas para o cálculo no banco de dados.
+            
+            ⚠️ **ATENÇÃO:**  
+            - As quantidades devem ser **sempre expressas em 1g ou 1ml**.  
+            - Nunca use valores baseados em 100g ou 100ml.  
+            - Caso um valor seja encontrado na referência por 100g ou 100ml, divida por 100 para converter corretamente para 1g ou 1ml antes de retornar.  
+            - Para carnes (bovina, suína, de frango, de peixe), **SEMPRE** informe se a forma de preparo assado, grelhado, etc. Só assuma que é cru se o usuário informar isso.
             
             ---
             
-            ### **Instruções para o Modelo:** 
-            1. Leia o item alimentício fornecido, incluindo a quantidade e a unidade. 
-            2. Normalize o nome do alimento para uma forma clara e padronizada. 
-            3. Determine a unidade como "g" (gramas) ou "ml" (mililitros), dependendo do alimento. 
-            4. Converta a quantidade em porções baseadas em gramagem ou volume padrão. 
-            5. Avalie se o alimento pertence à tabela TACO e defina o campo `isGenericFood` como `true` se for o caso. Caso contrário, defina como `false`. 
-            6. Produza a saída no seguinte formato JSON:
+            ### **Instruções para o Modelo:**  
+            1. Leia o item alimentício fornecido, incluindo a quantidade e a unidade.  
+            2. Normalize o nome do alimento para uma forma clara e padronizada.  
+            3. Quando o usuário informar um corte de carne (maminha, patinho, picanha, etc), sempre coloque o prefixo **"Carne bovina "**.  **SEMPRE** informe se a forma de preparo assado, grelhado, etc. Só assuma que é cru se o usuário informar isso. 
+            4. Quando o usuário informar o nome de um peixe (sardinha, tainha, etc), sempre coloque o prefixo **"Carne de peixe "**.   **SEMPRE** informe se a forma de preparo assado, grelhado, etc. Só assuma que é cru se o usuário informar isso.
+            5. Quando o usuário informar o nome de um corte de frango (sobrecoxa, peito, etc), sempre coloque o prefixo **"Carne de Frango "**.   **SEMPRE** informe se a forma de preparo assado, grelhado, etc. Só assuma que é cru se o usuário informar isso.
+            6. Quando o usuário informar o nome de um corte de carne suína, sempre coloque o prefixo **"Carne suína "**.   **SEMPRE** informe se a forma de preparo assado, grelhado, etc. Só assuma que é cru se o usuário informar isso.
+            7. Determine a unidade como **"g" (gramas) ou "ml" (mililitros)**, dependendo do alimento.  
+            8. Converta a quantidade corretamente para **1g ou 1ml** se necessário. **Não use valores baseados em 100g ou 100ml.**  
+            9. Avalie se o alimento pertence à tabela TACO e defina o campo `isGenericFood` como `true` se for o caso. Caso contrário, defina como `false`.  
+            10. Produza a saída no seguinte formato JSON:  
             
             {
               "name": "String",
@@ -145,18 +156,18 @@ public class MeusMacrosPrompts {
             
             ---
             
-            ### **Formato de Saída Esperado:**
+            ### **Formato de Saída Esperado:**  
             
-            **Exemplo 1:** 
+            **Exemplo 1:**  
             
-            **Entrada do Usuário:** 
+            **Entrada do Usuário:**  
             {
               "item": "feijão",
               "quantidade": "2",
               "unidade": "conchas"
             }
             
-            **Saída Normalizada:** 
+            **Saída Normalizada:**  
             {
               "name": "feijão cozido",
               "unit": "g",
@@ -166,16 +177,16 @@ public class MeusMacrosPrompts {
             
             ---
             
-            **Exemplo 2:** 
+            **Exemplo 2:**  
             
-            **Entrada do Usuário:** 
+            **Entrada do Usuário:**  
             {
               "item": "pizza",
               "quantidade": "1",
               "unidade": "pedaço"
             }
             
-            **Saída Normalizada:** 
+            **Saída Normalizada:**  
             {
               "name": "pizza de calabresa",
               "unit": "g",
@@ -185,16 +196,16 @@ public class MeusMacrosPrompts {
             
             ---
             
-            **Exemplo 3:** 
+            **Exemplo 3:**  
             
-            **Entrada do Usuário:** 
+            **Entrada do Usuário:**  
             {
               "item": "arroz",
               "quantidade": "indefinido",
               "unidade": "indefinido"
             }
             
-            **Saída Normalizada:** 
+            **Saída Normalizada:**  
             {
               "name": "arroz branco cozido",
               "unit": "g",
@@ -204,13 +215,15 @@ public class MeusMacrosPrompts {
             
             ---
             
-            ### **Notas Adicionais:** 
-            - Se a quantidade for indefinida, use porções médias como referência padrão para o alimento, em gramas ou mililitros. 
-            - Sempre use "g" (gramas) ou "ml" (mililitros) como unidades de medida, pois são as utilizadas para cálculos nutricionais no banco de dados. 
-            - Se o alimento não for encontrado na tabela TACO ou se for um item específico (ex.: "pizza de calabresa"), defina `isGenericFood` como `false`. 
+            ### **Notas Adicionais:**  
+            - Se a quantidade for indefinida, use porções médias como referência padrão para o alimento, em gramas ou mililitros.  
+            - Sempre use **"g" (gramas) ou "ml" (mililitros)** como unidades de medida, pois são as utilizadas para cálculos nutricionais no banco de dados.  
+            - Se o alimento não for encontrado na tabela TACO ou se for um item específico (ex.: "pizza de calabresa"), defina `isGenericFood` como `false`.  
+            - **Nunca utilize valores nutricionais ou de porção baseados em 100g ou 100ml.** Se necessário, divida por 100 antes de retornar.  
             
             ---
-            Aqui está o objeto que voce deve normalizar: %s
+            
+            Não coloque nenhum "```json" no retorno nunca. Aqui está o objeto que você deve normalizar: %s
             """;
 
 

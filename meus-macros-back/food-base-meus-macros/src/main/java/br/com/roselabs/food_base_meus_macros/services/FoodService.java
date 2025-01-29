@@ -1,12 +1,12 @@
 package br.com.roselabs.food_base_meus_macros.services;
 
 import br.com.roselabs.food_base_meus_macros.clients.AIClient;
+import br.com.roselabs.food_base_meus_macros.dtos.ChooseDTO;
 import br.com.roselabs.food_base_meus_macros.dtos.FoodDTO;
+import br.com.roselabs.food_base_meus_macros.dtos.FoodItemChooseDTO;
 import br.com.roselabs.food_base_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.food_base_meus_macros.entities.FoodItem;
 import br.com.roselabs.food_base_meus_macros.repositories.FoodItemRepository;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class FoodService {
     private final FoodItemRepository foodItemRepository;
     private final AIClient aiClient;
 
-    public void generateEmbeddings() throws InterruptedException {
+    public void generateEmbeddings() {
         logger.info("Starting embedding generation for food items without embeddings.");
         List<FoodItem> foodsWithoutEmbedding = this.foodItemRepository.findFoodsWithoutEmbedding();
         logger.debug("Found {} food items without embeddings.", foodsWithoutEmbedding.size());
@@ -58,14 +58,18 @@ public class FoodService {
 
         for (FoodDTO foodDTO : foodDTOs) {
             logger.debug("Searching for nearest neighbor for food: {}", foodDTO.getName());
-            List<FoodItem> foodItems = this.foodItemRepository.findNearestNeighbors(
-                    foodDTO.getEmbedding().toString());
+            String embedding = foodDTO.getEmbedding().toString();
+            List<FoodItem> foodItems = this.foodItemRepository.findNearestNeighbors(embedding);
 
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("foodItems", new Gson().toJson(foodItems));
-            jsonObject.addProperty("userInput", foodDTO.getName());
+            List<FoodItemChooseDTO> itemsToChoose = new ArrayList<>();
+            for (FoodItem foodItem : foodItems) {
+                FoodItemChooseDTO itemChooseDTO = new FoodItemChooseDTO(foodItem);
+                itemsToChoose.add(itemChooseDTO);
+            }
 
-            String chosenId = this.aiClient.chooseId(new Gson().toJson(jsonObject));
+            ChooseDTO chooseDTO = new ChooseDTO(foodDTO.getName(), itemsToChoose);
+
+            String chosenId = this.aiClient.chooseId(chooseDTO);
 
             FoodItem foodItem = null;
 

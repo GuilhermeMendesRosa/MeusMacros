@@ -4,6 +4,7 @@ import br.com.roselabs.macros_calculator_meus_macros.clients.AIClient;
 import br.com.roselabs.macros_calculator_meus_macros.clients.FoodBaseClient;
 import br.com.roselabs.macros_calculator_meus_macros.dtos.FoodDTO;
 import br.com.roselabs.macros_calculator_meus_macros.dtos.FoodItemDTO;
+import br.com.roselabs.macros_calculator_meus_macros.dtos.TranscriptDTO;
 import br.com.roselabs.macros_calculator_meus_macros.entities.MealDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class CalculationsService {
     private final AIClient aiClient;
     private final FoodBaseClient foodBaseClient;
 
-    public MealDTO calculate(String transcriptFood) {
+    public MealDTO calculate(TranscriptDTO transcriptFood) {
         List<FoodDTO> foodDTOS = this.aiClient.convertTranscriptToList(transcriptFood);
 
         List<FoodDTO> foodItemDTOsInNatura = new ArrayList<>();

@@ -1,13 +1,14 @@
 package br.com.roselabs.ai_meus_macros.services;
 
 import br.com.roselabs.ai_meus_macros.data.Food;
+import br.com.roselabs.ai_meus_macros.data.Transcript;
+import br.com.roselabs.ai_meus_macros.dtos.ChooseDTO;
 import br.com.roselabs.ai_meus_macros.dtos.FoodDTO;
 import br.com.roselabs.ai_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.ai_meus_macros.util.MeusMacrosPrompts;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -28,8 +29,6 @@ import java.util.List;
 @Service
 public class AIService {
 
-    //TODO refatorar classe
-
     private final OpenAiChatModel chatModel;
     private final OpenAiEmbeddingModel embeddingModel;
 
@@ -39,20 +38,18 @@ public class AIService {
         this.embeddingModel = this.buildEmbeddingModel(openAiApi);
     }
 
-    public List<Food> convertTranscriptToList(String transcript) throws InterruptedException {
-        JsonObject body = new Gson().fromJson(transcript, JsonObject.class);
-        JsonElement transcriptFood = body.get("transcriptFood");
-
-        String inicialProcessingPrompt = String.format(MeusMacrosPrompts.INICIAL_PROCESSING, transcriptFood);
-        ChatResponse inicialProcessingResponse = chatModel.call(new Prompt(inicialProcessingPrompt));
-        String inicialProcessingResult = inicialProcessingResponse.getResult().getOutput().getContent();
-        JsonArray jsonElements = new Gson().fromJson(inicialProcessingResult, JsonArray.class);
+    public List<Food> convertTranscriptToList(Transcript transcript) {
+        String transcriptFood = transcript.getTranscriptFood();
+        String initialProcessingPrompt = String.format(MeusMacrosPrompts.INITIAL_PROCESSING, transcriptFood);
+        ChatResponse initialProcessingResponse = this.chatModel.call(new Prompt(initialProcessingPrompt));
+        String initialProcessingResult = initialProcessingResponse.getResult().getOutput().getContent();
+        JsonArray jsonElements = new Gson().fromJson(initialProcessingResult, JsonArray.class);
 
         List<Food> foods = new ArrayList<>();
 
         for (JsonElement jsonElement : jsonElements) {
             String normalizationPrompt = String.format(MeusMacrosPrompts.NORMALIZATION_PROCESSING, new Gson().toJson(jsonElement));
-            ChatResponse normalizationResponse = chatModel.call(new Prompt(normalizationPrompt));
+            ChatResponse normalizationResponse = this.chatModel.call(new Prompt(normalizationPrompt));
             String normalizationResult = normalizationResponse.getResult().getOutput().getContent();
 
             Food food = new Gson().fromJson(normalizationResult, Food.class);
@@ -72,13 +69,12 @@ public class AIService {
     public List<FoodItemDTO> findFoodItems(List<FoodDTO> foodDTOs) {
         Gson gson = new Gson();
 
-
-        String toImprovePrompt = String.format(MeusMacrosPrompts.CALCULATE, gson.toJson(foodDTOs));
-        ChatResponse toImproveResponse = chatModel.call(new Prompt(toImprovePrompt));
-        String toImproveResult = toImproveResponse.getResult().getOutput().getContent();
+        String calculatePrompt = String.format(MeusMacrosPrompts.CALCULATE, gson.toJson(foodDTOs));
+        ChatResponse calculateResponse = this.chatModel.call(new Prompt(calculatePrompt));
+        String calculateResult = calculateResponse.getResult().getOutput().getContent();
 
         List<FoodItemDTO> foodItemDTOS = new Gson().fromJson(
-                toImproveResult,
+                calculateResult,
                 new TypeToken<List<FoodItemDTO>>() {
                 }.getType()
         );
@@ -94,6 +90,15 @@ public class AIService {
             embeddings.add((double) value);
         }
         return embeddings;
+    }
+
+    public String choose(ChooseDTO chooseDTO) {
+        String json = new Gson().toJson(chooseDTO);
+        String choosePrompt = String.format(MeusMacrosPrompts.CHOOSE, json);
+        ChatResponse chooseResponse = this.chatModel.call(new Prompt(choosePrompt));
+        String chooseResult = chooseResponse.getResult().getOutput().getContent();
+
+        return chooseResult;
     }
 
     private OpenAiChatModel buildChatModel(OpenAiApi openAiApi) {
@@ -117,13 +122,5 @@ public class AIService {
                 MetadataMode.EMBED,
                 embeddingOptions,
                 RetryUtils.DEFAULT_RETRY_TEMPLATE);
-    }
-
-    public String choose(String json) {
-        String toImprovePrompt = String.format(MeusMacrosPrompts.CHOOSE, json);
-        ChatResponse toImproveResponse = chatModel.call(new Prompt(toImprovePrompt));
-        String toImproveResult = toImproveResponse.getResult().getOutput().getContent();
-
-        return toImproveResult;
     }
 }
