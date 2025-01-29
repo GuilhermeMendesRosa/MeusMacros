@@ -40,7 +40,7 @@ public class MeusMacrosPrompts {
 
     public static final String CHOOSE = """
             Com base no userInput, qual é o o foodItem mais coerente?
-            ME RETORNE SOMENTE O ID e nada mais.
+            ME RETORNE SOMENTE O ID e nada mais. Nada dentro de um json ou algo parecido, só o ID.
             
             %s
             """;
