@@ -5,6 +5,7 @@ import br.com.roselabs.ai_meus_macros.dtos.FoodDTO;
 import br.com.roselabs.ai_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.ai_meus_macros.util.MeusMacrosPrompts;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -27,6 +28,8 @@ import java.util.List;
 @Service
 public class AIService {
 
+    //TODO refatorar classe
+
     private final OpenAiChatModel chatModel;
     private final OpenAiEmbeddingModel embeddingModel;
 
@@ -40,26 +43,24 @@ public class AIService {
         JsonObject body = new Gson().fromJson(transcript, JsonObject.class);
         JsonElement transcriptFood = body.get("transcriptFood");
 
-        String toImprovePrompt = String.format(MeusMacrosPrompts.FIRST_STEP, transcriptFood);
-        ChatResponse toImproveResponse = chatModel.call(new Prompt(toImprovePrompt));
-        String toImproveResult = toImproveResponse.getResult().getOutput().getContent();
+        String inicialProcessingPrompt = String.format(MeusMacrosPrompts.INICIAL_PROCESSING, transcriptFood);
+        ChatResponse inicialProcessingResponse = chatModel.call(new Prompt(inicialProcessingPrompt));
+        String inicialProcessingResult = inicialProcessingResponse.getResult().getOutput().getContent();
+        JsonArray jsonElements = new Gson().fromJson(inicialProcessingResult, JsonArray.class);
 
-        String toConvertPrompt = String.format(MeusMacrosPrompts.SECOND_STEP, toImproveResult);
-        ChatResponse toConvertResponse = chatModel.call(new Prompt(toConvertPrompt));
-        String toConvertResult = toConvertResponse.getResult().getOutput().getContent();
+        List<Food> foods = new ArrayList<>();
 
-        String thirdPrompt = String.format(MeusMacrosPrompts.THIRD_STEP, toConvertResult);
-        ChatResponse thirdResponse = chatModel.call(new Prompt(thirdPrompt));
-        String thirdResult = thirdResponse.getResult().getOutput().getContent();
+        for (JsonElement jsonElement : jsonElements) {
+            String normalizationPrompt = String.format(MeusMacrosPrompts.NORMALIZATION_PROCESSING, new Gson().toJson(jsonElement));
+            ChatResponse normalizationResponse = chatModel.call(new Prompt(normalizationPrompt));
+            String normalizationResult = normalizationResponse.getResult().getOutput().getContent();
 
-        List<Food> foods = new Gson().fromJson(
-                thirdResult,
-                new TypeToken<List<Food>>() {
-                }.getType()
-        );
+            Food food = new Gson().fromJson(normalizationResult, Food.class);
+            foods.add(food);
+        }
 
         for (Food food : foods) {
-            if (food.getInNatura()) {
+            if (food.getIsGenericFood()) {
                 List<Double> embedding = this.generateEmbedding(food.getName());
                 food.setEmbedding(embedding);
             }

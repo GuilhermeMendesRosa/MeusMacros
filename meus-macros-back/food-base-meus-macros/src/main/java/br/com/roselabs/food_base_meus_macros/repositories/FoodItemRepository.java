@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface FoodItemRepository extends JpaRepository<FoodItem, Long> {
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM food_item ORDER BY embedding <-> cast(? as vector) LIMIT 5")
+            value = "SELECT * FROM food_item ORDER BY embedding <-> cast(? as vector) LIMIT 10")
     List<FoodItem> findNearestNeighbors(String embedding);
 
     @Query(nativeQuery = true,

@@ -15,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CalculationsService {
 
+    //TODO refatorar classe
+
     private final AIClient aiClient;
     private final FoodBaseClient foodBaseClient;
 
@@ -25,7 +27,7 @@ public class CalculationsService {
         List<FoodDTO> foodItemDTOsNotInNatura = new ArrayList<>();
 
         for (FoodDTO foodDTO : foodDTOS) {
-            if (foodDTO.getInNatura()) {
+            if (foodDTO.getIsGenericFood()) {
                 foodItemDTOsInNatura.add(foodDTO);
             } else {
                 foodItemDTOsNotInNatura.add(foodDTO);

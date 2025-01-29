@@ -17,6 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class AIController {
 
+    //TODO parâmetros - criar objetos
+
     private final AIService service;
 
     @PostMapping("/transcript-to-list")

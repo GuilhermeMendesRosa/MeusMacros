@@ -12,6 +12,9 @@ import java.util.List;
 
 @FeignClient(name = "ai-meus-macros", configuration = SecurityConfig.class)
 public interface AIClient {
+
+    //TODO parâmetros - criar objetos
+
     @RequestMapping(method = RequestMethod.POST, value = "/transcript-to-list")
     List<FoodDTO> convertTranscriptToList(@RequestBody String transcript);
 

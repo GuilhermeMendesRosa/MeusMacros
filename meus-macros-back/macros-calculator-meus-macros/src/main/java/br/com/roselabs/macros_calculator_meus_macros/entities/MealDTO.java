@@ -9,6 +9,8 @@ import java.util.List;
 @Getter
 public class MealDTO {
 
+    //TODO criar entidade
+
     private final List<String> foods = new ArrayList<>();
     private int calories = 0;
     private int protein = 0;
