@@ -45,4 +45,8 @@ public class JWTService {
         }
     }
 
+    public String getUUIDFromToken(String token) {
+        return "XXXXXXXXXXXXX";
+    }
+
 }

@@ -5,7 +5,7 @@ import br.com.roselabs.macros_calculator_meus_macros.clients.FoodBaseClient;
 import br.com.roselabs.macros_calculator_meus_macros.dtos.FoodDTO;
 import br.com.roselabs.macros_calculator_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.macros_calculator_meus_macros.dtos.TranscriptDTO;
-import br.com.roselabs.macros_calculator_meus_macros.entities.MealDTO;
+import br.com.roselabs.macros_calculator_meus_macros.dtos.MealDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
