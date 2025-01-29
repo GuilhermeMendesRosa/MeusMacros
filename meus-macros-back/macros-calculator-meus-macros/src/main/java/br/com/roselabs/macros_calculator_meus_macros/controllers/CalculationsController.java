@@ -7,17 +7,19 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 
-@RestController("/calculator")
+@RestController()
+@RequestMapping("/calculate")
 @AllArgsConstructor
 public class CalculationsController {
 
     private final CalculationsService calculationsService;
 
-    @PostMapping("/calculate")
+    @PostMapping()
     public ResponseEntity<MealDTO> calculateMacros(@RequestBody TranscriptDTO transcriptDTO) {
         MealDTO mealDTO = this.calculationsService.calculate(transcriptDTO);
         return ResponseEntity.ok(mealDTO);

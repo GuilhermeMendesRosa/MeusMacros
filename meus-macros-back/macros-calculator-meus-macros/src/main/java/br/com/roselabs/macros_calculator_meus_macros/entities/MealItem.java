@@ -16,4 +16,14 @@ public class MealItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "meal_id", nullable = false)
+    private Meal meal;
+
+    private String name;
+    private String quantity;
+    private int calories;
+    private int protein;
+    private int carbohydrates;
+    private int fat;
 }

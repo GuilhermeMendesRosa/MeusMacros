@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class JWTService {
@@ -45,8 +46,8 @@ public class JWTService {
         }
     }
 
-    public String getUUIDFromToken(String token) {
-        return "XXXXXXXXXXXXX";
+    public UUID getUUIDFromToken(String token) {
+        return UUID.randomUUID();
     }
 
 }
