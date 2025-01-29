@@ -12,14 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FoodService {
-
-    //TODO refatorar classe
 
     private static final Logger logger = LoggerFactory.getLogger(FoodService.class);
 
@@ -27,67 +25,60 @@ public class FoodService {
     private final AIClient aiClient;
 
     public void generateEmbeddings() {
-        logger.info("Starting embedding generation for food items without embeddings.");
-        List<FoodItem> foodsWithoutEmbedding = this.foodItemRepository.findFoodsWithoutEmbedding();
-        logger.debug("Found {} food items without embeddings.", foodsWithoutEmbedding.size());
+        logger.info("Iniciando geração de embeddings para itens de comida sem embeddings.");
+
+        List<FoodItem> foodsWithoutEmbedding = foodItemRepository.findFoodsWithoutEmbedding();
+        logger.debug("{} itens de comida encontrados sem embeddings.", foodsWithoutEmbedding.size());
 
         for (FoodItem foodItem : foodsWithoutEmbedding) {
             try {
-                logger.debug("Generating embedding for food item: {}", foodItem.getName());
-                List<Double> embedding = getEmbedding(foodItem.getName());
-                foodItem.setEmbedding(embedding);
-                this.foodItemRepository.save(foodItem);
-                logger.info("Successfully saved embedding for food item: {}", foodItem.getName());
+                logger.debug("Gerando embedding para: {}", foodItem.getName());
+                foodItem.setEmbedding(getEmbedding(foodItem.getName()));
+                foodItemRepository.save(foodItem);
+                logger.info("Embedding salvo com sucesso para: {}", foodItem.getName());
             } catch (Exception e) {
-                logger.error("Error generating or saving embedding for food item: {}", foodItem.getName(), e);
+                logger.error("Erro ao gerar ou salvar embedding para: {}", foodItem.getName(), e);
             }
+
         }
-        logger.info("Finished embedding generation.");
+
+        logger.info("Geração de embeddings concluída.");
     }
 
-    private List<Double> getEmbedding(String foodItem) {
-        logger.debug("Calling AI client to generate embedding for: {}", foodItem);
-        List<Double> embedding = this.aiClient.generateEmbedding(foodItem);
-        logger.debug("Received embedding for food item: {}", foodItem);
-        return embedding;
+    private List<Double> getEmbedding(String foodItemName) {
+        logger.debug("Chamando cliente de IA para gerar embedding de: {}", foodItemName);
+        return aiClient.generateEmbedding(foodItemName);
     }
 
     public List<FoodItemDTO> findFoodItems(List<FoodDTO> foodDTOs) {
-        logger.info("Starting search for food items based on provided embeddings.");
-        List<FoodItemDTO> foodItemDTOS = new ArrayList<>();
+        logger.info("Iniciando busca de itens de comida com base nos embeddings fornecidos.");
 
-        for (FoodDTO foodDTO : foodDTOs) {
-            logger.debug("Searching for nearest neighbor for food: {}", foodDTO.getName());
-            String embedding = foodDTO.getEmbedding().toString();
-            List<FoodItem> foodItems = this.foodItemRepository.findNearestNeighbors(embedding);
+        List<FoodItemDTO> foodItemDTOS = foodDTOs.stream().map(this::findNearestFoodItem).collect(Collectors.toList());
 
-            List<FoodItemChooseDTO> itemsToChoose = new ArrayList<>();
-            for (FoodItem foodItem : foodItems) {
-                FoodItemChooseDTO itemChooseDTO = new FoodItemChooseDTO(foodItem);
-                itemsToChoose.add(itemChooseDTO);
-            }
-
-            ChooseDTO chooseDTO = new ChooseDTO(foodDTO.getName(), itemsToChoose);
-
-            String chosenId = this.aiClient.chooseId(chooseDTO);
-
-            FoodItem foodItem = null;
-
-            for (FoodItem foodItem1 : foodItems) {
-                if (chosenId.equals(foodItem1.getId().toString())) {
-                    foodItem = foodItem1;
-                }
-            }
-
-            if (foodItem != null) {
-                foodItemDTOS.add(new FoodItemDTO(foodItem, foodDTO.getPortions()));
-                logger.info("Found nearest neighbor for food: {} -> {}", foodDTO.getName(), foodItem.getName());
-            } else {
-                logger.warn("No nearest neighbor found for food: {}", foodDTO.getName());
-            }
-        }
-
-        logger.info("Finished search for food items. Found {} matches.", foodItemDTOS.size());
+        logger.info("Busca concluída. {} correspondências encontradas.", foodItemDTOS.size());
         return foodItemDTOS;
+    }
+
+    private FoodItemDTO findNearestFoodItem(FoodDTO foodDTO) {
+        logger.debug("Buscando vizinho mais próximo para: {}", foodDTO.getName());
+
+        List<FoodItem> foodItems = foodItemRepository.findNearestNeighbors(foodDTO.getEmbedding().toString());
+        List<FoodItemChooseDTO> itemsToChoose = foodItems.stream()
+                .map(FoodItemChooseDTO::new)
+                .collect(Collectors.toList());
+
+        String chosenId = aiClient.chooseId(new ChooseDTO(foodDTO.getName(), itemsToChoose));
+
+        return foodItems.stream()
+                .filter(foodItem -> foodItem.getId().toString().equals(chosenId))
+                .findFirst()
+                .map(foodItem -> {
+                    logger.info("Vizinho mais próximo encontrado para {} -> {}", foodDTO.getName(), foodItem.getName());
+                    return new FoodItemDTO(foodItem, foodDTO.getPortions());
+                })
+                .orElseGet(() -> {
+                    logger.warn("Nenhum vizinho mais próximo encontrado para: {}", foodDTO.getName());
+                    return null;
+                });
     }
 }
