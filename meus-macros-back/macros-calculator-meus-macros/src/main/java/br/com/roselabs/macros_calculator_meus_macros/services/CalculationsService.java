@@ -6,55 +6,50 @@ import br.com.roselabs.macros_calculator_meus_macros.dtos.FoodDTO;
 import br.com.roselabs.macros_calculator_meus_macros.dtos.FoodItemDTO;
 import br.com.roselabs.macros_calculator_meus_macros.dtos.TranscriptDTO;
 import br.com.roselabs.macros_calculator_meus_macros.entities.MealDTO;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
 public class CalculationsService {
-
-    //TODO refatorar classe
 
     private final AIClient aiClient;
     private final FoodBaseClient foodBaseClient;
 
     public MealDTO calculate(TranscriptDTO transcriptFood) {
-        List<FoodDTO> foodDTOS = this.aiClient.convertTranscriptToList(transcriptFood);
+        log.info("Iniciando cálculo das refeições com base na transcrição recebida.");
 
-        List<FoodDTO> foodItemDTOsInNatura = new ArrayList<>();
-        List<FoodDTO> foodItemDTOsNotInNatura = new ArrayList<>();
+        List<FoodDTO> foodDTOS = aiClient.convertTranscriptToList(transcriptFood);
+        log.info("{} itens alimentares identificados na transcrição.", foodDTOS.size());
 
-        for (FoodDTO foodDTO : foodDTOS) {
-            if (foodDTO.getIsGenericFood()) {
-                foodItemDTOsInNatura.add(foodDTO);
-            } else {
-                foodItemDTOsNotInNatura.add(foodDTO);
-            }
-        }
+        List<FoodDTO> genericFoods = foodDTOS.stream()
+                .filter(FoodDTO::getIsGenericFood)
+                .collect(Collectors.toList());
+        List<FoodDTO> nonGenericFoods = foodDTOS.stream()
+                .filter(foodDTO -> !foodDTO.getIsGenericFood())
+                .collect(Collectors.toList());
 
+        log.info("Itens genéricos (in natura): {}", genericFoods.size());
+        log.info("Itens processados: {}", nonGenericFoods.size());
 
-        List<FoodItemDTO> foodBaseClientFoodItems = new ArrayList<>();
-        List<FoodItemDTO> aiClientFoodItems = new ArrayList<>();
+        List<FoodItemDTO> foodBaseClientFoodItems = genericFoods.isEmpty() ?
+                new ArrayList<>() : foodBaseClient.findFoodItems(genericFoods);
 
-        if (!foodItemDTOsInNatura.isEmpty()) {
-            foodBaseClientFoodItems = this.foodBaseClient.findFoodItems(foodItemDTOsInNatura);
-        }
-
-        if (!foodItemDTOsNotInNatura.isEmpty()) {
-            aiClientFoodItems = this.aiClient.findFoodItems(foodItemDTOsNotInNatura);
-        }
+        List<FoodItemDTO> aiClientFoodItems = nonGenericFoods.isEmpty() ?
+                new ArrayList<>() : aiClient.findFoodItems(nonGenericFoods);
 
         List<FoodItemDTO> combinedFoodItems = new ArrayList<>();
-
         combinedFoodItems.addAll(foodBaseClientFoodItems);
         combinedFoodItems.addAll(aiClientFoodItems);
 
-        MealDTO mealDTO = new MealDTO(combinedFoodItems);
+        log.info("Total de itens combinados para a refeição: {}", combinedFoodItems.size());
 
-        return mealDTO;
+        return new MealDTO(combinedFoodItems);
     }
-
 }
