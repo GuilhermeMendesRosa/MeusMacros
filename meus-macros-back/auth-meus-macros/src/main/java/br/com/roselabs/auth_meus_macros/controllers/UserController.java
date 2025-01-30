@@ -1,5 +1,6 @@
 package br.com.roselabs.auth_meus_macros.controllers;
 
+import br.com.roselabs.auth_meus_macros.data.AuthenticationTokens;
 import br.com.roselabs.auth_meus_macros.data.LoginRequestRecord;
 import br.com.roselabs.auth_meus_macros.data.RegisterRequestRecord;
 import br.com.roselabs.auth_meus_macros.services.JWTService;
@@ -24,14 +25,16 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequestRecord loginRequest) {
+    public ResponseEntity<AuthenticationTokens> login(@RequestBody LoginRequestRecord loginRequest) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password());
 
         Authentication authentication = authenticationManager.authenticate(authToken);
 
         String token = tokenService.generateToken(authentication);
 
-        return ResponseEntity.ok(token);
+        AuthenticationTokens tokens = new AuthenticationTokens(token);
+
+        return ResponseEntity.ok(tokens);
     }
 
     @PostMapping("/register")

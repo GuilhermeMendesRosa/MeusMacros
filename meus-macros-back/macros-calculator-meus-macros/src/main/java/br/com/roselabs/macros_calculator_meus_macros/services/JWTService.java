@@ -6,10 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -47,7 +45,16 @@ public class JWTService {
     }
 
     public UUID getUUIDFromToken(String token) {
-        return UUID.randomUUID();
+        try {
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secretKey))
+                    .withIssuer("meus-macros")
+                    .build()
+                    .verify(token);
+
+            return UUID.fromString(decodedJWT.getSubject());
+        } catch (JWTVerificationException exception) {
+            return null;
+        }
     }
 
 }

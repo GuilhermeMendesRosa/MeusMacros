@@ -1,0 +1,3 @@
+ALTER TABLE users DROP COLUMN id;
+
+ALTER TABLE users ADD COLUMN id UUID DEFAULT gen_random_uuid() PRIMARY KEY;

@@ -26,7 +26,7 @@ public class JWTService {
 
         return JWT.create()
                 .withIssuer("meus-macros")
-                .withSubject(user.getUsername())
+                .withSubject(String.valueOf(user.getId()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration))
                 .sign(Algorithm.HMAC256(secretKey));
     }
