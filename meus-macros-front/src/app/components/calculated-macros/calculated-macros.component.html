@@ -5,7 +5,7 @@
         Resultados dos Macronutrientes
       </h2>
       <p class="text-neutral-700 text-center text-base font-medium">
-        Hambúrguer caseiro com queijo
+        Refeição <!-- Adicione uma propriedade name no modelo Meal se necessário -->
       </p>
     </header>
 
@@ -13,25 +13,25 @@
       <div
         class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
         <p class="text-neutral-700 text-xs mb-1">Proteínas</p>
-        <p class="text-primary-500 font-bold text-2xl">30g</p>
+        <p class="text-primary-500 font-bold text-2xl">{{ meal.protein }}g</p>
         <span class="material-symbols-outlined text-primary-400 mt-1">egg_alt</span>
       </div>
       <div
         class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
         <p class="text-neutral-700 text-xs mb-1">Carboidratos</p>
-        <p class="text-green-500 font-bold text-2xl">25g</p>
+        <p class="text-green-500 font-bold text-2xl">{{ meal.carbohydrates }}g</p>
         <span class="material-symbols-outlined text-green-400 mt-1">grain</span>
       </div>
       <div
         class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
         <p class="text-neutral-700 text-xs mb-1">Gorduras</p>
-        <p class="text-amber-500 font-bold text-2xl">15g</p>
+        <p class="text-amber-500 font-bold text-2xl">{{ meal.fat }}g</p>
         <span class="material-symbols-outlined text-amber-400 mt-1">water_drop</span>
       </div>
       <div
         class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
         <p class="text-neutral-700 text-xs mb-1">Calorias</p>
-        <p class="text-neutral-950 font-bold text-2xl">400</p>
+        <p class="text-neutral-950 font-bold text-2xl">{{ meal.calories }}</p>
         <p class="text-neutral-500 text-xs">kcal</p>
       </div>
     </div>
@@ -44,9 +44,5 @@
       class=" my-button bg-primary-500 text-primary-50 font-semibold rounded-lg w-full py-3 mt-6 shadow-lg shadow-primary-500/20 hover:bg-primary-600 active:bg-primary-700 transition-all duration-300 transform hover:-translate-y-1">
       Salvar Resultados
     </button>
-
-    <br>
-    <br>
-    <br>
   </div>
 </div>

@@ -78,8 +78,8 @@ export class AudioTransciptionComponent {
   }
 
   navigateToResultados() {
-    this.calculationsService.login(this.transcription).subscribe(value => {
-      console.log('Transcrição enviada:', this.transcription.transcriptFood);
+    this.calculationsService.calculateMeal(this.transcription).subscribe(meal => {
+      this.calculationsService.meal = meal;
       this.router.navigate(['/calculated-macros']);
     })
 

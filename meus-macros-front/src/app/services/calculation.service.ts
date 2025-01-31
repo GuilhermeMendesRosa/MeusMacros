@@ -10,10 +10,12 @@ import {Meal} from '../models/Meal';
 export class CalculationService {
   private readonly API_URL = 'http://localhost:8082/macros-calculator-meus-macros'
 
+  public meal?: Meal;
+
   constructor(private http: HttpClient) {
   }
 
-  public login(user: Transcription): Observable<Meal> {
+  public calculateMeal(user: Transcription): Observable<Meal> {
     return this.http.post<Meal>(`${this.API_URL}/calculate`, user);
   }
 }
