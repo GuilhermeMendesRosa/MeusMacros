@@ -16,7 +16,7 @@
 
     <!-- Status de gravação -->
     <p class="text-primary-500 mb-6" *ngIf="isRecording">Gravando...</p>
-    <p class="text-primary-500 mb-6" *ngIf="!isRecording && transcription">Texto transcrito: {{ transcription }}</p>
+    <p class="text-primary-500 mb-6" *ngIf="!isRecording && transcription.transcriptFood">Texto transcrito: {{ transcription.transcriptFood }}</p>
 
     <!-- Botão para calcular os macronutrientes -->
     <button
