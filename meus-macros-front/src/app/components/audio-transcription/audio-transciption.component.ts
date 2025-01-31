@@ -1,6 +1,8 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgIf } from '@angular/common';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgIf} from '@angular/common';
+import {CalculationService} from '../../services/calculation.service';
+import {Transcription} from '../../models/Transcription';
 
 @Component({
   selector: 'app-audio-transcription',
@@ -10,11 +12,12 @@ import { NgIf } from '@angular/common';
 })
 export class AudioTransciptionComponent {
   isRecording = false;
-  transcription = '';
+  transcription: Transcription = {
+    transcriptFood: ""
+  };
   recognition: any;
 
-  constructor(private cdr: ChangeDetectorRef, private router: Router) {
-    // Inicializa o reconhecimento de voz
+  constructor(private calculationsService: CalculationService, private cdr: ChangeDetectorRef, private router: Router) {
     if ('webkitSpeechRecognition' in window) {
       this.recognition = new (window as any).webkitSpeechRecognition();
     } else if ('SpeechRecognition' in window) {
@@ -32,7 +35,7 @@ export class AudioTransciptionComponent {
         for (let i = event.resultIndex; i < event.results.length; i++) {
           transcript += event.results[i][0].transcript;
         }
-        this.transcription = transcript.trim();
+        this.transcription.transcriptFood = transcript.trim();
         this.cdr.detectChanges(); // Atualiza a UI
       };
 
@@ -61,7 +64,7 @@ export class AudioTransciptionComponent {
   startRecording() {
     this.isRecording = true;
     if (this.recognition) {
-      this.transcription = '';  // Limpa qualquer transcrição anterior
+      this.transcription.transcriptFood = '';  // Limpa qualquer transcrição anterior
       this.recognition.start();
     }
   }
@@ -70,16 +73,15 @@ export class AudioTransciptionComponent {
     this.isRecording = false;
     if (this.recognition) {
       this.recognition.stop();
-      // Ao parar, o conteúdo total captado até o momento será exibido
-      console.log('Texto completo captado:', this.transcription);
+      console.log('Texto completo captado:', this.transcription.transcriptFood);
     }
   }
 
   navigateToResultados() {
-    // Aqui você pode adicionar lógica para enviar a transcrição ao back-end, se necessário.
-    console.log('Transcrição enviada:', this.transcription);
+    this.calculationsService.login(this.transcription).subscribe(value => {
+      console.log('Transcrição enviada:', this.transcription.transcriptFood);
+      this.router.navigate(['/calculated-macros']);
+    })
 
-    // Redireciona para a tela de exibição dos macronutrientes
-    this.router.navigate(['/calculated-macros']);
   }
 }
