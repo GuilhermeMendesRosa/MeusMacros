@@ -1,49 +1,52 @@
-<div class="w-full h-screen bg-white shadow rounded-lg p-4 flex flex-col items-center justify-between">
-  <h2 class="font-title text-lg text-center text-neutral-950">
-    Resultados dos Macronutrientes
-  </h2>
-  <p class="text-neutral-700 mt-2 text-center">
-    Hambúrguer caseiro com queijo
-  </p>
+<div id="webcrumbs">
+  <div class="w-full max-w-md mx-auto min-h-screen bg-gradient-to-b from-white to-primary-50 p-4 rounded-xl shadow-lg">
+    <header class="space-y-1 mb-6">
+      <h2 class="font-title text-xl text-center text-neutral-950 font-bold tracking-tight">
+        Resultados dos Macronutrientes
+      </h2>
+      <p class="text-neutral-700 text-center text-base font-medium">
+        Hambúrguer caseiro com queijo
+      </p>
+    </header>
 
-  <!-- Cards com altura ajustada -->
-  <div class="mt-4 space-y-3 w-full flex flex-col items-center ">
-    <div class="bg-primary-50 rounded-md p-1 flex flex-col items-center w-full max-w-[200px] h-16">
-      <p class="text-neutral-700">Proteínas</p>
-      <p class="text-primary-500 font-bold text-lg">30g</p>
+    <div class="grid grid-cols-2 gap-3 w-full">
+      <div
+        class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+        <p class="text-neutral-700 text-xs mb-1">Proteínas</p>
+        <p class="text-primary-500 font-bold text-2xl">30g</p>
+        <span class="material-symbols-outlined text-primary-400 mt-1">egg_alt</span>
+      </div>
+      <div
+        class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+        <p class="text-neutral-700 text-xs mb-1">Carboidratos</p>
+        <p class="text-green-500 font-bold text-2xl">25g</p>
+        <span class="material-symbols-outlined text-green-400 mt-1">grain</span>
+      </div>
+      <div
+        class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+        <p class="text-neutral-700 text-xs mb-1">Gorduras</p>
+        <p class="text-amber-500 font-bold text-2xl">15g</p>
+        <span class="material-symbols-outlined text-amber-400 mt-1">water_drop</span>
+      </div>
+      <div
+        class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+        <p class="text-neutral-700 text-xs mb-1">Calorias</p>
+        <p class="text-neutral-950 font-bold text-2xl">400</p>
+        <p class="text-neutral-500 text-xs">kcal</p>
+      </div>
     </div>
-    <div class="bg-primary-50 rounded-md p-1 flex flex-col items-center w-full max-w-[200px] h-16">
-      <p class="text-neutral-700">Carboidratos</p>
-      <p class="text-green-500 font-bold text-lg">25g</p>
-    </div>
-    <div class="bg-primary-50 rounded-md p-1 flex flex-col items-center w-full max-w-[200px] h-16">
-      <p class="text-neutral-700">Gorduras</p>
-      <p class="text-amber-500 font-bold text-lg">15g</p>
-    </div>
-    <div class="bg-primary-50 rounded-md p-1 flex flex-col items-center w-full max-w-[200px] h-16">
-      <p class="text-neutral-700">Calorias</p>
-      <p class="text-neutral-950 font-bold text-lg">400 kcal</p>
-    </div>
-  </div>
 
-  <!-- Gráfico de Pizza -->
-  <div class=" mt-6">
-    <apx-chart [series]="chartOptions.series"
-               [chart]="chartOptions.chart"
-               [labels]="chartOptions.labels"
-               [colors]="chartOptions.colors"
-               [legend]="chartOptions.legend"
-               [dataLabels]="chartOptions.dataLabels">
-    </apx-chart>
-  </div>
+    <div class="mt-6 bg-white p-4 rounded-lg shadow-sm">
+      <apx-chart [series]="chartSeries" [chart]="chartOptions" [labels]="chartLabels"></apx-chart>
+    </div>
 
-  <!-- Botões com altura ajustada -->
-  <div class="w-full space-y-2 mt-6">
-    <button class="bg-primary-500 text-primary-50 font-medium rounded-md w-full py-2">
-      Salvar
+    <button
+      class=" my-button bg-primary-500 text-primary-50 font-semibold rounded-lg w-full py-3 mt-6 shadow-lg shadow-primary-500/20 hover:bg-primary-600 active:bg-primary-700 transition-all duration-300 transform hover:-translate-y-1">
+      Salvar Resultados
     </button>
-    <button class="bg-neutral-900 text-neutral-50 font-medium rounded-md w-full py-2">
-      Novo Registro
-    </button>
+
+    <br>
+    <br>
+    <br>
   </div>
 </div>
