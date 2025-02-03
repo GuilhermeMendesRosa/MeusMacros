@@ -10,7 +10,7 @@ import {ProfileComponent} from './components/profile/profile.component';
 import {LoginComponent} from './components/login/login.component';
 
 export const routes: Routes = [
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
+  {path: '', redirectTo: 'audio-transcription', pathMatch: 'full'},
   {path: 'audio-transcription', component: AudioTransciptionComponent},
   {path: 'calculated-macros', component: CalculatedMacrosComponent},
   {path: 'my-meals', component: MyMealsComponent},

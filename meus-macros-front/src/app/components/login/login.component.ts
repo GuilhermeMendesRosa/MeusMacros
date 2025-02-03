@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {User} from '../../models/User';
 import {AuthService} from '../../services/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,10 @@ import {AuthService} from '../../services/auth.service';
 })
 export class LoginComponent {
 
-  constructor(public authService: AuthService) {
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) {
   }
 
   public user: User = {
@@ -23,7 +27,7 @@ export class LoginComponent {
 
   onSubmit() {
     this.authService.login(this.user).subscribe(value => {
-      console.log(value)
+      this.router.navigate(["/"]);
     })
   }
 
