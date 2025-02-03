@@ -2,16 +2,21 @@ import {Component} from '@angular/core';
 import {ApexChart, ChartComponent} from 'ng-apexcharts';
 import {CalculationService} from '../../services/calculation.service';
 import {Meal} from '../../models/Meal';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-calculated-macros',
   templateUrl: './calculated-macros.component.html',
   imports: [
-    ChartComponent
+    ChartComponent,
+    FormsModule
   ],
   styleUrls: ['./calculated-macros.component.css']
 })
 export class CalculatedMacrosComponent {
+
+  protected readonly colors = ['#3B82F6', '#F97316', '#EF4444'];
+  public mealName: string = "";
 
   chartSeries: number[] = [];
   chartLabels = ['Proteínas', 'Carboidratos', 'Gorduras'];
@@ -47,5 +52,4 @@ export class CalculatedMacrosComponent {
     ];
   }
 
-  protected readonly colors = ['#3B82F6', '#F97316', '#EF4444'];
 }

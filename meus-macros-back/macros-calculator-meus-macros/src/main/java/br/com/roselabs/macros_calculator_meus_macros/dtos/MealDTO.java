@@ -13,6 +13,7 @@ import java.util.List;
 public class MealDTO {
 
     private final List<MealItemDTO> items = new ArrayList<>();
+    private String mealName;
     private int calories = 0;
     private int protein = 0;
     private int carbohydrates = 0;

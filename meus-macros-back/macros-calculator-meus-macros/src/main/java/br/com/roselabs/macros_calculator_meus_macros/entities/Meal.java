@@ -32,6 +32,10 @@ public class Meal {
     private int carbohydrates;
     private int fat;
 
+    // Adicionando o novo campo mealName
+    @Column(name = "meal_name")
+    private String mealName;
+
     @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MealItem> items = new ArrayList<>();
 }
