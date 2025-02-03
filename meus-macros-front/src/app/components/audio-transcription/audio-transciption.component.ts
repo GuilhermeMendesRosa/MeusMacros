@@ -1,8 +1,8 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
-import {Router} from '@angular/router';
-import {NgIf} from '@angular/common';
-import {CalculationService} from '../../services/calculation.service';
-import {Transcription} from '../../models/Transcription';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
+import { CalculationService } from '../../services/calculation.service';
+import { Transcription } from '../../models/Transcription';
 
 @Component({
   selector: 'app-audio-transcription',
@@ -12,12 +12,17 @@ import {Transcription} from '../../models/Transcription';
 })
 export class AudioTransciptionComponent {
   isRecording = false;
+  isLoading = false; // Propriedade para controlar o loading
   transcription: Transcription = {
     transcriptFood: ""
   };
   recognition: any;
 
-  constructor(private calculationsService: CalculationService, private cdr: ChangeDetectorRef, private router: Router) {
+  constructor(
+    private calculationsService: CalculationService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {
     if ('webkitSpeechRecognition' in window) {
       this.recognition = new (window as any).webkitSpeechRecognition();
     } else if ('SpeechRecognition' in window) {
@@ -78,10 +83,21 @@ export class AudioTransciptionComponent {
   }
 
   navigateToResultados() {
-    this.calculationsService.calculateMeal(this.transcription).subscribe(meal => {
-      this.calculationsService.meal = meal;
-      this.router.navigate(['/calculated-macros']);
-    })
-
+    this.isLoading = true; // Inicia o loading
+    this.calculationsService.calculateMeal(this.transcription).subscribe({
+      next: meal => {
+        this.calculationsService.meal = meal;
+        this.router.navigate(['/calculated-macros']);
+      },
+      error: error => {
+        console.error('Erro ao calcular a refeição:', error);
+        // Caso deseje, trate o erro e mostre uma mensagem para o usuário
+        this.isLoading = false;
+      },
+      complete: () => {
+        // Caso a navegação não ocorra imediatamente, finalize o loading
+        this.isLoading = false;
+      }
+    });
   }
 }
