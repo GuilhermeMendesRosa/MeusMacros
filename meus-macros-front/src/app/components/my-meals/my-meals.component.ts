@@ -3,6 +3,7 @@ import {CalculationService} from '../../services/calculation.service';
 import {Meal} from '../../models/Meal';
 import {NgForOf, NgIf} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {Goal} from '../../models/Goal';
 
 @Component({
   selector: 'app-my-meals',
@@ -17,10 +18,17 @@ import {FormsModule} from '@angular/forms';
 export class MyMealsComponent implements OnInit {
 
   // Inicializa com a data de hoje no formato YYYY-MM-DD
-  selectedDate: string = new Date().toISOString().split('T')[0];
+  public selectedDate: string = new Date().toISOString().split('T')[0];
 
   // Array para armazenar as refeições retornadas pela API
-  mealsFromAPI: Meal[] = [];
+  public mealsFromAPI: Meal[] = [];
+
+  public goal: Goal = {
+    calories: 2000,
+    proteinPercentage: 25,
+    carbohydratesPercentage: 50,
+    fatPercentage: 25
+  }
 
   constructor(private calculationService: CalculationService) {
   }
@@ -47,4 +55,17 @@ export class MyMealsComponent implements OnInit {
     this.selectedDate = newDate;
     this.fetchMeals();
   }
+
+  get protein(): number {
+    return Math.round(this.goal.calories * this.goal.proteinPercentage * 0.01 / 4);
+  }
+
+  get carbohydrates(): number {
+    return Math.round(this.goal.calories * this.goal.carbohydratesPercentage * 0.01 / 4);
+  }
+
+  get fat(): number {
+    return Math.round(this.goal.calories * this.goal.fatPercentage * 0.01 / 9);
+  }
+
 }

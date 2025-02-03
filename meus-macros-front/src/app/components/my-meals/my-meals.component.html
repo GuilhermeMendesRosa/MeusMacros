@@ -2,7 +2,7 @@
   <div class="bg-white flex justify-center pt-16 min-h-screen ">
     <div class="">
       <header class="flex items-center justify-between mb-8">
-        <h1 class="text-2xl font-bold tracking-tight">Diário</h1>
+        <h1 class="text-2xl font-bold tracking-tight">Minhas Refeições</h1>
       </header>
 
       <div class="flex items-center justify-between mb-8">
@@ -27,7 +27,8 @@
           <div class="flex justify-between mb-2">
             <span class="font-medium text-xs">Proteína</span>
           </div>
-          <div class="text-xs text-gray-500 mb-3">Meta: 120g</div>
+          <div class="text-xs text-gray-500 mb-3">Total: 120g</div>
+          <div class="text-xs text-gray-500 mb-3">Meta: {{ protein }}g</div>
           <div class="h-2.5 bg-gray-200 rounded-md overflow-hidden">
             <div class="h-full w-[70%] bg-blue-500 rounded-md transition-all duration-500 hover:opacity-80"></div>
           </div>
@@ -36,7 +37,8 @@
           <div class="flex justify-between mb-2">
             <span class="font-medium text-xs">Carboidratos</span>
           </div>
-          <div class="text-xs text-gray-500 mb-3">Meta: 200g</div>
+          <div class="text-xs text-gray-500 mb-3">Total: 200g</div>
+          <div class="text-xs text-gray-500 mb-3">Meta: {{ carbohydrates }}g</div>
           <div class="h-2.5 bg-gray-200 rounded-md overflow-hidden">
             <div class="h-full w-[72%] bg-orange-500 rounded-md transition-all duration-500 hover:opacity-80"></div>
           </div>
@@ -45,7 +47,8 @@
           <div class="flex justify-between mb-2">
             <span class="font-medium text-xs">Gordura</span>
           </div>
-          <div class="text-xs text-gray-500 mb-3">Meta: 65g</div>
+          <div class="text-xs text-gray-500 mb-3">Total: 65g</div>
+          <div class="text-xs text-gray-500 mb-3">Meta: {{ fat }}g</div>
           <div class="h-2.5 bg-gray-200 rounded-md overflow-hidden">
             <div class="h-full w-[69%] bg-red-500 rounded-md transition-all duration-500 hover:opacity-80"></div>
           </div>
@@ -58,7 +61,7 @@
           <span class="font-semibold">Total Diário</span>
           <span class="font-medium">1350 kcal</span>
         </div>
-        <div class="text-sm text-gray-500 mb-3">Meta: 2000 kcal</div>
+        <div class="text-sm text-gray-500 mb-3">Meta: {{ goal.calories }} kcal</div>
         <div class="h-2.5 bg-gray-200 rounded-md overflow-hidden">
           <div class="h-full w-[67%] bg-green-500 rounded-md transition-all duration-500 hover:opacity-80"></div>
         </div>

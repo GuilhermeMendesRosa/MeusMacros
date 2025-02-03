@@ -29,7 +29,6 @@ export class ProfileComponent {
     })
   }
 
-
   get proteinGrams(): number {
     return Math.round((this.goal.proteinPercentage / 100 * this.goal.calories) / 4);
   }
