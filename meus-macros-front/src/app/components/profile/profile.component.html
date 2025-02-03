@@ -88,6 +88,10 @@
               <input type="range" min="0" max="100" step="5" [(ngModel)]="fatsPercent"
                      class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500"/>
             </div>
+            <div class="text-center text-sm text-gray-600">
+              Total: {{ proteinPercent + carbsPercent + fatsPercent }}%
+            </div>
+
             <button (click)="saveGoals()"
                     [disabled]="isDisabled()"
                     class="my-button bg-primary-500 text-primary-50 font-semibold rounded-lg w-full py-3 mt-6 shadow-lg shadow-primary-500/20
