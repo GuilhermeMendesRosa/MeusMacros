@@ -15,7 +15,11 @@ export class CalculationService {
   constructor(private http: HttpClient) {
   }
 
-  public calculateMeal(user: Transcription): Observable<Meal> {
-    return this.http.post<Meal>(`${this.API_URL}/calculate`, user);
+  public calculateMeal(transcription: Transcription): Observable<Meal> {
+    return this.http.post<Meal>(`${this.API_URL}/calculate`, transcription);
+  }
+
+  public createMeal(meal: Meal): Observable<string> {
+    return this.http.post<string>(`${this.API_URL}/meals`, meal);
   }
 }

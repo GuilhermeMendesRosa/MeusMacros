@@ -26,6 +26,7 @@ export class CalculatedMacrosComponent {
   };
 
   meal: Meal = {
+    mealName: "",
     protein: 0,
     carbohydrates: 0,
     fat: 0,
