@@ -68,6 +68,8 @@ export class CalculatedMacrosComponent {
   }
 
   public isDisabled(): boolean {
-    return this.meal?.mealName?.length <= 0
+    if (!this.meal?.mealName) return true;
+
+    return this.meal.mealName.length <= 0
   }
 }
