@@ -11,6 +11,6 @@ import java.util.UUID;
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, Long> {
 
-    @Query("SELECT g FROM Goal g WHERE g.userUuid = :userUuid ORDER BY g.date DESC")
+    @Query("SELECT g FROM Goal g WHERE g.userUuid = :userUuid ORDER BY g.date DESC LIMIT 1")
     Optional<Goal> findLatestGoalByUser(UUID userUuid);
 }

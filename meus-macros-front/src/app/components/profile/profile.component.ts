@@ -23,6 +23,13 @@ export class ProfileComponent {
     fatPercentage: 25
   }
 
+  ngOnInit() {
+    this.goalService.getLatestGoal().subscribe(goal => {
+      this.goal = goal;
+    })
+  }
+
+
   get proteinGrams(): number {
     return Math.round((this.goal.proteinPercentage / 100 * this.goal.calories) / 4);
   }
