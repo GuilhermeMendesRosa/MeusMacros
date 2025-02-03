@@ -24,7 +24,7 @@
           class="bg-white/80 p-4 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md">
           <div class="flex justify-between items-center">
             <span class="font-semibold">Calorias Diárias</span>
-            <span class="text-green-500 font-bold">{{ calories }} kcal</span>
+            <span class="text-green-500 font-bold">{{ goal.calories }} kcal</span>
           </div>
         </div>
 
@@ -72,26 +72,26 @@
             <div class="space-y-2">
               <label class="block font-medium">Calorias</label>
               <!-- Slider de calorias (fixo ou desabilitado) -->
-              <input type="range" min="500" max="15000" step="50" [value]="calories" [(ngModel)]="calories"
+              <input type="range" min="500" max="15000" step="50" [value]="goal.calories" [(ngModel)]="goal.calories"
                      class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-not-allowed accent-green-500"/>
             </div>
             <div class="space-y-2">
-              <label class="block font-medium">Proteína ({{ proteinPercent }}%)</label>
-              <input type="range" min="0" max="100" step="5" [(ngModel)]="proteinPercent"
+              <label class="block font-medium">Proteína ({{ goal.proteinPercentage }}%)</label>
+              <input type="range" min="0" max="100" step="5" [(ngModel)]="goal.proteinPercentage"
                      class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"/>
             </div>
             <div class="space-y-2">
-              <label class="block font-medium">Carboidratos ({{ carbsPercent }}%)</label>
-              <input type="range" min="0" max="100" step="5" [(ngModel)]="carbsPercent"
+              <label class="block font-medium">Carboidratos ({{ goal.carbohydratesPercentage }}%)</label>
+              <input type="range" min="0" max="100" step="5" [(ngModel)]="goal.carbohydratesPercentage"
                      class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"/>
             </div>
             <div class="space-y-2">
-              <label class="block font-medium">Gorduras ({{ fatsPercent }}%)</label>
-              <input type="range" min="0" max="100" step="5" [(ngModel)]="fatsPercent"
+              <label class="block font-medium">Gorduras ({{ goal.fatPercentage }}%)</label>
+              <input type="range" min="0" max="100" step="5" [(ngModel)]="goal.fatPercentage"
                      class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500"/>
             </div>
             <div class="text-center text-sm text-gray-600">
-              Total: {{ proteinPercent + carbsPercent + fatsPercent }}%
+              Total: {{ goal.proteinPercentage + goal.carbohydratesPercentage + goal.fatPercentage }}%
             </div>
 
             <button (click)="saveGoals()"

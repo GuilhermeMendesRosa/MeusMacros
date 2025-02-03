@@ -2,14 +2,12 @@ package br.com.roselabs.macros_calculator_meus_macros.controllers;
 
 import br.com.roselabs.macros_calculator_meus_macros.dtos.MealDTO;
 import br.com.roselabs.macros_calculator_meus_macros.dtos.MealFilter;
-import br.com.roselabs.macros_calculator_meus_macros.entities.Meal;
 import br.com.roselabs.macros_calculator_meus_macros.services.JWTService;
 import br.com.roselabs.macros_calculator_meus_macros.services.MealService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 

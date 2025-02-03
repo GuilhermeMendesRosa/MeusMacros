@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {GoalService} from '../../services/goal.service';
+import {Goal} from '../../models/Goal';
 
 @Component({
   selector: 'app-profile',
@@ -10,38 +12,37 @@ import {FormsModule} from '@angular/forms';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-  // Valor fixo de calorias
-  calories: number = 2000;
 
-  // Porcentagens iniciais para cada macronutriente
-  proteinPercent: number = 25;
-  carbsPercent: number = 50;
-  fatsPercent: number = 25;
+  constructor(private goalService: GoalService) {
+  }
 
-  // Cálculo dos valores em gramas (arredondados)
+  public goal: Goal = {
+    calories: 2000,
+    proteinPercentage: 25,
+    carbohydratesPercentage: 50,
+    fatPercentage: 25
+  }
+
   get proteinGrams(): number {
-    return Math.round((this.proteinPercent / 100 * this.calories) / 4);
+    return Math.round((this.goal.proteinPercentage / 100 * this.goal.calories) / 4);
   }
 
   get carbsGrams(): number {
-    return Math.round((this.carbsPercent / 100 * this.calories) / 4);
+    return Math.round((this.goal.carbohydratesPercentage / 100 * this.goal.calories) / 4);
   }
 
   get fatsGrams(): number {
-    return Math.round((this.fatsPercent / 100 * this.calories) / 9);
+    return Math.round((this.goal.fatPercentage / 100 * this.goal.calories) / 9);
   }
 
-  saveGoals() {
-    // Exemplo: exibir os valores no console
-    console.log('Metas salvas:');
-    console.log(`Calorias: ${this.calories} kcal`);
-    console.log(`Proteínas: ${this.proteinPercent}% -> ${this.proteinGrams}g`);
-    console.log(`Carboidratos: ${this.carbsPercent}% -> ${this.carbsGrams}g`);
-    console.log(`Gorduras: ${this.fatsPercent}% -> ${this.fatsGrams}g`);
+  public saveGoals() {
+    this.goalService.createGoal(this.goal).subscribe(goal => {
+      this.goal = goal;
+    });
   }
 
   public isDisabled(): boolean {
-    return this.proteinPercent + this.carbsPercent + this.fatsPercent != 100;
+    return this.goal.proteinPercentage + this.goal.carbohydratesPercentage + this.goal.fatPercentage != 100;
   }
 
 }
