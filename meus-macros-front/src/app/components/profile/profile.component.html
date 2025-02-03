@@ -1,39 +1,91 @@
-<div id="webcrumbs" class="flex justify-center items-center min-h-screen">
-  <div class="w-[360px] bg-white rounded-lg shadow-lg min-h-[600px]">
-    <header class="bg-primary-500 text-primary-50 text-center p-4 rounded-t-lg">
-      <h1 class="font-title text-2xl">Perfil do Usuário</h1>
-    </header>
+<div id="webcrumbs">
+  <div class="flex justify-center items-center min-h-screen ">
+    <div
+      class="w-full max-w-[360px] bg-gradient-to-br rounded-2xl shadow-xl p-4 hover:shadow-2xl transition-all duration-300">
+      <header class="flex items-center gap-4 mb-6 justify-center">
+        <div class="relative group">
+          <div
+            class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur"></div>
+          <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d" alt="Profile"
+               class="relative w-16 h-16 rounded-full object-cover ring-2 ring-white transition-transform hover:scale-105 duration-300"/>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">John
+            Doe</h1>
+          <p class="text-gray-500">Nutrition Goals</p>
+        </div>
+      </header>
 
-    <section class="flex flex-col items-center p-6">
-      <div class="w-[120px] h-[120px] rounded-full overflow-hidden">
-        <img
-          [src]="user.avatar"
-          alt="Avatar"
-          class="object-cover w-full h-full"
-        />
+      <div class="space-y-4">
+        <div
+          class="bg-white/80 p-4 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md">
+          <div class="flex justify-between items-center mb-2">
+            <span class="font-semibold">Daily Calories</span>
+            <span class="text-blue-600 font-bold">2000 kcal</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div
+              class="bg-gradient-to-r from-blue-600 to-cyan-600 h-2 rounded-full w-[75%] transition-all duration-500 animate-pulse"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div
+            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
+            <span class="material-symbols-outlined text-2xl text-blue-600">egg_alt</span>
+            <h3 class="font-semibold mt-2">Protein</h3>
+            <p class="text-xl font-bold mt-1">150g</p>
+          </div>
+
+          <div
+            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
+            <span class="material-symbols-outlined text-2xl text-green-600">grain</span>
+            <h3 class="font-semibold mt-2">Carbs</h3>
+            <p class="text-xl font-bold mt-1">250g</p>
+          </div>
+
+          <div
+            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
+            <span class="material-symbols-outlined text-2xl text-yellow-600">water_drop</span>
+            <h3 class="font-semibold mt-2">Fats</h3>
+            <p class="text-xl font-bold mt-1">70g</p>
+          </div>
+        </div>
+
+        <details class="group">
+          <summary
+            class="flex items-center justify-between cursor-pointer list-none p-4 bg-white/80 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md">
+            <span class="font-semibold">Adjust Goals</span>
+            <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+          </summary>
+          <div class="mt-3 space-y-4 p-4 bg-white/80 rounded-xl backdrop-blur-sm shadow-sm">
+            <div class="space-y-2">
+              <label class="block font-medium">Calories</label>
+              <input type="range"
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"/>
+            </div>
+            <div class="space-y-2">
+              <label class="block font-medium">Protein</label>
+              <input type="range"
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"/>
+            </div>
+            <div class="space-y-2">
+              <label class="block font-medium">Carbs</label>
+              <input type="range"
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"/>
+            </div>
+            <div class="space-y-2">
+              <label class="block font-medium">Fats</label>
+              <input type="range"
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"/>
+            </div>
+            <button
+              class="w-full py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transform transition-all hover:scale-[1.02] active:scale-[0.98]">
+              Save Goals
+            </button>
+          </div>
+        </details>
       </div>
-      <h2 class="text-neutral-950 font-semibold text-xl mt-4">{{ user.nome }}</h2>
-      <p class="text-neutral-500 text-sm">{{ user.email }}</p>
-    </section>
-
-    <section class="flex flex-col items-center p-6">
-      <h3 class="text-neutral-950 font-semibold text-lg mb-4">Informações</h3>
-      <ul class="space-y-4 text-center">
-        <li>
-          <span class="block text-neutral-500">Telefone</span>
-          <span class="block text-neutral-950">{{ user.telefone }}</span>
-        </li>
-        <li>
-          <span class="block text-neutral-500">Data de Nascimento</span>
-          <span class="block text-neutral-950">{{ user.nascimento }}</span>
-        </li>
-      </ul>
-    </section>
-
-    <footer class="p-6">
-      <button class="w-full py-3 bg-primary-500 text-primary-50 rounded-md font-semibold">
-        Editar Perfil
-      </button>
-    </footer>
+    </div>
   </div>
 </div>
