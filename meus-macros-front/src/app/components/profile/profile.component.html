@@ -1,5 +1,5 @@
 <div id="webcrumbs">
-  <div class="flex justify-center items-center min-h-screen ">
+  <div class="flex justify-center items-center min-h-screen">
     <div
       class="w-full max-w-[360px] bg-gradient-to-br rounded-2xl shadow-xl p-4 hover:shadow-2xl transition-all duration-300">
       <header class="flex items-center gap-4 mb-6 justify-center">
@@ -17,41 +17,53 @@
       </header>
 
       <div class="space-y-4">
+        <!-- Daily Calories Card (Calorias: bg-green-500) -->
         <div
           class="bg-white/80 p-4 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md">
           <div class="flex justify-between items-center mb-2">
             <span class="font-semibold">Daily Calories</span>
-            <span class="text-blue-600 font-bold">2000 kcal</span>
+            <span class="text-green-500 font-bold">2000 kcal</span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-2">
             <div
-              class="bg-gradient-to-r from-blue-600 to-cyan-600 h-2 rounded-full w-[75%] transition-all duration-500 animate-pulse"></div>
+              class="bg-green-500 h-2 rounded-full w-[75%] transition-all duration-500 animate-pulse"></div>
           </div>
         </div>
 
+        <!-- Cards de Macronutrientes -->
         <div class="grid grid-cols-3 gap-3">
+          <!-- Proteínas: bg-blue-500 -->
           <div
-            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
-            <span class="material-symbols-outlined text-2xl text-blue-600">egg_alt</span>
+            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-center">
+            <div class="flex items-center justify-center w-10 h-10 mx-auto bg-blue-500 rounded-full">
+              <span class="material-symbols-outlined text-2xl text-white">egg_alt</span>
+            </div>
             <h3 class="font-semibold mt-2">Protein</h3>
             <p class="text-xl font-bold mt-1">150g</p>
           </div>
 
+          <!-- Carboidratos: bg-orange-500 -->
           <div
-            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
-            <span class="material-symbols-outlined text-2xl text-green-600">grain</span>
+            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-center">
+            <div class="flex items-center justify-center w-10 h-10 mx-auto bg-orange-500 rounded-full">
+              <span class="material-symbols-outlined text-2xl text-white">grain</span>
+            </div>
             <h3 class="font-semibold mt-2">Carbs</h3>
             <p class="text-xl font-bold mt-1">250g</p>
           </div>
 
+          <!-- Gorduras: bg-blue-500 -->
           <div
-            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
-            <span class="material-symbols-outlined text-2xl text-yellow-600">water_drop</span>
+            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-center">
+            <div class="flex items-center justify-center w-10 h-10 mx-auto bg-red-500 rounded-full">
+              <span class="material-symbols-outlined text-2xl text-white">water_drop</span>
+            </div>
             <h3 class="font-semibold mt-2">Fats</h3>
             <p class="text-xl font-bold mt-1">70g</p>
           </div>
         </div>
 
+        <!-- Adjust Goals Section -->
         <details class="group">
           <summary
             class="flex items-center justify-between cursor-pointer list-none p-4 bg-white/80 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md">
@@ -62,25 +74,25 @@
             <div class="space-y-2">
               <label class="block font-medium">Calories</label>
               <input type="range"
-                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"/>
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-500"/>
             </div>
             <div class="space-y-2">
               <label class="block font-medium">Protein</label>
               <input type="range"
-                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"/>
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"/>
             </div>
             <div class="space-y-2">
               <label class="block font-medium">Carbs</label>
               <input type="range"
-                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"/>
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"/>
             </div>
             <div class="space-y-2">
               <label class="block font-medium">Fats</label>
               <input type="range"
-                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"/>
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500"/>
             </div>
             <button
-              class="w-full py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transform transition-all hover:scale-[1.02] active:scale-[0.98]">
+              class="w-full py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-semibold hover:shadow-lg transform transition-all hover:scale-[1.02] active:scale-[0.98]">
               Save Goals
             </button>
           </div>

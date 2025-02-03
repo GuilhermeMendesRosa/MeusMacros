@@ -1,38 +1,45 @@
 <div id="webcrumbs">
-  <div class="w-full max-w-md mx-auto min-h-screen bg-gradient-to-b  p-4 ">
+  <div class="w-full max-w-md mx-auto min-h-screen bg-gradient-to-b p-4">
     <header class="space-y-1 mb-6">
       <h2 class="font-title text-xl text-center text-neutral-950 font-bold tracking-tight">
         Resultados dos Macronutrientes
       </h2>
       <p class="text-neutral-700 text-center text-base font-medium">
-        Refeição <!-- Adicione uma propriedade name no modelo Meal se necessário -->
+        Refeição
       </p>
     </header>
 
     <div class="grid grid-cols-2 gap-3 w-full">
+      <!-- Proteínas -->
       <div
         class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
         <p class="text-neutral-700 text-xs mb-1">Proteínas</p>
-        <p class="text-primary-500 font-bold text-2xl">{{ meal.protein }}g</p>
-        <span class="material-symbols-outlined text-primary-400 mt-1">egg_alt</span>
+        <p class="text-blue-500 font-bold text-2xl">{{ meal.protein }}g</p>
+        <span class="material-symbols-outlined text-blue-400 mt-1">egg_alt</span>
       </div>
+
+      <!-- Carboidratos -->
       <div
         class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
         <p class="text-neutral-700 text-xs mb-1">Carboidratos</p>
-        <p class="text-green-500 font-bold text-2xl">{{ meal.carbohydrates }}g</p>
-        <span class="material-symbols-outlined text-green-400 mt-1">grain</span>
+        <p class="text-orange-500 font-bold text-2xl">{{ meal.carbohydrates }}g</p>
+        <span class="material-symbols-outlined text-orange-400 mt-1">grain</span>
       </div>
+
+      <!-- Gorduras -->
       <div
         class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
         <p class="text-neutral-700 text-xs mb-1">Gorduras</p>
-        <p class="text-amber-500 font-bold text-2xl">{{ meal.fat }}g</p>
-        <span class="material-symbols-outlined text-amber-400 mt-1">water_drop</span>
+        <p class="text-red-500 font-bold text-2xl">{{ meal.fat }}g</p>
+        <span class="material-symbols-outlined text-red-400 mt-1">water_drop</span>
       </div>
+
+      <!-- Calorias -->
       <div
         class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
         <p class="text-neutral-700 text-xs mb-1">Calorias</p>
-        <p class="text-neutral-950 font-bold text-2xl">{{ meal.calories }}</p>
-        <p class="text-neutral-500 text-xs">kcal</p>
+        <p class="text-green-500 font-bold text-2xl">{{ meal.calories }}</p>
+        <p class="text-green-400 text-xs">kcal</p>
       </div>
     </div>
 
@@ -41,7 +48,7 @@
     </div>
 
     <button
-      class=" my-button bg-primary-500 text-primary-50 font-semibold rounded-lg w-full py-3 mt-6 shadow-lg shadow-primary-500/20 hover:bg-primary-600 active:bg-primary-700 transition-all duration-300 transform hover:-translate-y-1">
+      class="my-button bg-primary-500 text-primary-50 font-semibold rounded-lg w-full py-3 mt-6 shadow-lg shadow-primary-500/20 hover:bg-primary-600 active:bg-primary-700 transition-all duration-300 transform hover:-translate-y-1">
       Salvar Resultados
     </button>
   </div>

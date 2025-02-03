@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ApexChart, ApexLegend, ChartComponent} from 'ng-apexcharts';
+import {ApexChart, ChartComponent} from 'ng-apexcharts';
 import {CalculationService} from '../../services/calculation.service';
 import {Meal} from '../../models/Meal';
 
