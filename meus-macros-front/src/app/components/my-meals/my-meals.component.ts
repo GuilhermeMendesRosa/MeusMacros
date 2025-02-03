@@ -23,6 +23,11 @@ export class MyMealsComponent implements OnInit {
   // Array para armazenar as refeições retornadas pela API
   public mealsFromAPI: Meal[] = [];
 
+  public consumedCalories: number = 0;
+  public consumedProtein: number = 0;
+  public consumedCarbohydrates: number = 0;
+  public consumedFat: number = 0;
+
   public goal: Goal = {
     calories: 2000,
     proteinPercentage: 25,
@@ -39,10 +44,21 @@ export class MyMealsComponent implements OnInit {
 
   // Busca as refeições a partir da API com base na data selecionada
   fetchMeals(): void {
-    this.calculationService.listMeals(this.selectedDate).subscribe(
-      (meals: Meal[]) => {
+
+    this.calculationService.listMeals(this.selectedDate).subscribe(meals => {
+        this.consumedCalories = 0;
+        this.consumedProtein = 0;
+        this.consumedCarbohydrates = 0;
+        this.consumedFat = 0;
+
         this.mealsFromAPI = meals;
-        console.log('Refeições carregadas:', meals);
+        meals.forEach((meal: Meal) => {
+          this.consumedCalories += meal.calories;
+          this.consumedProtein += meal.protein;
+          this.consumedCarbohydrates += meal.carbohydrates;
+          this.consumedFat += meal.fat;
+        })
+
       },
       (error) => {
         console.error('Erro ao buscar as refeições:', error);
