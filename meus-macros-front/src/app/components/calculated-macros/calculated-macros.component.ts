@@ -3,6 +3,7 @@ import {ApexChart, ChartComponent} from 'ng-apexcharts';
 import {CalculationService} from '../../services/calculation.service';
 import {Meal} from '../../models/Meal';
 import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-calculated-macros',
@@ -15,8 +16,8 @@ import {FormsModule} from '@angular/forms';
 })
 export class CalculatedMacrosComponent {
 
+
   protected readonly colors = ['#3B82F6', '#F97316', '#EF4444'];
-  public mealName: string = "";
 
   chartSeries: number[] = [];
   chartLabels = ['Proteínas', 'Carboidratos', 'Gorduras'];
@@ -34,7 +35,10 @@ export class CalculatedMacrosComponent {
     items: [],
   };
 
-  constructor(private calculationsService: CalculationService) {
+  constructor(
+    private calculationsService: CalculationService,
+    private router: Router
+  ) {
   }
 
   ngOnInit() {
@@ -51,6 +55,12 @@ export class CalculatedMacrosComponent {
       this.meal.carbohydrates,
       this.meal.fat
     ];
+  }
+
+  public createMeal() {
+    this.calculationsService.createMeal(this.meal).subscribe(value => {
+      this.router.navigate(['/my-meals']);
+    })
   }
 
 }
