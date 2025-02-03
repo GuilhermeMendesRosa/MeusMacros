@@ -28,7 +28,8 @@ export class CalculatedMacrosComponent {
     items: [],
   };
 
-  constructor(private calculationsService: CalculationService) {}
+  constructor(private calculationsService: CalculationService) {
+  }
 
   ngOnInit() {
     if (this.calculationsService.meal) {
@@ -45,4 +46,6 @@ export class CalculatedMacrosComponent {
       this.meal.fat
     ];
   }
+
+  protected readonly colors = ['#3B82F6', '#F97316', '#EF4444'];
 }
