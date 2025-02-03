@@ -1,6 +1,6 @@
 <div id="webcrumbs">
-  <div class="bg-white flex justify-center pt-5 min-h-screen">
-    <div class="w-full max-w-3xl">
+  <div class="bg-white flex justify-center pt-3 min-h-screen ">
+    <div class="">
       <header class="flex items-center justify-between mb-8">
         <h1 class="text-2xl font-bold tracking-tight">Diário</h1>
       </header>
@@ -22,21 +22,67 @@
         </button>
       </div>
 
-      <!-- Exibição das refeições retornadas pela API -->
-      <div *ngIf="mealsFromAPI && mealsFromAPI.length > 0; else noMeals">
-        <div *ngFor="let meal of mealsFromAPI" class="p-5 bg-gray-50 rounded-lg mb-8 hover:shadow-md transition-all duration-300">
-          <h3 class="font-semibold text-lg">{{ meal.mealName }}</h3>
-          <p class="text-gray-600">Calorias: {{ meal.calories }} kcal</p>
-          <div class="flex gap-4 mt-2">
-            <span class="text-sm text-gray-500">Proteína: {{ meal.protein }}g</span>
-            <span class="text-sm text-gray-500">Carboidratos: {{ meal.carbohydrates }}g</span>
-            <span class="text-sm text-gray-500">Gordura: {{ meal.fat }}g</span>
+      <div class="grid grid-cols-3 gap-5 mb-8">
+        <div class="bg-gray-50 p-5 rounded-lg hover:shadow-md transition-all duration-300">
+          <div class="flex justify-between mb-2">
+            <span class="font-semibold">Protein</span>
+          </div>
+          <div class="text-sm text-gray-500 mb-3">Goal: 120g</div>
+          <div class="h-2.5 bg-gray-200 rounded-md overflow-hidden">
+            <div class="h-full w-[70%] bg-blue-500 rounded-md transition-all duration-500 hover:opacity-80"></div>
+          </div>
+        </div>
+        <div class="bg-gray-50 p-5 rounded-lg hover:shadow-md transition-all duration-300">
+          <div class="flex justify-between mb-2">
+            <span class="font-semibold">Carbs</span>
+          </div>
+          <div class="text-sm text-gray-500 mb-3">Goal: 200g</div>
+          <div class="h-2.5 bg-gray-200 rounded-md overflow-hidden">
+            <div class="h-full w-[72%] bg-orange-500 rounded-md transition-all duration-500 hover:opacity-80"></div>
+          </div>
+        </div>
+        <div class="bg-gray-50 p-5 rounded-lg hover:shadow-md transition-all duration-300">
+          <div class="flex justify-between mb-2">
+            <span class="font-semibold">Fat</span>
+          </div>
+          <div class="text-sm text-gray-500 mb-3">Goal: 65g</div>
+          <div class="h-2.5 bg-gray-200 rounded-md overflow-hidden">
+            <div class="h-full w-[69%] bg-red-500 rounded-md transition-all duration-500 hover:opacity-80"></div>
           </div>
         </div>
       </div>
-      <ng-template #noMeals>
-        <p class="text-center text-gray-500">Nenhuma refeição encontrada para a data selecionada.</p>
-      </ng-template>
+
+      <div class="bg-gray-50 p-5 rounded-lg mb-8 hover:shadow-md transition-all duration-300">
+        <div class="flex justify-between mb-2">
+          <span class="font-semibold">Daily Total</span>
+          <span class="font-medium">1350 kcal</span>
+        </div>
+        <div class="text-sm text-gray-500 mb-3">Goal: 2000 kcal</div>
+        <div class="h-2.5 bg-gray-200 rounded-md overflow-hidden">
+          <div class="h-full w-[67%] bg-green-500 rounded-md transition-all duration-500 hover:opacity-80"></div>
+        </div>
+      </div>
+
+      <div class="space-y-5">
+
+        <!-- Exibição das refeições retornadas pela API -->
+        <div *ngIf="mealsFromAPI && mealsFromAPI.length > 0; else noMeals">
+          <div *ngFor="let meal of mealsFromAPI"
+               class="p-5 bg-gray-50 rounded-lg mb-8 hover:shadow-md transition-all duration-300">
+            <h3 class="font-semibold text-lg">{{ meal.mealName }}</h3>
+            <p class="text-gray-600">Calorias: {{ meal.calories }} kcal</p>
+            <div class="flex gap-4 mt-2">
+              <span class="text-sm text-gray-500">Proteína: {{ meal.protein }}g</span>
+              <span class="text-sm text-gray-500">Carboidratos: {{ meal.carbohydrates }}g</span>
+              <span class="text-sm text-gray-500">Gordura: {{ meal.fat }}g</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #noMeals>
+          <p class="text-center text-gray-500">Nenhuma refeição encontrada.</p>
+        </ng-template>
+
+      </div>
     </div>
   </div>
   <br>
