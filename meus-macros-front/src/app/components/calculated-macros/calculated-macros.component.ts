@@ -61,9 +61,13 @@ export class CalculatedMacrosComponent {
   }
 
   public createMeal() {
+    console.log(this.meal);
     this.calculationsService.createMeal(this.meal).subscribe(value => {
       this.router.navigate(['/my-meals']);
     })
   }
 
+  public isDisabled(): boolean {
+    return this.meal?.mealName?.length <= 0
+  }
 }

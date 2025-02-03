@@ -33,6 +33,7 @@ public class MealService {
                 .peek(item -> item.setMeal(meal))
                 .toList();
 
+        meal.setMealName(mealDTO.getMealName());
         meal.setCalories(items.stream().mapToInt(MealItem::getCalories).sum());
         meal.setProtein(items.stream().mapToInt(MealItem::getProtein).sum());
         meal.setCarbohydrates(items.stream().mapToInt(MealItem::getCarbohydrates).sum());

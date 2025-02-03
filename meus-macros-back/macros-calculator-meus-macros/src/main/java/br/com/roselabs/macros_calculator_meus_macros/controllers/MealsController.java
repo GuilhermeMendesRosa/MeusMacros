@@ -19,9 +19,10 @@ public class MealsController {
     private final JWTService jwtService;
 
     @PostMapping
-    public ResponseEntity<Meal> createMeal(@RequestBody MealDTO mealDTO, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<String> createMeal(@RequestBody MealDTO mealDTO, @RequestHeader("Authorization") String token) {
         UUID userUuid = jwtService.getUUIDFromToken(token.replace("Bearer ", ""));
-        return ResponseEntity.ok(mealService.createMeal(mealDTO, userUuid));
+        this.mealService.createMeal(mealDTO, userUuid);
+        return ResponseEntity.ok().build();
     }
 
 }
