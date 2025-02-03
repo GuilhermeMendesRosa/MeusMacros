@@ -4,13 +4,15 @@ import {CalculationService} from '../../services/calculation.service';
 import {Meal} from '../../models/Meal';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
+import {NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-calculated-macros',
   templateUrl: './calculated-macros.component.html',
   imports: [
     ChartComponent,
-    FormsModule
+    FormsModule,
+    NgForOf
   ],
   styleUrls: ['./calculated-macros.component.css']
 })
@@ -46,6 +48,7 @@ export class CalculatedMacrosComponent {
       this.meal = this.calculationsService.meal;
       this.updateChart();
       this.calculationsService.meal = undefined;
+      console.log(this.meal);
     }
   }
 
