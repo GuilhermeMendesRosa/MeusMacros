@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {CalculationService} from '../../services/calculation.service';
 import {Meal} from '../../models/Meal';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgForOf, NgIf, NgStyle} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Goal} from '../../models/Goal';
+import {GoalService} from '../../services/goal.service';
 
 @Component({
   selector: 'app-my-meals',
@@ -11,7 +12,8 @@ import {Goal} from '../../models/Goal';
   imports: [
     NgIf,
     NgForOf,
-    FormsModule
+    FormsModule,
+    NgStyle
   ],
   styleUrls: ['./my-meals.component.css']
 })
@@ -33,34 +35,37 @@ export class MyMealsComponent implements OnInit {
     proteinPercentage: 25,
     carbohydratesPercentage: 50,
     fatPercentage: 25
-  }
+  };
 
-  constructor(private calculationService: CalculationService) {
+  constructor(
+    private calculationService: CalculationService,
+    private goalService: GoalService) {
   }
 
   ngOnInit(): void {
+    this.goalService.getLatestGoal().subscribe(goal => {
+      this.goal = goal;
+    })
     this.fetchMeals();
   }
 
   // Busca as refeições a partir da API com base na data selecionada
   fetchMeals(): void {
-
-    this.calculationService.listMeals(this.selectedDate).subscribe(meals => {
+    this.calculationService.listMeals(this.selectedDate).subscribe(
+      meals => {
         this.consumedCalories = 0;
         this.consumedProtein = 0;
         this.consumedCarbohydrates = 0;
         this.consumedFat = 0;
-
         this.mealsFromAPI = meals;
         meals.forEach((meal: Meal) => {
           this.consumedCalories += meal.calories;
           this.consumedProtein += meal.protein;
           this.consumedCarbohydrates += meal.carbohydrates;
           this.consumedFat += meal.fat;
-        })
-
+        });
       },
-      (error) => {
+      error => {
         console.error('Erro ao buscar as refeições:', error);
       }
     );
@@ -84,4 +89,24 @@ export class MyMealsComponent implements OnInit {
     return Math.round(this.goal.calories * this.goal.fatPercentage * 0.01 / 9);
   }
 
+  // Métodos para calcular a porcentagem de progresso
+  getProteinProgress(): number {
+    const progress = (this.consumedProtein / this.protein) * 100;
+    return progress > 100 ? 100 : progress;
+  }
+
+  getCarbohydratesProgress(): number {
+    const progress = (this.consumedCarbohydrates / this.carbohydrates) * 100;
+    return progress > 100 ? 100 : progress;
+  }
+
+  getFatProgress(): number {
+    const progress = (this.consumedFat / this.fat) * 100;
+    return progress > 100 ? 100 : progress;
+  }
+
+  getCaloriesProgress(): number {
+    const progress = (this.consumedCalories / this.goal.calories) * 100;
+    return progress > 100 ? 100 : progress;
+  }
 }
