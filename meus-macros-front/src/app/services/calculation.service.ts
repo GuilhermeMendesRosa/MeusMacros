@@ -20,6 +20,11 @@ export class CalculationService {
   }
 
   public createMeal(meal: Meal): Observable<string> {
-    return this.http.post<string>(`${this.API_URL}/meals`, meal);
+    return this.http.post<string>(`${this.API_URL}/meals/create`, meal);
   }
+
+  public listMeals(date: string): Observable<Meal[]> {
+    return this.http.post<Meal[]>(`${this.API_URL}/meals/list`, {date});
+  }
+
 }
