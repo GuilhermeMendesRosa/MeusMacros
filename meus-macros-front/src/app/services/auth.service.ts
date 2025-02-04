@@ -28,6 +28,10 @@ export class AuthService {
     return this.http.post<AuthenticationTokens>(`${this.API_URL}/register`, user);
   }
 
+  public me(): Observable<User> {
+    return this.http.get<User>(`${this.API_URL}/me`);
+  }
+
   public getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }

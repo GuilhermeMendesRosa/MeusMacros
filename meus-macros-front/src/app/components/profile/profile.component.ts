@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {GoalService} from '../../services/goal.service';
 import {Goal} from '../../models/Goal';
+import {AuthService} from '../../services/auth.service';
+import {User} from '../../models/User';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +15,9 @@ import {Goal} from '../../models/Goal';
 })
 export class ProfileComponent {
 
-  constructor(private goalService: GoalService) {
+  constructor(
+    private goalService: GoalService,
+    private authService: AuthService) {
   }
 
   public goal: Goal = {
@@ -23,7 +27,15 @@ export class ProfileComponent {
     fatPercentage: 25
   }
 
+  public user: User = {
+    firstName: '',
+    lastName: '',
+  }
+
   ngOnInit() {
+    this.authService.me().subscribe(me => {
+      this.user = me;
+    })
     this.goalService.getLatestGoal().subscribe(goal => {
       this.goal = goal;
     })

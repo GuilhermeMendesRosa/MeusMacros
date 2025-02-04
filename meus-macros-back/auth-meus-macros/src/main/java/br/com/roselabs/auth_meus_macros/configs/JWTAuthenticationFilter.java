@@ -31,10 +31,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         String token = extractToken(request);
 
         if (token != null && jwtService.validateToken(token)) {
-            String username = jwtService.getIssuerFromToken(token);
+            String uuid = jwtService.getSubjectFromToken(token);
 
             UserService userDetailsService = applicationContext.getBean(UserService.class);
-            User userDetails = (User) userDetailsService.loadUserByUsername(username);
+            User userDetails = (User) userDetailsService.loadUserByUUID(uuid);
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());

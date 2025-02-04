@@ -59,4 +59,17 @@ public class JWTService {
         }
     }
 
+    public String getSubjectFromToken(String token) {
+        try {
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(secretKey))
+                    .withIssuer("meus-macros")
+                    .build()
+                    .verify(token);
+
+            return decodedJWT.getSubject();
+        } catch (JWTVerificationException exception) {
+            return null;
+        }
+    }
+
 }

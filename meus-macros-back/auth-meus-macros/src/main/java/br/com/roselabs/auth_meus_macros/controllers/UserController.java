@@ -3,6 +3,7 @@ package br.com.roselabs.auth_meus_macros.controllers;
 import br.com.roselabs.auth_meus_macros.data.AuthenticationTokens;
 import br.com.roselabs.auth_meus_macros.data.LoginRequestRecord;
 import br.com.roselabs.auth_meus_macros.data.RegisterRequestRecord;
+import br.com.roselabs.auth_meus_macros.data.ShowUserDTO;
 import br.com.roselabs.auth_meus_macros.services.JWTService;
 import br.com.roselabs.auth_meus_macros.services.UserService;
 import lombok.AllArgsConstructor;
@@ -10,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final AuthenticationManager authenticationManager;
-    private final JWTService tokenService;
+    private final JWTService jwtService;
     private final UserService userService;
 
     @PostMapping("/login")
@@ -30,7 +28,7 @@ public class UserController {
 
         Authentication authentication = authenticationManager.authenticate(authToken);
 
-        String token = tokenService.generateToken(authentication);
+        String token = jwtService.generateToken(authentication);
 
         AuthenticationTokens tokens = new AuthenticationTokens(token);
 
@@ -45,6 +43,15 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ShowUserDTO> me(@RequestHeader("Authorization") String token) {
+        String userUuid = jwtService.getSubjectFromToken(token.replace("Bearer ", ""));
+
+        ShowUserDTO showUserDTO = this.userService.showUser(userUuid);
+
+        return ResponseEntity.ok(showUserDTO);
     }
 
 }
