@@ -31,4 +31,9 @@ export class LoginComponent {
     })
   }
 
+  // Método para redirecionar para a tela de login
+  goToRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
 }

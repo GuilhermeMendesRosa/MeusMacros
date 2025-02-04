@@ -8,6 +8,7 @@ import {
 import {MyMealsComponent} from './components/my-meals/my-meals.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {LoginComponent} from './components/login/login.component';
+import {RegisterComponent} from './components/register/register.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'audio-transcription', pathMatch: 'full'},
@@ -15,4 +16,6 @@ export const routes: Routes = [
   {path: 'calculated-macros', component: CalculatedMacrosComponent},
   {path: 'my-meals', component: MyMealsComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'login', component: LoginComponent},];
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
+];

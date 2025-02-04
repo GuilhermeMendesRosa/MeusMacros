@@ -2,7 +2,7 @@
   <div
     class="w-full h-screen bg-white shadow-lg rounded-none p-10 flex items-center justify-center animate-pulse-on-mount">
     <div class="w-[400px]">
-      <h1 class="text-3xl font-title font-bold text-neutral-950 mb-8 text-center">Login</h1>
+      <h1 class="text-3xl font-title font-bold text-neutral-950 mb-8 text-center">Meus Macros</h1>
       <form class="space-y-6" (submit)="onSubmit()">
         <div>
           <label for="email" class="block text-neutral-700 font-medium mb-2">Email</label>
@@ -34,6 +34,16 @@
         >
           Entrar
         </button>
+        <div class="flex flex-col items-center gap-4 mt-6">
+          <span class="text-neutral-500">ou</span>
+          <button
+            type="button"
+            (click)="goToRegister()"
+            class="w-full bg-transparent border-2 border-primary-500 text-primary-500 py-3 rounded-md font-bold text-lg hover:bg-primary-50 active:scale-95 transform transition-all duration-300"
+          >
+            Criar conta
+          </button>
+        </div>
       </form>
     </div>
   </div>

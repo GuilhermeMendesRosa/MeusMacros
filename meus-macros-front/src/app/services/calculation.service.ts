@@ -8,7 +8,7 @@ import {Meal} from '../models/Meal';
   providedIn: 'root'
 })
 export class CalculationService {
-  private readonly API_URL = 'http://192.168.1.171:8082/macros-calculator-meus-macros'
+  private readonly API_URL = 'http://localhost:8082/macros-calculator-meus-macros'
 
   public meal?: Meal;
 

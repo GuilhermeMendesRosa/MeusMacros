@@ -18,7 +18,7 @@ export class AppComponent {
   }
 
   public get showMenu(): boolean {
-    return !this.router.url.includes('/login') && !this.router.url.includes('/signup');
+    return !this.router.url.includes('/login') && !this.router.url.includes('/register');
   }
 
 }

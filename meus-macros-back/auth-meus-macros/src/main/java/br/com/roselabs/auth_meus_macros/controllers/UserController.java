@@ -38,9 +38,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequestRecord registerRequest) {
-        userService.registerUser(registerRequest);
-        return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<Void> register(@RequestBody RegisterRequestRecord registerRequest) {
+        try {
+            userService.registerUser(registerRequest);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

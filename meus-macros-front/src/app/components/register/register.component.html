@@ -1,0 +1,116 @@
+<div id="webcrumbs">
+  <div
+    class="w-full h-screen bg-white shadow-lg rounded-none p-10 animate-pulse-on-mount flex items-center justify-center"
+  >
+    <div class="w-[400px]">
+      <h1
+        class="text-3xl font-title font-bold text-neutral-950 mb-8 text-center"
+      >
+        Meus Macros
+      </h1>
+
+      <!-- Mensagem de erro amigável -->
+      <div *ngIf="errorMessage" class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Formulário de registro -->
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="space-y-6">
+        <!-- Primeiro Nome -->
+        <div>
+          <label for="firstName" class="block text-neutral-700 font-medium mb-2">
+            Primeiro nome
+          </label>
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            [(ngModel)]="user.firstName"
+            required
+            placeholder="Digite seu primeiro nome"
+            class="w-full py-3 px-4 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
+          />
+        </div>
+        <!-- Sobrenome -->
+        <div>
+          <label for="lastName" class="block text-neutral-700 font-medium mb-2">
+            Sobrenome
+          </label>
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            [(ngModel)]="user.lastName"
+            required
+            placeholder="Digite seu sobrenome"
+            class="w-full py-3 px-4 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
+          />
+        </div>
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-neutral-700 font-medium mb-2">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="user.email"
+            required
+            placeholder="Digite seu email"
+            class="w-full py-3 px-4 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
+          />
+        </div>
+        <!-- Senha -->
+        <div>
+          <label for="password" class="block text-neutral-700 font-medium mb-2">
+            Senha
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            [(ngModel)]="user.password"
+            required
+            placeholder="Digite sua senha"
+            class="w-full py-3 px-4 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
+          />
+        </div>
+        <!-- Confirmar Senha -->
+        <div>
+          <label for="confirmPassword" class="block text-neutral-700 font-medium mb-2">
+            Confirmar senha
+          </label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            [(ngModel)]="confirmPassword"
+            required
+            placeholder="Digite sua senha novamente"
+            class="w-full py-3 px-4 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
+          />
+        </div>
+        <!-- Botão de Cadastro -->
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid"
+          class="w-full bg-primary-500 text-primary-50 py-3 rounded-md font-bold text-lg hover:bg-primary-600 active:scale-95 transform transition-all duration-300"
+        >
+          Criar conta
+        </button>
+        <!-- Botão de Navegação para Login -->
+        <div class="flex flex-col items-center gap-4 mt-6">
+          <span class="text-neutral-500">ou</span>
+          <button
+            type="button"
+            (click)="goToLogin()"
+            class="w-full bg-transparent border-2 border-primary-500 text-primary-500 py-3 rounded-md font-bold text-lg hover:bg-primary-50 active:scale-95 transform transition-all duration-300"
+          >
+            Fazer login
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
