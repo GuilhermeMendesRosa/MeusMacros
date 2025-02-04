@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { CalculationService } from '../../services/calculation.service';
 import { Meal } from '../../models/Meal';
 import { NgForOf, NgIf, NgStyle } from '@angular/common';
@@ -161,4 +161,11 @@ export class MyMealsComponent implements OnInit {
   cancelDeleteMeal(): void {
     this.activeDeleteMeal = null;
   }
+
+  // Captura cliques fora do overlay para fechá-lo
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.activeDeleteMeal = null;
+  }
+
 }
