@@ -8,7 +8,7 @@ import { AuthenticationTokens } from '../models/AuthenticationTokens';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'http://localhost:8082/auth-meus-macros/auth';
+  private readonly API_URL = 'http://192.168.1.171:8082/auth-meus-macros/auth';
   private readonly TOKEN_KEY = 'auth_token';
 
   constructor(private http: HttpClient) {}
