@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {CalculationService} from '../../services/calculation.service';
-import {Meal} from '../../models/Meal';
-import {NgForOf, NgIf, NgStyle} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {Goal} from '../../models/Goal';
-import {GoalService} from '../../services/goal.service';
+import { Component, OnInit } from '@angular/core';
+import { CalculationService } from '../../services/calculation.service';
+import { Meal } from '../../models/Meal';
+import { NgForOf, NgIf, NgStyle } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Goal } from '../../models/Goal';
+import { GoalService } from '../../services/goal.service';
 
 @Component({
   selector: 'app-my-meals',
@@ -45,7 +45,7 @@ export class MyMealsComponent implements OnInit {
   ngOnInit(): void {
     this.goalService.getLatestGoal().subscribe(goal => {
       this.goal = goal;
-    })
+    });
     this.fetchMeals();
   }
 
@@ -74,6 +74,22 @@ export class MyMealsComponent implements OnInit {
   // Atualiza a data e refaz a busca sempre que o usuário altera o valor do input
   onDateChange(newDate: string): void {
     this.selectedDate = newDate;
+    this.fetchMeals();
+  }
+
+  // Navega para o dia anterior
+  goPreviousDay(): void {
+    const date = new Date(this.selectedDate);
+    date.setDate(date.getDate() - 1);
+    this.selectedDate = date.toISOString().split('T')[0];
+    this.fetchMeals();
+  }
+
+  // Navega para o dia seguinte
+  goNextDay(): void {
+    const date = new Date(this.selectedDate);
+    date.setDate(date.getDate() + 1);
+    this.selectedDate = date.toISOString().split('T')[0];
     this.fetchMeals();
   }
 

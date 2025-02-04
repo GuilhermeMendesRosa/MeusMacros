@@ -6,7 +6,7 @@
       </header>
 
       <div class="flex items-center justify-between mb-8">
-        <button class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+        <button (click)="goPreviousDay()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
           <span class="material-symbols-outlined">arrow_back_ios</span>
         </button>
 
@@ -17,7 +17,7 @@
                  (ngModelChange)="onDateChange($event)"/>
         </div>
 
-        <button class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+        <button (click)="goNextDay()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
           <span class="material-symbols-outlined">arrow_forward_ios</span>
         </button>
       </div>
