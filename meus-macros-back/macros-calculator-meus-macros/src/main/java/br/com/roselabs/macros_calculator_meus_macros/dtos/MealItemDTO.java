@@ -18,10 +18,10 @@ public class MealItemDTO {
 
     public MealItemDTO(FoodItemDTO foodItemDTO) {
         this.name = foodItemDTO.getName();
-        this.calories += (int) (foodItemDTO.getCalories() * foodItemDTO.getPortions());
-        this.protein += (int) (foodItemDTO.getProtein() * foodItemDTO.getPortions());
-        this.carbohydrates += (int) (foodItemDTO.getCarbohydrates() * foodItemDTO.getPortions());
-        this.fat += (int) (foodItemDTO.getFat() * foodItemDTO.getPortions());
+        this.calories += foodItemDTO.getCalories();
+        this.protein += foodItemDTO.getProtein();
+        this.carbohydrates += foodItemDTO.getCarbohydrates();
+        this.fat += foodItemDTO.getFat();
         this.quantity = String.format("%d%s", foodItemDTO.getPortions(), foodItemDTO.getUnit());
     }
 

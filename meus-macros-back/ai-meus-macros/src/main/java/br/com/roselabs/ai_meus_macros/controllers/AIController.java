@@ -1,6 +1,5 @@
 package br.com.roselabs.ai_meus_macros.controllers;
 
-import br.com.roselabs.ai_meus_macros.data.Food;
 import br.com.roselabs.ai_meus_macros.data.Transcript;
 import br.com.roselabs.ai_meus_macros.dtos.ChooseDTO;
 import br.com.roselabs.ai_meus_macros.dtos.FoodDTO;
@@ -22,30 +21,9 @@ public class AIController {
     private final AIService service;
 
     @PostMapping("/transcript-to-list")
-    public ResponseEntity<List<Food>> convertTranscriptToList(@RequestBody Transcript transcript) throws InterruptedException {
-        List<Food> foods = this.service.convertTranscriptToList(transcript);
+    public ResponseEntity<List<FoodItemDTO>> convertTranscriptToList(@RequestBody Transcript transcript) {
+        List<FoodItemDTO> foods = this.service.convertTranscriptToList(transcript);
         return ResponseEntity.ok(foods);
-    }
-
-    @PostMapping("/generate-embedding")
-    public ResponseEntity<List<Double>> generateEmbedding(@RequestBody String foodName) {
-        List<Double> embedding = this.service.generateEmbedding(foodName);
-        return ResponseEntity.ok(embedding);
-    }
-
-    @PostMapping("/choose")
-    public ResponseEntity<String> choose(@RequestBody ChooseDTO chooseDTO) {
-        return ResponseEntity.ok(this.service.choose(chooseDTO));
-    }
-
-    @PostMapping("/find-food-items")
-    public ResponseEntity<List<FoodItemDTO>> findFoodItems(@RequestBody List<FoodDTO> foodDTOs) {
-        return ResponseEntity.ok(this.service.findFoodItems(foodDTOs));
-    }
-
-    @GetMapping("/hello-world")
-    public String helloWorld() {
-        return "Hello World";
     }
 
 }

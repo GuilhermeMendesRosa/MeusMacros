@@ -15,8 +15,6 @@ import java.util.List;
 public interface AIClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/transcript-to-list")
-    List<FoodDTO> convertTranscriptToList(@RequestBody TranscriptDTO transcript);
+    List<FoodItemDTO> convertTranscriptToList(@RequestBody TranscriptDTO transcript);
 
-    @RequestMapping(method = RequestMethod.POST, value = "/find-food-items")
-    List<FoodItemDTO> findFoodItems(@RequestBody List<FoodDTO> foodDTOs);
 }

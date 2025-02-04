@@ -59,13 +59,6 @@ public class MealService {
         return item;
     }
 
-    /**
-     * Lista as refeições de um usuário para uma data específica.
-     *
-     * @param mealFilter filtro com a data (do tipo java.util.Date)
-     * @param userUuid   identificador do usuário
-     * @return lista de MealDTO para as refeições encontradas
-     */
     public List<MealDTO> listMeals(MealFilter mealFilter, UUID userUuid) {
         // Define o início e o fim do dia
         LocalDateTime startOfDay = mealFilter.getDate().atStartOfDay();
@@ -80,12 +73,6 @@ public class MealService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Exclui uma refeição, verificando se ela pertence ao usuário.
-     *
-     * @param mealId   identificador da refeição a ser excluída
-     * @param userUuid identificador do usuário (obtido via token JWT)
-     */
     public void deleteMeal(Long mealId, UUID userUuid) {
         Meal meal = mealRepository.findById(mealId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Refeição não encontrada"));

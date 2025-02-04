@@ -41,7 +41,6 @@ public class MealDTO {
         this.setCarbohydrates(meal.getCarbohydrates());
         this.setFat(meal.getFat());
 
-        // Converte os itens da refeição para MealItemDTO
         meal.getItems().forEach(item -> {
             MealItemDTO itemDTO = new MealItemDTO();
             itemDTO.setName(item.getName());

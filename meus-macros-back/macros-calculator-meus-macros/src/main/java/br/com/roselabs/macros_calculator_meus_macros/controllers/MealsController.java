@@ -32,7 +32,6 @@ public class MealsController {
         return ResponseEntity.ok(this.mealService.listMeals(mealFilter, userUuid));
     }
 
-    // Rota DELETE para excluir uma refeição
     @DeleteMapping("/delete/{mealId}")
     public ResponseEntity<Void> deleteMeal(@PathVariable Long mealId, @RequestHeader("Authorization") String token) {
         UUID userUuid = jwtService.getUUIDFromToken(token.replace("Bearer ", ""));
