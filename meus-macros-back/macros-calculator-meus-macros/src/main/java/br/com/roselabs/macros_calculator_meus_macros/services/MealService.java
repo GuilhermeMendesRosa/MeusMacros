@@ -9,12 +9,12 @@ import br.com.roselabs.macros_calculator_meus_macros.repositories.MealItemReposi
 import br.com.roselabs.macros_calculator_meus_macros.repositories.MealRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -76,36 +76,24 @@ public class MealService {
 
         // Converte cada Meal para MealDTO
         return meals.stream()
-                .map(this::convertToMealDTO)
+                .map(MealDTO::new)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Converte a entidade Meal para o DTO correspondente.
+     * Exclui uma refeição, verificando se ela pertence ao usuário.
      *
-     * @param meal a entidade Meal
-     * @return o MealDTO convertido
+     * @param mealId   identificador da refeição a ser excluída
+     * @param userUuid identificador do usuário (obtido via token JWT)
      */
-    private MealDTO convertToMealDTO(Meal meal) {
-        MealDTO dto = new MealDTO();
-        dto.setMealName(meal.getMealName());
-        dto.setCalories(meal.getCalories());
-        dto.setProtein(meal.getProtein());
-        dto.setCarbohydrates(meal.getCarbohydrates());
-        dto.setFat(meal.getFat());
+    public void deleteMeal(Long mealId, UUID userUuid) {
+        Meal meal = mealRepository.findById(mealId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Refeição não encontrada"));
 
-        // Converte os itens da refeição para MealItemDTO
-        meal.getItems().forEach(item -> {
-            MealItemDTO itemDTO = new MealItemDTO();
-            itemDTO.setName(item.getName());
-            itemDTO.setQuantity(item.getQuantity());
-            itemDTO.setCalories(item.getCalories());
-            itemDTO.setProtein(item.getProtein());
-            itemDTO.setCarbohydrates(item.getCarbohydrates());
-            itemDTO.setFat(item.getFat());
-            dto.getItems().add(itemDTO);
-        });
+        if (!meal.getUserUuid().equals(userUuid)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acesso negado para excluir esta refeição");
+        }
 
-        return dto;
+        mealRepository.delete(meal);
     }
 }

@@ -1,19 +1,18 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Transcription} from '../models/Transcription';
-import {Meal} from '../models/Meal';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Transcription } from '../models/Transcription';
+import { Meal } from '../models/Meal';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalculationService {
-  private readonly API_URL = 'http://localhost:8082/macros-calculator-meus-macros'
+  private readonly API_URL = 'http://localhost:8082/macros-calculator-meus-macros';
 
   public meal?: Meal;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   public calculateMeal(transcription: Transcription): Observable<Meal> {
     return this.http.post<Meal>(`${this.API_URL}/calculate`, transcription);
@@ -24,7 +23,10 @@ export class CalculationService {
   }
 
   public listMeals(date: string): Observable<Meal[]> {
-    return this.http.post<Meal[]>(`${this.API_URL}/meals/list`, {date});
+    return this.http.post<Meal[]>(`${this.API_URL}/meals/list`, { date });
   }
 
+  public deleteMeal(mealId: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/meals/delete/${mealId}`);
+  }
 }

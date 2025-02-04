@@ -23,7 +23,7 @@
       </div>
 
       <div class="grid grid-cols-3 gap-5 mb-8">
-        <!-- Proteína -->
+        <!-- Card Proteína -->
         <div class="bg-gray-50 p-5 rounded-lg hover:shadow-md transition-all duration-300">
           <div class="flex justify-between mb-2">
             <span class="font-medium text-xs">Proteína</span>
@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <!-- Carboidratos -->
+        <!-- Card Carboidratos -->
         <div class="bg-gray-50 p-5 rounded-lg hover:shadow-md transition-all duration-300">
           <div class="flex justify-between mb-2">
             <span class="font-medium text-xs">Carboidratos</span>
@@ -49,7 +49,7 @@
           </div>
         </div>
 
-        <!-- Gordura -->
+        <!-- Card Gordura -->
         <div class="bg-gray-50 p-5 rounded-lg hover:shadow-md transition-all duration-300">
           <div class="flex justify-between mb-2">
             <span class="font-medium text-xs">Gordura</span>
@@ -76,17 +76,34 @@
         </div>
       </div>
 
+      <!-- Lista de Refeições -->
       <div class="space-y-5">
-        <!-- Exibição das refeições retornadas pela API -->
         <div *ngIf="mealsFromAPI && mealsFromAPI.length > 0; else noMeals">
           <div *ngFor="let meal of mealsFromAPI"
-               class="p-5 bg-gray-50 rounded-lg mb-8 hover:shadow-md transition-all duration-300">
+               class="relative p-5 bg-gray-50 rounded-lg mb-8 hover:shadow-md transition-all duration-300"
+               (mousedown)="onMealPressStart(meal.id)" (touchstart)="onMealPressStart(meal.id)"
+               (mouseup)="onMealPressEnd()" (mouseleave)="onMealPressEnd()" (touchend)="onMealPressEnd()">
             <h3 class="font-semibold text-lg">{{ meal.mealName }}</h3>
             <p class="text-gray-600">Calorias: {{ meal.calories }} kcal</p>
             <div class="flex gap-4 mt-2">
               <span class="text-sm text-gray-500">Proteína: {{ meal.protein }}g</span>
               <span class="text-sm text-gray-500">Carboidratos: {{ meal.carbohydrates }}g</span>
               <span class="text-sm text-gray-500">Gordura: {{ meal.fat }}g</span>
+            </div>
+            <!-- Overlay de confirmação de exclusão exibido após long press -->
+            <div *ngIf="activeDeleteMeal === meal.id"
+                 class="absolute inset-0 bg-primary-500 bg-opacity-80 flex flex-col items-center justify-center rounded-lg p-4">
+              <p class="text-white font-bold mb-4 text-center">Deseja realmente excluir esta refeição?</p>
+              <div class="flex gap-4">
+                <button (click)="confirmDeleteMeal(meal.id)"
+                        class="bg-white text-primary-500 px-4 py-2 rounded shadow hover:bg-gray-100 transition-colors">
+                  Sim
+                </button>
+                <button (click)="cancelDeleteMeal()"
+                        class="bg-white text-primary-500 px-4 py-2 rounded shadow hover:bg-gray-100 transition-colors">
+                  Não
+                </button>
+              </div>
             </div>
           </div>
         </div>
