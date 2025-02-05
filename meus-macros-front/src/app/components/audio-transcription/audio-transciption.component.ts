@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { CalculationService } from '../../services/calculation.service';
 import { Transcription } from '../../models/Transcription';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-audio-transcription',
@@ -21,6 +22,7 @@ export class AudioTransciptionComponent {
   constructor(
     private calculationsService: CalculationService,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService,
     private router: Router
   ) {
     if ('webkitSpeechRecognition' in window) {
@@ -56,6 +58,11 @@ export class AudioTransciptionComponent {
         console.log('Reconhecimento de fala finalizado.');
       };
     }
+  }
+  
+  ngOnInit() {
+    this.authService.me().subscribe(me => {
+    });
   }
 
   toggleRecording() {
