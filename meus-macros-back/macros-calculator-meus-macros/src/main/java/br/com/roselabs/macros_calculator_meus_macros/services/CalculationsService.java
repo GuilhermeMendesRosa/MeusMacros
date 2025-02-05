@@ -20,7 +20,7 @@ public class CalculationsService {
     public MealDTO calculate(TranscriptDTO transcriptFood) {
         log.info("Iniciando cálculo das refeições com base na transcrição recebida.");
 
-        List<FoodItemDTO> foodDTOS = aiClient.convertTranscriptToList(transcriptFood);
+        List<FoodItemDTO> foodDTOS = aiClient.generate(transcriptFood);
 
         return new MealDTO(foodDTOS);
     }

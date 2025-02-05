@@ -19,6 +19,14 @@
         </processorPath>
         <module name="ai-meus-macros" />
         <module name="macros-calculator-meus-macros" />
+      </profile>
+      <profile name="Annotation profile for auth-meus-macros" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath>
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+        </processorPath>
         <module name="auth-meus-macros" />
       </profile>
     </annotationProcessing>

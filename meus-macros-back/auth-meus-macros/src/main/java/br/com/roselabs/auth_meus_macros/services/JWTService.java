@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class JWTService {
@@ -27,6 +28,14 @@ public class JWTService {
         return JWT.create()
                 .withIssuer("meus-macros")
                 .withSubject(String.valueOf(user.getId()))
+                .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration))
+                .sign(Algorithm.HMAC256(secretKey));
+    }
+
+    public String generateToken(UUID uuid) {
+        return JWT.create()
+                .withIssuer("meus-macros")
+                .withSubject(String.valueOf(uuid))
                 .withExpiresAt(new Date(System.currentTimeMillis() + jwtExpiration))
                 .sign(Algorithm.HMAC256(secretKey));
     }

@@ -14,7 +14,7 @@ import java.util.List;
 @FeignClient(name = "ai-meus-macros", configuration = SecurityConfig.class)
 public interface AIClient {
 
-    @RequestMapping(method = RequestMethod.POST, value = "/transcript-to-list")
-    List<FoodItemDTO> convertTranscriptToList(@RequestBody TranscriptDTO transcript);
+    @RequestMapping(method = RequestMethod.POST, value = "/generate")
+    List<FoodItemDTO> generate(@RequestBody TranscriptDTO transcript);
 
 }

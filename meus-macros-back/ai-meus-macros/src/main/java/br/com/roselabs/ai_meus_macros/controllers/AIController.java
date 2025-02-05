@@ -20,9 +20,9 @@ public class AIController {
 
     private final AIService service;
 
-    @PostMapping("/transcript-to-list")
-    public ResponseEntity<List<FoodItemDTO>> convertTranscriptToList(@RequestBody Transcript transcript) {
-        List<FoodItemDTO> foods = this.service.convertTranscriptToList(transcript);
+    @PostMapping("/generate")
+    public ResponseEntity<List<FoodItemDTO>> generate(@RequestBody Transcript transcript) {
+        List<FoodItemDTO> foods = this.service.generate(transcript);
         return ResponseEntity.ok(foods);
     }
 

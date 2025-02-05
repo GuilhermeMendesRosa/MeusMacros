@@ -34,7 +34,7 @@ public class AIService {
         this.chatModel = buildChatModel(openAiApi);
     }
 
-    public List<FoodItemDTO> convertTranscriptToList(Transcript transcript) {
+    public List<FoodItemDTO> generate(Transcript transcript) {
         logger.info("Buscando itens de alimentos com base nos dados fornecidos...");
 
         String calculatePrompt = String.format(MeusMacrosPrompts.CALCULATE, transcript.getTranscriptFood());
