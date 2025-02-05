@@ -31,7 +31,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="food-base-meus-macros" target="21" />
+      <module name="food-base-meus-macros" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
