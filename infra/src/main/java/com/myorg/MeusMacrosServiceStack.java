@@ -6,6 +6,7 @@ import software.amazon.awscdk.services.ecs.Cluster;
 import software.amazon.awscdk.services.ecs.ContainerImage;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskImageOptions;
+import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
 import software.constructs.Construct;
 
 public class MeusMacrosServiceStack extends Stack {
@@ -16,7 +17,7 @@ public class MeusMacrosServiceStack extends Stack {
     public MeusMacrosServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
-        ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
+        ApplicationLoadBalancedFargateService app = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("MeusMacros-service-ola")
                 .cluster(cluster)           // Required
                 .cpu(512)                   // Default is 256
@@ -32,5 +33,8 @@ public class MeusMacrosServiceStack extends Stack {
                 .memoryLimitMiB(1024)       // Default is 512
                 .publicLoadBalancer(true)   // Default is false
                 .build();
+
+        app.getTargetGroup().configureHealthCheck(HealthCheck.builder().path("/ola").build());
+
     }
 }
