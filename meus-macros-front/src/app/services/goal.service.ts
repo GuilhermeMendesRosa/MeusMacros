@@ -7,7 +7,7 @@ import {Goal} from '../models/Goal';
   providedIn: 'root'
 })
 export class GoalService {
-  private readonly API_URL = 'http://localhost:8082/macros-calculator-meus-macros/goals'
+  private readonly API_URL = 'http://localhost:8080/goals'
 
   constructor(private http: HttpClient) {
   }
