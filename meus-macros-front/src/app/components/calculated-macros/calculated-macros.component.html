@@ -50,38 +50,39 @@
       <apx-chart [series]="chartSeries" [chart]="chartOptions" [labels]="chartLabels" [colors]="colors"></apx-chart>
     </div>
 
-    <div *ngFor="let item of meal.items" class="space-y-5">
-      <div class="p-5 bg-gray-50 rounded-lg hover:bg-gray-100 hover:shadow-md transition-all duration-300">
-        <div class="flex items-center gap-4 mb-4">
-          <div>
-            <h3 class="font-semibold text-lg"> {{ item.name }} </h3>
+    <div class="space-y-5">
+      <div *ngFor="let item of meal.items">
+        <div class="p-5 bg-gray-50 rounded-lg hover:bg-gray-100 hover:shadow-md transition-all duration-300">
+          <!-- Conteúdo do item -->
+          <div class="flex items-center gap-4 mb-4">
+            <h3 class="font-semibold text-lg">{{ item.name }}</h3>
           </div>
-        </div>
-        <div class="flex gap-6 mb-4">
-          <div>
-            <div class="text-sm font-semibold mb-1">Protein</div>
-            <div class="text-sm text-gray-500"> {{ item.protein }}</div>
-          </div>
-          <div>
-            <div class="text-sm font-semibold mb-1">Carbs</div>
-            <div class="text-sm text-gray-500"> {{ item.carbohydrates }}</div>
-          </div>
-          <div>
-            <div class="text-sm font-semibold mb-1">Fat</div>
-            <div class="text-sm text-gray-500"> {{ item.fat }}</div>
-          </div>
-          <div>
-            <div class="text-sm font-semibold mb-1">Calories</div>
-            <div class="text-sm text-gray-500"> {{ item.calories + " kcal" }}</div>
-          </div>
-          <div>
-            <div class="text-sm font-semibold mb-1">Quantidade</div>
-            <div class="text-sm text-gray-500"> {{ item.quantity }}</div>
+          <div class="flex gap-6 mb-4">
+            <div>
+              <div class="text-sm font-semibold mb-1">Proteína</div>
+              <div class="text-sm text-gray-500">{{ item.protein }}</div>
+            </div>
+            <div>
+              <div class="text-sm font-semibold mb-1">Carboidratos</div>
+              <div class="text-sm text-gray-500">{{ item.carbohydrates }}</div>
+            </div>
+            <div>
+              <div class="text-sm font-semibold mb-1">Gorduras</div>
+              <div class="text-sm text-gray-500">{{ item.fat }}</div>
+            </div>
+            <div>
+              <div class="text-sm font-semibold mb-1">Calorias</div>
+              <div class="text-sm text-gray-500">{{ item.calories }} kcal</div>
+            </div>
+            <div>
+              <div class="text-sm font-semibold mb-1">Quantidade</div>
+              <div class="text-sm text-gray-500">{{ item.quantity }}</div>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
+
 
     <button
       class="my-button bg-primary-500 text-primary-50 font-semibold rounded-lg w-full py-3 mt-6 shadow-lg shadow-primary-500/20
