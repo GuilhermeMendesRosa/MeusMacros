@@ -50,7 +50,7 @@ public class UserController {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, authenticationTokens.getToken(), null);
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
-//            this.userService.createDefaultGoal(user, authenticationTokens.getToken());
+            this.userService.createDefaultGoal(user, authenticationTokens.getToken());
 
             rabbitTemplate.convertAndSend("email.ex", "", new ShowUserDTO(user));
 
