@@ -1,0 +1,10 @@
+.idea/
+.vscode/
+meus-macros-back/.idea/
+meus-macros-front/.angular/
+meus-macros-front/.idea/
+meus-macros-front/.vscode/
+meus-macros-front/android/
+meus-macros-front/dist/
+meus-macros-front/node_modules/
+meus-macros-front/package-lock.json
