@@ -59,6 +59,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://auth-meus-macros-db:5432/auth_meus_macros
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+
   auth-meus-macros-db:
     image: postgres:16
     container_name: postgres_auth_meus_macros
@@ -72,6 +73,7 @@ services:
       POSTGRES_DB: auth_meus_macros
     volumes:
       - auth-meus-macros-data:/var/lib/postgresql/data
+
   macros-calculator-meus-macros:
     image: macros-calculator-meus-macros-img
     build:
@@ -87,6 +89,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://macros-calculator-meus-macros-db:5432/macros-calculator_meus_macros
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+
   macros-calculator-meus-macros-db:
     image: postgres:16
     container_name: postgres_macros-calculator_meus_macros
@@ -100,6 +103,30 @@ services:
       POSTGRES_DB: macros-calculator_meus_macros
     volumes:
       - macros-calculator-meus-macros-data:/var/lib/postgresql/data
+
+  email-meus-macros:
+    image: email-meus-macros-img
+    build:
+      context: ./email-meus-macros
+      dockerfile: Dockerfile
+    depends_on:
+      - gateway-meus-macros
+    networks:
+      - minha-rede
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-meus-macros:8081/eureka
+
+  rabbitmq:
+    image: rabbitmq:3.10-management
+    container_name: rabbitmq
+    networks:
+      - minha-rede
+    ports:
+      - "5672:5672"  # Porta de comunicação com o RabbitMQ
+      - "15672:15672"  # Porta de acesso à interface de gerenciamento
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
 volumes:
   auth-meus-macros-data:
