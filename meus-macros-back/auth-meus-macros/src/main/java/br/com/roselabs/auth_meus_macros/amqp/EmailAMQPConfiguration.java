@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AvaliacaoAMQPConfiguration {
+public class EmailAMQPConfiguration {
     @Bean
     public Jackson2JsonMessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
@@ -23,28 +23,6 @@ public class AvaliacaoAMQPConfiguration {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(messageConverter);
         return rabbitTemplate;
-    }
-
-    @Bean
-    public Queue filaBemVindo() {
-        return QueueBuilder
-                .nonDurable("email.bem-vindo")
-                .build();
-    }
-
-    @Bean
-    public FanoutExchange fanoutExchange() {
-        return ExchangeBuilder
-                .fanoutExchange("email.ex")
-                .build();
-    }
-
-
-    @Bean
-    public Binding bindPagamentoPedido() {
-        return BindingBuilder
-                .bind(filaBemVindo())
-                .to(fanoutExchange());
     }
 
     @Bean

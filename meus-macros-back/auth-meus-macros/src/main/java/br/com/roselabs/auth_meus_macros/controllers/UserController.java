@@ -8,6 +8,7 @@ import br.com.roselabs.auth_meus_macros.entities.User;
 import br.com.roselabs.auth_meus_macros.services.JWTService;
 import br.com.roselabs.auth_meus_macros.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,7 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
     private final UserService userService;
+    private final RabbitTemplate rabbitTemplate;
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationTokens> login(@RequestBody LoginRequestRecord loginRequest) {
@@ -48,7 +50,9 @@ public class UserController {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, authenticationTokens.getToken(), null);
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
-            this.userService.createDefaultGoal(user, authenticationTokens.getToken());
+//            this.userService.createDefaultGoal(user, authenticationTokens.getToken());
+
+            rabbitTemplate.convertAndSend("email.ex", "", new ShowUserDTO(user));
 
             return ResponseEntity.ok().build();
         } catch (Exception e) {

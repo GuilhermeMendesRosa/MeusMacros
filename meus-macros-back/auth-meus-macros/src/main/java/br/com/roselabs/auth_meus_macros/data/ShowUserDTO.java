@@ -14,9 +14,9 @@ public class ShowUserDTO {
     private String firstName;
     private String lastName;
 
-    public ShowUserDTO(User userDetails) {
-        this.email = userDetails.getEmail();
-        this.firstName = userDetails.getFirstName();
-        this.lastName = userDetails.getLastName();
+    public ShowUserDTO(User user) {
+        this.email = user.getEmail();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
     }
 }
