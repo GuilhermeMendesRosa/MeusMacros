@@ -7,7 +7,7 @@ import {Goal} from '../models/Goal';
   providedIn: 'root'
 })
 export class GoalService {
-  private readonly API_URL = 'https://meus-macros-monolith.onrender.com/goals'
+  private readonly API_URL = 'https://meus-macros-monolith-production.up.railway.app/goals'
 
   constructor(private http: HttpClient) {
   }
