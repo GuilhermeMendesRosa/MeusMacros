@@ -1,4 +1,4 @@
-package com.myorg;
+package br.com.roselabs;
 
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.RemovalPolicy;
@@ -13,15 +13,10 @@ import software.amazon.awscdk.services.logs.LogGroup;
 import software.constructs.Construct;
 
 public class MeusMacrosDiscoveryServiceStack extends Stack {
-    private final String dns;
-    private final int port;
+    private final String eurekaServerUrl;
 
-    public String getDns() {
-        return dns;
-    }
-
-    public int getPort() {
-        return port;
+    public String getEurekaServerUrl() {
+        return eurekaServerUrl;
     }
 
     public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final Cluster cluster) {
@@ -31,8 +26,7 @@ public class MeusMacrosDiscoveryServiceStack extends Stack {
     public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
-        this.port = 8081;
-
+        int port = 8081;
         ApplicationLoadBalancedFargateService discovery = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("DiscoveryMeusMacros")
                 .cluster(cluster)           // Required
@@ -75,6 +69,6 @@ public class MeusMacrosDiscoveryServiceStack extends Stack {
                 .scaleOutCooldown(Duration.seconds(60))
                 .build());
 
-        this.dns = discovery.getLoadBalancer().getLoadBalancerDnsName();
+        this.eurekaServerUrl = "http://" + discovery.getLoadBalancer().getLoadBalancerDnsName() + ":" + port + "/eureka";
     }
 }

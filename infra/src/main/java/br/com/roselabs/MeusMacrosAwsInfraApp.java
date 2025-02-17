@@ -1,4 +1,4 @@
-package com.myorg;
+package br.com.roselabs;
 
 import software.amazon.awscdk.App;
 
@@ -13,10 +13,8 @@ public class MeusMacrosAwsInfraApp {
         MeusMacrosDiscoveryServiceStack discovery = new MeusMacrosDiscoveryServiceStack(app, "Discovery", clusterStack.getCluster());
         discovery.addDependency(clusterStack);
 
-        String dns = discovery.getDns();
-        int port = discovery.getPort();
-
-        MeusMacrosGatewayServiceStack gateway = new MeusMacrosGatewayServiceStack(app, "Gateway", clusterStack.getCluster(), dns, port);
+        String eurekaServerUrl = discovery.getEurekaServerUrl();
+        MeusMacrosGatewayServiceStack gateway = new MeusMacrosGatewayServiceStack(app, "Gateway", clusterStack.getCluster(), eurekaServerUrl);
         gateway.addDependency(clusterStack);
         gateway.addDependency(discovery);
 

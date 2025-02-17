@@ -1,4 +1,4 @@
-package com.myorg;
+package br.com.roselabs;
 
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.RemovalPolicy;
@@ -15,11 +15,11 @@ import software.constructs.Construct;
 import java.util.Map;
 
 public class MeusMacrosGatewayServiceStack extends Stack {
-    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final Cluster cluster, String dns, int port) {
-        this(scope, id, null, cluster, dns, port);
+    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final Cluster cluster, String eurekaServerUrl) {
+        this(scope, id, null, cluster, eurekaServerUrl);
     }
 
-    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster, String dns, int port) {
+    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster, String eurekaServerUrl) {
         super(scope, id, props);
 
         ApplicationLoadBalancedFargateService gateway = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
@@ -35,7 +35,7 @@ public class MeusMacrosGatewayServiceStack extends Stack {
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/gateway-meus-macros:latest"))
                                 .containerPort(8082)
                                 .environment(Map.of(
-                                        "EUREKA_SERVER_URL", "http://" + dns + ":" + port + "/eureka"
+                                        "EUREKA_SERVER_URL", eurekaServerUrl
                                 ))
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                         .logGroup(LogGroup.Builder
