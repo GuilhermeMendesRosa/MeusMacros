@@ -12,12 +12,14 @@ import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
 import software.amazon.awscdk.services.logs.LogGroup;
 import software.constructs.Construct;
 
+import java.util.Map;
+
 public class MeusMacrosGatewayServiceStack extends Stack {
-    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final Cluster cluster) {
-        this(scope, id, null, cluster);
+    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final Cluster cluster, String dns, int port) {
+        this(scope, id, null, cluster, dns, port);
     }
 
-    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
+    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster, String dns, int port) {
         super(scope, id, props);
 
         ApplicationLoadBalancedFargateService gateway = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
@@ -32,6 +34,9 @@ public class MeusMacrosGatewayServiceStack extends Stack {
                                 .containerName("gateway-meus-macros")
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/gateway-meus-macros:latest"))
                                 .containerPort(8082)
+                                .environment(Map.of(
+                                        "EUREKA_SERVER_URL", "http://" + dns + ":" + port + "/eureka"
+                                ))
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                         .logGroup(LogGroup.Builder
                                                 .create(this, "GatewayMeusMacrosLogGroup")

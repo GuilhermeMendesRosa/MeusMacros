@@ -13,10 +13,13 @@ public class MeusMacrosAwsInfraApp {
         MeusMacrosDiscoveryServiceStack discovery = new MeusMacrosDiscoveryServiceStack(app, "Discovery", clusterStack.getCluster());
         discovery.addDependency(clusterStack);
 
-        MeusMacrosGatewayServiceStack gateway = new MeusMacrosGatewayServiceStack(app, "Gateway", clusterStack.getCluster());
+        String dns = discovery.getDns();
+        int port = discovery.getPort();
+
+        MeusMacrosGatewayServiceStack gateway = new MeusMacrosGatewayServiceStack(app, "Gateway", clusterStack.getCluster(), dns, port);
         gateway.addDependency(clusterStack);
         gateway.addDependency(discovery);
-        
+
         app.synth();
     }
 }

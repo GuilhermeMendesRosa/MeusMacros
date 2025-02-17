@@ -1,5 +1,6 @@
 package com.myorg;
 
+import org.jetbrains.annotations.NotNull;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
@@ -13,6 +14,17 @@ import software.amazon.awscdk.services.logs.LogGroup;
 import software.constructs.Construct;
 
 public class MeusMacrosDiscoveryServiceStack extends Stack {
+    private final String dns;
+    private final int port;
+
+    public String getDns() {
+        return dns;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
     public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final Cluster cluster) {
         this(scope, id, null, cluster);
     }
@@ -20,18 +32,20 @@ public class MeusMacrosDiscoveryServiceStack extends Stack {
     public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
+        this.port = 8081;
+
         ApplicationLoadBalancedFargateService discovery = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("DiscoveryMeusMacros")
                 .cluster(cluster)           // Required
                 .cpu(512)                   // Default is 256
                 .desiredCount(1)            // Default is 1
-                .listenerPort(8081)
+                .listenerPort(port)
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
                                 .containerName("discovery-meus-macros")
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/discovery-meus-macros:latest"))
-                                .containerPort(8081)
+                                .containerPort(port)
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                         .logGroup(LogGroup.Builder
                                                 .create(this, "DiscoveryMeusMacrosLogGroup")
@@ -61,5 +75,7 @@ public class MeusMacrosDiscoveryServiceStack extends Stack {
                 .scaleInCooldown(Duration.seconds(60))
                 .scaleOutCooldown(Duration.seconds(60))
                 .build());
+
+        this.dns = discovery.getLoadBalancer().getLoadBalancerDnsName();
     }
 }
