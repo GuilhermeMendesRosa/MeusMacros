@@ -1,12 +1,11 @@
 package com.myorg;
 
+import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
-import software.amazon.awscdk.services.ecs.AwsLogDriverProps;
-import software.amazon.awscdk.services.ecs.Cluster;
-import software.amazon.awscdk.services.ecs.ContainerImage;
-import software.amazon.awscdk.services.ecs.LogDriver;
+import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps;
+import software.amazon.awscdk.services.ecs.*;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskImageOptions;
 import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
@@ -21,7 +20,7 @@ public class MeusMacrosServiceStack extends Stack {
     public MeusMacrosServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
-        ApplicationLoadBalancedFargateService app = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
+        ApplicationLoadBalancedFargateService discovery = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("MeusMacros-service-ola")
                 .cluster(cluster)           // Required
                 .cpu(512)                   // Default is 256
@@ -39,16 +38,28 @@ public class MeusMacrosServiceStack extends Stack {
                                                 .logGroupName("DiscoveryMeusMacros")
                                                 .removalPolicy(RemovalPolicy.DESTROY)
                                                 .build())
+                                        .streamPrefix("discovery-meus-macros")
                                         .build()))
                                 .build())
                 .memoryLimitMiB(1024)       // Default is 512
                 .publicLoadBalancer(true)   // Default is false
                 .build();
 
-        app.getTargetGroup().configureHealthCheck(HealthCheck.builder()
+        discovery.getTargetGroup().configureHealthCheck(HealthCheck.builder()
                 .path("/actuator/health")
                 .port("8081")
                 .healthyGrpcCodes("200")
+                .build());
+
+        ScalableTaskCount scalableTaskCount = discovery.getService().autoScaleTaskCount(EnableScalingProps.builder()
+                .minCapacity(2)
+                .maxCapacity(4)
+                .build());
+
+        scalableTaskCount.scaleOnCpuUtilization("DiscoveryMeusMacrosAutoScaling", CpuUtilizationScalingProps.builder()
+                .targetUtilizationPercent(50)
+                .scaleInCooldown(Duration.seconds(60))
+                .scaleOutCooldown(Duration.seconds(60))
                 .build());
     }
 }
