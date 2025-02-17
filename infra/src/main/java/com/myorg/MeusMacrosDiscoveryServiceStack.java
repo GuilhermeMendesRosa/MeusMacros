@@ -12,16 +12,16 @@ import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
 import software.amazon.awscdk.services.logs.LogGroup;
 import software.constructs.Construct;
 
-public class MeusMacrosServiceStack extends Stack {
-    public MeusMacrosServiceStack(final Construct scope, final String id, final Cluster cluster) {
+public class MeusMacrosDiscoveryServiceStack extends Stack {
+    public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final Cluster cluster) {
         this(scope, id, null, cluster);
     }
 
-    public MeusMacrosServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
+    public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
         ApplicationLoadBalancedFargateService discovery = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
-                .serviceName("MeusMacros-service-ola")
+                .serviceName("DiscoveryMeusMacros")
                 .cluster(cluster)           // Required
                 .cpu(512)                   // Default is 256
                 .desiredCount(1)            // Default is 1
@@ -48,7 +48,7 @@ public class MeusMacrosServiceStack extends Stack {
         discovery.getTargetGroup().configureHealthCheck(HealthCheck.builder()
                 .path("/actuator/health")
                 .port("8081")
-                .healthyGrpcCodes("200")
+                .healthyHttpCodes("200")
                 .build());
 
         ScalableTaskCount scalableTaskCount = discovery.getService().autoScaleTaskCount(EnableScalingProps.builder()

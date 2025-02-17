@@ -1,10 +1,6 @@
 package com.myorg;
 
 import software.amazon.awscdk.App;
-import software.amazon.awscdk.Environment;
-import software.amazon.awscdk.StackProps;
-
-import java.util.Arrays;
 
 public class MeusMacrosAwsInfraApp {
     public static void main(final String[] args) {
@@ -14,8 +10,13 @@ public class MeusMacrosAwsInfraApp {
         MeusMacrosClusterStack clusterStack = new MeusMacrosClusterStack(app, "Cluster", vpcStack.getVpc());
         clusterStack.addDependency(vpcStack);
 
-        MeusMacrosServiceStack MeusMacrosServiceStack = new MeusMacrosServiceStack(app, "Service", clusterStack.getCluster());
-        MeusMacrosServiceStack.addDependency(clusterStack);
+        MeusMacrosDiscoveryServiceStack discovery = new MeusMacrosDiscoveryServiceStack(app, "Discovery", clusterStack.getCluster());
+        discovery.addDependency(clusterStack);
+
+        MeusMacrosGatewayServiceStack gateway = new MeusMacrosGatewayServiceStack(app, "Gateway", clusterStack.getCluster());
+        gateway.addDependency(clusterStack);
+        gateway.addDependency(discovery);
+        
         app.synth();
     }
 }
