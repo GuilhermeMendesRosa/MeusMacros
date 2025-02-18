@@ -1,6 +1,11 @@
 package br.com.roselabs;
 
 import br.com.roselabs.stacks.*;
+import br.com.roselabs.stacks.rds.MeusMacrosAuthRdsStack;
+import br.com.roselabs.stacks.services.MeusMacrosAuthServiceStack;
+import br.com.roselabs.stacks.MeusMacrosClusterStack;
+import br.com.roselabs.stacks.services.MeusMacrosDiscoveryServiceStack;
+import br.com.roselabs.stacks.services.MeusMacrosGatewayServiceStack;
 import software.amazon.awscdk.App;
 
 public class MeusMacrosAwsInfraApp {

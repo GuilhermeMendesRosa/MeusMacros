@@ -1,4 +1,4 @@
-package br.com.roselabs.stacks;
+package br.com.roselabs.stacks.rds;
 
 import software.amazon.awscdk.*;
 import software.amazon.awscdk.services.ec2.*;
@@ -27,7 +27,7 @@ public class MeusMacrosAuthRdsStack extends Stack {
         iSecurityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(5432));
 
         DatabaseInstance database = DatabaseInstance.Builder
-                .create(this, "Rds-pedidos")
+                .create(this, "Rds-auth")
                 .instanceIdentifier("meus-macros-auth-db")
                 .engine(DatabaseInstanceEngine.postgres(PostgresInstanceEngineProps.builder()
                         .version(PostgresEngineVersion.VER_16)

@@ -1,4 +1,4 @@
-package br.com.roselabs.stacks;
+package br.com.roselabs.stacks.services;
 
 import software.amazon.awscdk.*;
 import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps;
@@ -9,59 +9,64 @@ import software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck;
 import software.amazon.awscdk.services.logs.LogGroup;
 import software.constructs.Construct;
 
-import java.util.Map;
+public class MeusMacrosDiscoveryServiceStack extends Stack {
 
-public class MeusMacrosGatewayServiceStack extends Stack {
-    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final Cluster cluster) {
+    public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final Cluster cluster) {
         this(scope, id, null, cluster);
     }
 
-    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
+    public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
-        ApplicationLoadBalancedFargateService gateway = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
-                .serviceName("GatewayMeusMacros")
+        int port = 8081;
+        ApplicationLoadBalancedFargateService discovery = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
+                .serviceName("DiscoveryMeusMacros")
                 .cluster(cluster)           // Required
                 .cpu(512)                   // Default is 256
                 .desiredCount(1)            // Default is 1
-                .listenerPort(8082)
+                .listenerPort(port)
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
-                                .containerName("gateway-meus-macros")
-                                .image(ContainerImage.fromRegistry("guilhermemendesrosa/gateway-meus-macros:latest"))
-                                .containerPort(8082)
-                                .environment(Map.of(
-                                        "EUREKA_SERVER_URL", Fn.importValue("eureka-server-url")
-                                ))
+                                .containerName("discovery-meus-macros")
+                                .image(ContainerImage.fromRegistry("guilhermemendesrosa/discovery-meus-macros:latest"))
+                                .containerPort(port)
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                         .logGroup(LogGroup.Builder
-                                                .create(this, "GatewayMeusMacrosLogGroup")
-                                                .logGroupName("GatewayMeusMacros")
+                                                .create(this, "DiscoveryMeusMacrosLogGroup")
+                                                .logGroupName("DiscoveryMeusMacros")
                                                 .removalPolicy(RemovalPolicy.DESTROY)
                                                 .build())
-                                        .streamPrefix("gateway-meus-macros")
+                                        .streamPrefix("discovery-meus-macros")
                                         .build()))
                                 .build())
                 .memoryLimitMiB(1024)       // Default is 512
                 .publicLoadBalancer(true)   // Default is false
                 .build();
 
-        gateway.getTargetGroup().configureHealthCheck(HealthCheck.builder()
+        discovery.getTargetGroup().configureHealthCheck(HealthCheck.builder()
                 .path("/actuator/health")
-                .port("8082")
+                .port("8081")
                 .healthyHttpCodes("200")
                 .build());
 
-        ScalableTaskCount scalableTaskCount = gateway.getService().autoScaleTaskCount(EnableScalingProps.builder()
+        ScalableTaskCount scalableTaskCount = discovery.getService().autoScaleTaskCount(EnableScalingProps.builder()
                 .minCapacity(2)
                 .maxCapacity(4)
                 .build());
 
-        scalableTaskCount.scaleOnCpuUtilization("GatewayMeusMacrosAutoScaling", CpuUtilizationScalingProps.builder()
+        scalableTaskCount.scaleOnCpuUtilization("DiscoveryMeusMacrosAutoScaling", CpuUtilizationScalingProps.builder()
                 .targetUtilizationPercent(50)
                 .scaleInCooldown(Duration.seconds(60))
                 .scaleOutCooldown(Duration.seconds(60))
                 .build());
+
+        String eurekaServerUrl = "http://" + discovery.getLoadBalancer().getLoadBalancerDnsName() + ":" + port + "/eureka";
+
+        CfnOutput.Builder.create(this, "eureka-server-url")
+                .exportName("eureka-server-url")
+                .value(eurekaServerUrl)
+                .build();
+
     }
 }
