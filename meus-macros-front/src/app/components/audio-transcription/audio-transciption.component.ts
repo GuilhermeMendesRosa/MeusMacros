@@ -13,7 +13,7 @@ import {AuthService} from '../../services/auth.service';
 })
 export class AudioTransciptionComponent {
   isRecording = false;
-  isLoading = false; // Propriedade para controlar o loading
+  isLoading = false;
   transcription: Transcription = {
     transcriptFood: ""
   };
@@ -43,7 +43,7 @@ export class AudioTransciptionComponent {
           transcript += event.results[i][0].transcript;
         }
         this.transcription.transcriptFood = transcript.trim();
-        this.cdr.detectChanges(); // Atualiza a UI
+        this.cdr.detectChanges();
       };
 
       this.recognition.onerror = (event: any) => {
@@ -59,7 +59,7 @@ export class AudioTransciptionComponent {
       };
     }
   }
-  
+
   ngOnInit() {
     this.authService.me().subscribe(me => {
     });
@@ -98,11 +98,9 @@ export class AudioTransciptionComponent {
       },
       error: error => {
         console.error('Erro ao calcular a refeição:', error);
-        // Caso deseje, trate o erro e mostre uma mensagem para o usuário
         this.isLoading = false;
       },
       complete: () => {
-        // Caso a navegação não ocorra imediatamente, finalize o loading
         this.isLoading = false;
       }
     });

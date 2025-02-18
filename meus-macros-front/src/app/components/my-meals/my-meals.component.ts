@@ -1,10 +1,10 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import { CalculationService } from '../../services/calculation.service';
-import { Meal } from '../../models/Meal';
-import { NgForOf, NgIf, NgStyle } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Goal } from '../../models/Goal';
-import { GoalService } from '../../services/goal.service';
+import {CalculationService} from '../../services/calculation.service';
+import {Meal} from '../../models/Meal';
+import {NgForOf, NgIf, NgStyle} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Goal} from '../../models/Goal';
+import {GoalService} from '../../services/goal.service';
 
 @Component({
   selector: 'app-my-meals',
@@ -19,10 +19,8 @@ import { GoalService } from '../../services/goal.service';
 })
 export class MyMealsComponent implements OnInit {
 
-  // Data selecionada (inicialmente hoje)
-  public selectedDate: string = new Date().toISOString().split('T')[0];
+  public selectedDate: string;
 
-  // Lista de refeições retornadas pela API
   public mealsFromAPI: Meal[] = [];
 
   public consumedCalories: number = 0;
@@ -37,14 +35,15 @@ export class MyMealsComponent implements OnInit {
     fatPercentage: 25
   };
 
-  // Propriedade que guarda o ID do card que está com a opção de deleção ativa
   public activeDeleteMeal: number | null = null;
   private pressTimer: any;
 
   constructor(
     private calculationService: CalculationService,
     private goalService: GoalService
-  ) {}
+  ) {
+    this.selectedDate = this.getCurrentBrasiliaDateString();
+  }
 
   ngOnInit(): void {
     this.goalService.getLatestGoal().subscribe(goal => {
@@ -53,7 +52,25 @@ export class MyMealsComponent implements OnInit {
     this.fetchMeals();
   }
 
-  // Busca as refeições com base na data selecionada
+  private getCurrentBrasiliaDateString(): string {
+    const now = new Date();
+    const brasiliaOffsetMinutes = -3 * 60; // -180 minutos para UTC-3
+    const localOffsetMinutes = now.getTimezoneOffset();
+    const diffMinutes = brasiliaOffsetMinutes - localOffsetMinutes;
+    const brasiliaTime = new Date(now.getTime() + diffMinutes * 60000);
+    return brasiliaTime.toISOString().split('T')[0];
+  }
+
+  private addDays(dateStr: string, days: number): string {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    date.setDate(date.getDate() + days);
+    const y = date.getFullYear();
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+    return `${y}-${m < 10 ? '0' + m : m}-${d < 10 ? '0' + d : d}`;
+  }
+
   fetchMeals(): void {
     this.calculationService.listMeals(this.selectedDate).subscribe(
       meals => {
@@ -75,25 +92,18 @@ export class MyMealsComponent implements OnInit {
     );
   }
 
-  // Atualiza a data conforme input
   onDateChange(newDate: string): void {
     this.selectedDate = newDate;
     this.fetchMeals();
   }
 
-  // Navega para o dia anterior
   goPreviousDay(): void {
-    const date = new Date(this.selectedDate);
-    date.setDate(date.getDate() - 1);
-    this.selectedDate = date.toISOString().split('T')[0];
+    this.selectedDate = this.addDays(this.selectedDate, -1);
     this.fetchMeals();
   }
 
-  // Navega para o dia seguinte
   goNextDay(): void {
-    const date = new Date(this.selectedDate);
-    date.setDate(date.getDate() + 1);
-    this.selectedDate = date.toISOString().split('T')[0];
+    this.selectedDate = this.addDays(this.selectedDate, 1);
     this.fetchMeals();
   }
 
@@ -109,7 +119,6 @@ export class MyMealsComponent implements OnInit {
     return Math.round(this.goal.calories * this.goal.fatPercentage * 0.01 / 9);
   }
 
-  // Métodos para calcular as porcentagens de progresso
   getProteinProgress(): number {
     const progress = (this.consumedProtein / this.protein) * 100;
     return progress > 100 ? 100 : progress;
@@ -130,15 +139,12 @@ export class MyMealsComponent implements OnInit {
     return progress > 100 ? 100 : progress;
   }
 
-  // Inicia o "long press" para exibir a opção de deleção
   onMealPressStart(mealId: number): void {
-    // Inicia um timer de 1 segundo
     this.pressTimer = setTimeout(() => {
       this.activeDeleteMeal = mealId;
     }, 1000);
   }
 
-  // Cancela o timer do "long press"
   onMealPressEnd(): void {
     if (this.pressTimer) {
       clearTimeout(this.pressTimer);
@@ -146,10 +152,8 @@ export class MyMealsComponent implements OnInit {
     }
   }
 
-  // Método chamado quando o usuário confirma a exclusão
   confirmDeleteMeal(mealId: number): void {
     this.calculationService.deleteMeal(mealId).subscribe(() => {
-      // Após deletar, atualiza a lista e reseta a flag
       this.activeDeleteMeal = null;
       this.fetchMeals();
     }, error => {
@@ -157,12 +161,10 @@ export class MyMealsComponent implements OnInit {
     });
   }
 
-  // Cancela a operação de deleção e oculta o overlay
   cancelDeleteMeal(): void {
     this.activeDeleteMeal = null;
   }
 
-  // Captura cliques fora do overlay para fechá-lo
   @HostListener('document:click')
   onDocumentClick(): void {
     this.activeDeleteMeal = null;

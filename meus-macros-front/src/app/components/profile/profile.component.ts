@@ -14,7 +14,6 @@ import {NgIf} from '@angular/common';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-  // Propriedade que indica se a seção "Ajustar Metas" está aberta
   public isAdjustMetasOpen: boolean = false;
 
   public goal: Goal = {
@@ -75,13 +74,11 @@ export class ProfileComponent {
     return this.goal.proteinPercentage + this.goal.carbohydratesPercentage + this.goal.fatPercentage !== 100;
   }
 
-  // Atualiza a propriedade isAdjustMetasOpen de acordo com o estado do <details>
   public onToggle(event: Event): void {
     const details = event.target as HTMLDetailsElement;
     this.isAdjustMetasOpen = details.open;
   }
 
-  // Método de logout: limpa o token e redireciona para /login
   public logout(): void {
     localStorage.removeItem('auth_token');
     this.router.navigate(['/login']);
