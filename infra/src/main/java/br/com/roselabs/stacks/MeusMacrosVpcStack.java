@@ -1,4 +1,4 @@
-package br.com.roselabs;
+package br.com.roselabs.stacks;
 
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;

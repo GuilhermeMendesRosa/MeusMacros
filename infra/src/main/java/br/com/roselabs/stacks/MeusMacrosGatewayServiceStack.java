@@ -1,9 +1,6 @@
-package br.com.roselabs;
+package br.com.roselabs.stacks;
 
-import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.RemovalPolicy;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.*;
 import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps;
 import software.amazon.awscdk.services.ecs.*;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService;
@@ -15,11 +12,11 @@ import software.constructs.Construct;
 import java.util.Map;
 
 public class MeusMacrosGatewayServiceStack extends Stack {
-    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final Cluster cluster, String eurekaServerUrl) {
-        this(scope, id, null, cluster, eurekaServerUrl);
+    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final Cluster cluster) {
+        this(scope, id, null, cluster);
     }
 
-    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster, String eurekaServerUrl) {
+    public MeusMacrosGatewayServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
         ApplicationLoadBalancedFargateService gateway = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
@@ -35,7 +32,7 @@ public class MeusMacrosGatewayServiceStack extends Stack {
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/gateway-meus-macros:latest"))
                                 .containerPort(8082)
                                 .environment(Map.of(
-                                        "EUREKA_SERVER_URL", eurekaServerUrl
+                                        "EUREKA_SERVER_URL", Fn.importValue("eureka-server-url")
                                 ))
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                         .logGroup(LogGroup.Builder

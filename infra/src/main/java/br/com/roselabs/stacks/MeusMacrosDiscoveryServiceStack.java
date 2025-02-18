@@ -1,9 +1,6 @@
-package br.com.roselabs;
+package br.com.roselabs.stacks;
 
-import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.RemovalPolicy;
-import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.*;
 import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps;
 import software.amazon.awscdk.services.ecs.*;
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFargateService;
@@ -13,11 +10,6 @@ import software.amazon.awscdk.services.logs.LogGroup;
 import software.constructs.Construct;
 
 public class MeusMacrosDiscoveryServiceStack extends Stack {
-    private final String eurekaServerUrl;
-
-    public String getEurekaServerUrl() {
-        return eurekaServerUrl;
-    }
 
     public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final Cluster cluster) {
         this(scope, id, null, cluster);
@@ -69,6 +61,12 @@ public class MeusMacrosDiscoveryServiceStack extends Stack {
                 .scaleOutCooldown(Duration.seconds(60))
                 .build());
 
-        this.eurekaServerUrl = "http://" + discovery.getLoadBalancer().getLoadBalancerDnsName() + ":" + port + "/eureka";
+        String eurekaServerUrl = "http://" + discovery.getLoadBalancer().getLoadBalancerDnsName() + ":" + port + "/eureka";
+
+        CfnOutput.Builder.create(this, "eureka-server-url")
+                .exportName("eureka-server-url")
+                .value(eurekaServerUrl)
+                .build();
+
     }
 }

@@ -1,5 +1,6 @@
 package br.com.roselabs;
 
+import br.com.roselabs.stacks.*;
 import software.amazon.awscdk.App;
 
 public class MeusMacrosAwsInfraApp {
@@ -13,10 +14,17 @@ public class MeusMacrosAwsInfraApp {
         MeusMacrosDiscoveryServiceStack discovery = new MeusMacrosDiscoveryServiceStack(app, "Discovery", clusterStack.getCluster());
         discovery.addDependency(clusterStack);
 
-        String eurekaServerUrl = discovery.getEurekaServerUrl();
-        MeusMacrosGatewayServiceStack gateway = new MeusMacrosGatewayServiceStack(app, "Gateway", clusterStack.getCluster(), eurekaServerUrl);
+        MeusMacrosGatewayServiceStack gateway = new MeusMacrosGatewayServiceStack(app, "Gateway", clusterStack.getCluster());
         gateway.addDependency(clusterStack);
         gateway.addDependency(discovery);
+
+        MeusMacrosAuthRdsStack authRds = new MeusMacrosAuthRdsStack(app, "AuthRds", vpcStack.getVpc());
+        authRds.addDependency(vpcStack);
+
+        MeusMacrosAuthServiceStack auth = new MeusMacrosAuthServiceStack(app, "AuthService", clusterStack.getCluster());
+        auth.addDependency(clusterStack);
+        auth.addDependency(discovery);
+        auth.addDependency(authRds);
 
         app.synth();
     }
