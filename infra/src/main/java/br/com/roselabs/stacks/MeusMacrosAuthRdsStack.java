@@ -18,6 +18,7 @@ public class MeusMacrosAuthRdsStack extends Stack {
 
         CfnParameter senha = CfnParameter.Builder.create(this, "senha")
                 .type("String")
+                .defaultValue("senha#123")
                 .description("Senha meus-macros-auth")
                 .build();
 
@@ -36,7 +37,7 @@ public class MeusMacrosAuthRdsStack extends Stack {
                         CredentialsFromUsernameOptions.builder()
                                 .password(SecretValue.unsafePlainText(senha.getValueAsString()))
                                 .build()))
-                .instanceType(InstanceType.of(InstanceClass.BURSTABLE2, InstanceSize.MICRO))
+                .instanceType(InstanceType.of(InstanceClass.BURSTABLE3, InstanceSize.MICRO))
                 .multiAz(false)
                 .allocatedStorage(10)
                 .securityGroups(Collections.singletonList(iSecurityGroup))
