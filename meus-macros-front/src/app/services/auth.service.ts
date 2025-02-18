@@ -11,6 +11,12 @@ export class AuthService {
   private readonly API_URL = 'https://meus-macros-monolith-production.up.railway.app/auth';
   private readonly TOKEN_KEY = 'auth_token';
 
+  private _cachedUser?: User;
+
+  get cachedUser(): User | undefined {
+    return this._cachedUser;
+  }
+
   constructor(private http: HttpClient) {
   }
 
@@ -29,7 +35,9 @@ export class AuthService {
   }
 
   public me(): Observable<User> {
-    return this.http.get<User>(`${this.API_URL}/me`);
+    return this.http.get<User>(`${this.API_URL}/me`).pipe(
+      tap(user => this._cachedUser = user)
+    );
   }
 
   public getToken(): string | null {
@@ -38,5 +46,6 @@ export class AuthService {
 
   public logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    this._cachedUser = undefined;
   }
 }

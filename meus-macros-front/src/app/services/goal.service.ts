@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 import {Goal} from '../models/Goal';
 
 @Injectable({
@@ -8,6 +8,12 @@ import {Goal} from '../models/Goal';
 })
 export class GoalService {
   private readonly API_URL = 'https://meus-macros-monolith-production.up.railway.app/goals'
+
+  private _cachedGoal?: Goal;
+
+  get cachedGoal(): Goal | undefined {
+    return this._cachedGoal;
+  }
 
   constructor(private http: HttpClient) {
   }
@@ -17,6 +23,8 @@ export class GoalService {
   }
 
   public getLatestGoal(): Observable<Goal> {
-    return this.http.get<Goal>(`${this.API_URL}`);
+    return this.http.get<Goal>(`${this.API_URL}`).pipe(
+      tap(goal => this._cachedGoal = goal)
+    );
   }
 }

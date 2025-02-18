@@ -37,6 +37,14 @@ export class ProfileComponent {
   }
 
   ngOnInit() {
+    if (this.authService.cachedUser) {
+      this.user = this.authService.cachedUser;
+    }
+
+    if (this.goalService.cachedGoal) {
+      this.goal = this.goalService.cachedGoal;
+    }
+
     this.authService.me().subscribe(me => {
       this.user = me;
     });
