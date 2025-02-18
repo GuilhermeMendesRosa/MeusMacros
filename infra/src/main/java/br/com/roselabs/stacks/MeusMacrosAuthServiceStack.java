@@ -36,7 +36,6 @@ public class MeusMacrosAuthServiceStack extends Stack {
                         ApplicationLoadBalancedTaskImageOptions.builder()
                                 .containerName("auth-meus-macros")
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/auth-meus-macros:latest"))
-                                .containerPort(8082)
                                 .environment(autenticacao)
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                         .logGroup(LogGroup.Builder
@@ -53,7 +52,7 @@ public class MeusMacrosAuthServiceStack extends Stack {
 
         auth.getTargetGroup().configureHealthCheck(HealthCheck.builder()
                 .path("/actuator/health")
-                .port("8082")
+                .port("traffic-port")
                 .healthyHttpCodes("200")
                 .build());
 
