@@ -22,6 +22,10 @@ public class MeusMacrosAwsInfraApp {
         gateway.addDependency(clusterStack);
         gateway.addDependency(discovery);
 
+        MeusMacrosAIServiceStack ai = new MeusMacrosAIServiceStack(app, "AIService", clusterStack.getCluster());
+        ai.addDependency(clusterStack);
+        ai.addDependency(discovery);
+
         MeusMacrosAuthRdsStack authRds = new MeusMacrosAuthRdsStack(app, "AuthRds", vpcStack.getVpc());
         authRds.addDependency(vpcStack);
 
@@ -33,14 +37,10 @@ public class MeusMacrosAwsInfraApp {
         auth.addDependency(discovery);
         auth.addDependency(authRds);
 
-        MeusMacrosMacrosCalculatorServiceStack macrosCalculatorServiceStack = new MeusMacrosMacrosCalculatorServiceStack(app, "AuthService", clusterStack.getCluster());
+        MeusMacrosMacrosCalculatorServiceStack macrosCalculatorServiceStack = new MeusMacrosMacrosCalculatorServiceStack(app, "MacrosCalculatorService", clusterStack.getCluster());
         macrosCalculatorServiceStack.addDependency(clusterStack);
         macrosCalculatorServiceStack.addDependency(discovery);
         macrosCalculatorServiceStack.addDependency(macrosCalculatorRds);
-
-        MeusMacrosAIServiceStack ai = new MeusMacrosAIServiceStack(app, "AIService", clusterStack.getCluster());
-        ai.addDependency(clusterStack);
-        ai.addDependency(discovery);
 
         app.synth();
     }
