@@ -29,6 +29,9 @@ public class MeusMacrosAwsInfraApp {
         MeusMacrosAuthRdsStack authRds = new MeusMacrosAuthRdsStack(app, "AuthRds", vpcStack.getVpc());
         authRds.addDependency(vpcStack);
 
+        RabbitMQStack rabbitMQ = new RabbitMQStack(app, "RabbitMQ", clusterStack.getCluster());
+        rabbitMQ.addDependency(clusterStack);
+
         MeusMacrosMacrosCalculatorRdsStack macrosCalculatorRds = new MeusMacrosMacrosCalculatorRdsStack(app, "MacrosCalculatorRds", vpcStack.getVpc());
         macrosCalculatorRds.addDependency(vpcStack);
 
@@ -36,6 +39,7 @@ public class MeusMacrosAwsInfraApp {
         auth.addDependency(clusterStack);
         auth.addDependency(discovery);
         auth.addDependency(authRds);
+        auth.addDependency(rabbitMQ);
 
         MeusMacrosMacrosCalculatorServiceStack macrosCalculatorServiceStack = new MeusMacrosMacrosCalculatorServiceStack(app, "MacrosCalculatorService", clusterStack.getCluster());
         macrosCalculatorServiceStack.addDependency(clusterStack);

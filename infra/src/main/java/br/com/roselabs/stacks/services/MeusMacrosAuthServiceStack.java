@@ -24,6 +24,7 @@ public class MeusMacrosAuthServiceStack extends Stack {
         autenticacao.put("SPRING_DATASOURCE_USERNAME", "admin");
         autenticacao.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("meus-macros-auth-db-senha"));
         autenticacao.put("EUREKA_SERVER_URL", Fn.importValue("eureka-server-url"));
+        autenticacao.put("RABBITMQ_URL", Fn.importValue("rabbit-mqp-management-url"));
 
         ApplicationLoadBalancedFargateService auth = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("AuthMeusMacros")
