@@ -46,6 +46,11 @@ public class MeusMacrosAwsInfraApp {
         macrosCalculatorServiceStack.addDependency(discovery);
         macrosCalculatorServiceStack.addDependency(macrosCalculatorRds);
 
+        MeusMacrosEmailServiceStack email = new MeusMacrosEmailServiceStack(app, "EmailService", clusterStack.getCluster());
+        email.addDependency(clusterStack);
+        email.addDependency(discovery);
+        email.addDependency(rabbitMQ);
+
         app.synth();
     }
 }
