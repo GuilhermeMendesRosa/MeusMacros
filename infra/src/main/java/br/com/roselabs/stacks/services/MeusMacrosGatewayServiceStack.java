@@ -54,8 +54,8 @@ public class MeusMacrosGatewayServiceStack extends Stack {
                 .build());
 
         ScalableTaskCount scalableTaskCount = gateway.getService().autoScaleTaskCount(EnableScalingProps.builder()
-                .minCapacity(2)
-                .maxCapacity(4)
+                .minCapacity(1)
+                .maxCapacity(1)
                 .build());
 
         scalableTaskCount.scaleOnCpuUtilization("GatewayMeusMacrosAutoScaling", CpuUtilizationScalingProps.builder()

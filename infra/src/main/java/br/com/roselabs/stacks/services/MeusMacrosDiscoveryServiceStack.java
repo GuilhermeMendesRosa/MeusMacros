@@ -50,8 +50,8 @@ public class MeusMacrosDiscoveryServiceStack extends Stack {
                 .build());
 
         ScalableTaskCount scalableTaskCount = discovery.getService().autoScaleTaskCount(EnableScalingProps.builder()
-                .minCapacity(2)
-                .maxCapacity(4)
+                .minCapacity(1)
+                .maxCapacity(1)
                 .build());
 
         scalableTaskCount.scaleOnCpuUtilization("DiscoveryMeusMacrosAutoScaling", CpuUtilizationScalingProps.builder()
