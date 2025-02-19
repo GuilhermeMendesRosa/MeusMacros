@@ -20,8 +20,8 @@ public class MeusMacrosAuthServiceStack extends Stack {
     public MeusMacrosAuthServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
         Map<String, String> autenticacao = new HashMap<>();
-        autenticacao.put("SPRING_DATASOURCE_URL", "jdbc:postgresql://" + Fn.importValue("meus-macros-auth-db-endpoint") + ":5432/auth_meus_macros?createDatabaseIfNotExist=true");
-        autenticacao.put("SPRING_DATASOURCE_USERNAME", "postgres");
+        autenticacao.put("SPRING_DATASOURCE_URL", "jdbc:mysql://" + Fn.importValue("meus-macros-auth-db-endpoint") + ":3306/auth_meus_macros?createDatabaseIfNotExist=true");
+        autenticacao.put("SPRING_DATASOURCE_USERNAME", "admin");
         autenticacao.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("meus-macros-auth-db-senha"));
         autenticacao.put("EUREKA_SERVER_URL", Fn.importValue("eureka-server-url"));
 

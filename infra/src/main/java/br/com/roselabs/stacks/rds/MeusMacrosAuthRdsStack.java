@@ -22,18 +22,17 @@ public class MeusMacrosAuthRdsStack extends Stack {
                 .description("Senha meus-macros-auth")
                 .build();
 
-        // Obtém o grupo de segurança padrão da VPC e altera a porta para PostgreSQL (5432)
         ISecurityGroup iSecurityGroup = SecurityGroup.fromSecurityGroupId(this, id, vpc.getVpcDefaultSecurityGroup());
-        iSecurityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(5432));
+        iSecurityGroup.addIngressRule(Peer.anyIpv4(), Port.tcp(3306));
 
         DatabaseInstance database = DatabaseInstance.Builder
                 .create(this, "Rds-auth")
                 .instanceIdentifier("meus-macros-auth-db")
-                .engine(DatabaseInstanceEngine.postgres(PostgresInstanceEngineProps.builder()
-                        .version(PostgresEngineVersion.VER_16)
+                .engine(DatabaseInstanceEngine.mysql(MySqlInstanceEngineProps.builder()
+                        .version(MysqlEngineVersion.VER_8_0)
                         .build()))
                 .vpc(vpc)
-                .credentials(Credentials.fromUsername("postgres",
+                .credentials(Credentials.fromUsername("admin",
                         CredentialsFromUsernameOptions.builder()
                                 .password(SecretValue.unsafePlainText(senha.getValueAsString()))
                                 .build()))
