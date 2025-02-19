@@ -2,11 +2,9 @@ package br.com.roselabs;
 
 import br.com.roselabs.stacks.*;
 import br.com.roselabs.stacks.rds.MeusMacrosAuthRdsStack;
-import br.com.roselabs.stacks.services.MeusMacrosAIServiceStack;
-import br.com.roselabs.stacks.services.MeusMacrosAuthServiceStack;
+import br.com.roselabs.stacks.rds.MeusMacrosMacrosCalculatorRdsStack;
+import br.com.roselabs.stacks.services.*;
 import br.com.roselabs.stacks.MeusMacrosClusterStack;
-import br.com.roselabs.stacks.services.MeusMacrosDiscoveryServiceStack;
-import br.com.roselabs.stacks.services.MeusMacrosGatewayServiceStack;
 import software.amazon.awscdk.App;
 
 public class MeusMacrosAwsInfraApp {
@@ -27,10 +25,18 @@ public class MeusMacrosAwsInfraApp {
         MeusMacrosAuthRdsStack authRds = new MeusMacrosAuthRdsStack(app, "AuthRds", vpcStack.getVpc());
         authRds.addDependency(vpcStack);
 
+        MeusMacrosMacrosCalculatorRdsStack macrosCalculatorRds = new MeusMacrosMacrosCalculatorRdsStack(app, "AuthRds", vpcStack.getVpc());
+        macrosCalculatorRds.addDependency(vpcStack);
+
         MeusMacrosAuthServiceStack auth = new MeusMacrosAuthServiceStack(app, "AuthService", clusterStack.getCluster());
         auth.addDependency(clusterStack);
         auth.addDependency(discovery);
         auth.addDependency(authRds);
+
+        MeusMacrosMacrosCalculatorServiceStack macrosCalculatorServiceStack = new MeusMacrosMacrosCalculatorServiceStack(app, "AuthService", clusterStack.getCluster());
+        macrosCalculatorServiceStack.addDependency(clusterStack);
+        macrosCalculatorServiceStack.addDependency(discovery);
+        macrosCalculatorServiceStack.addDependency(macrosCalculatorRds);
 
         MeusMacrosAIServiceStack ai = new MeusMacrosAIServiceStack(app, "AIService", clusterStack.getCluster());
         ai.addDependency(clusterStack);
