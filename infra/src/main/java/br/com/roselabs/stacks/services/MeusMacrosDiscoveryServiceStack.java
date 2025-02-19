@@ -18,19 +18,18 @@ public class MeusMacrosDiscoveryServiceStack extends Stack {
     public MeusMacrosDiscoveryServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
-        int port = 8081;
         ApplicationLoadBalancedFargateService discovery = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("DiscoveryMeusMacros")
                 .cluster(cluster)           // Required
                 .cpu(512)                   // Default is 256
                 .desiredCount(1)            // Default is 1
-                .listenerPort(port)
+                .listenerPort(8081)
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
                                 .containerName("discovery-meus-macros")
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/discovery-meus-macros:latest"))
-                                .containerPort(port)
+                                .containerPort(8081)
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
                                         .logGroup(LogGroup.Builder
                                                 .create(this, "DiscoveryMeusMacrosLogGroup")
@@ -61,7 +60,7 @@ public class MeusMacrosDiscoveryServiceStack extends Stack {
                 .scaleOutCooldown(Duration.seconds(60))
                 .build());
 
-        String eurekaServerUrl = "http://" + discovery.getLoadBalancer().getLoadBalancerDnsName() + ":" + port + "/eureka";
+        String eurekaServerUrl = "http://" + discovery.getLoadBalancer().getLoadBalancerDnsName() + ":" + 8081 + "/eureka";
 
         CfnOutput.Builder.create(this, "eureka-server-url")
                 .exportName("eureka-server-url")

@@ -7,7 +7,8 @@ import software.amazon.awscdk.services.ecs.Cluster;
 import software.constructs.Construct;
 
 public class MeusMacrosClusterStack extends Stack {
-    private  Cluster cluster;
+    private Cluster cluster;
+
     public MeusMacrosClusterStack(final Construct scope, final String id, final Vpc vpc) {
         this(scope, id, null, vpc);
     }
@@ -15,7 +16,7 @@ public class MeusMacrosClusterStack extends Stack {
     public MeusMacrosClusterStack(final Construct scope, final String id, final StackProps props, final Vpc vpc) {
         super(scope, id, props);
 
-         cluster = Cluster.Builder.create(this, "MeusMacrosCluster")
+        cluster = Cluster.Builder.create(this, "MeusMacrosCluster")
                 .clusterName("cluster-MeusMacros")
                 .vpc(vpc)
                 .build();

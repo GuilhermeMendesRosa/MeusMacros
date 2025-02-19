@@ -30,7 +30,6 @@ public class MeusMacrosAuthServiceStack extends Stack {
                 .cluster(cluster)           // Required
                 .cpu(512)                   // Default is 256
                 .desiredCount(1)            // Default is 1
-                .listenerPort(8082)
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()

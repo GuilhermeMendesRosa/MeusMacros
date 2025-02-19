@@ -1,8 +1,8 @@
 package br.com.roselabs.stacks.rds;
 
 import software.amazon.awscdk.*;
-import software.amazon.awscdk.services.ec2.*;
 import software.amazon.awscdk.services.ec2.InstanceType;
+import software.amazon.awscdk.services.ec2.*;
 import software.amazon.awscdk.services.rds.*;
 import software.constructs.Construct;
 

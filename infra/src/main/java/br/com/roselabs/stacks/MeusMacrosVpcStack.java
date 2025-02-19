@@ -7,6 +7,7 @@ import software.constructs.Construct;
 
 public class MeusMacrosVpcStack extends Stack {
     private Vpc vpc;
+
     public MeusMacrosVpcStack(final Construct scope, final String id) {
         this(scope, id, null);
     }
