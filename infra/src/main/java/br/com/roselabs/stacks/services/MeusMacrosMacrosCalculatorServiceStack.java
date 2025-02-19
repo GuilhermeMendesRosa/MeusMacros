@@ -28,12 +28,14 @@ public class MeusMacrosMacrosCalculatorServiceStack extends Stack {
         ApplicationLoadBalancedFargateService macrosCalculator = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("AuthMeusMacros")
                 .cluster(cluster)           // Required
-                .cpu(512)                   // Default is 256
+                .cpu(512)   // Default is 1
+                .listenerPort(8084)
                 .desiredCount(1)            // Default is 1
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
-                                .containerName("macros-calculator-meus-macros")
+                                .containerName("macros-calculator-meus-macros")  // Default is 1
+                                .containerPort(8084)
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/macros-calculator-meus-macros:latest"))
                                 .environment(autenticacao)
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
@@ -51,13 +53,13 @@ public class MeusMacrosMacrosCalculatorServiceStack extends Stack {
 
         macrosCalculator.getTargetGroup().configureHealthCheck(HealthCheck.builder()
                 .path("/actuator/health")
-                .port("traffic-port")
+                .port("8084")
                 .healthyHttpCodes("200")
                 .build());
 
         ScalableTaskCount scalableTaskCount = macrosCalculator.getService().autoScaleTaskCount(EnableScalingProps.builder()
-                .minCapacity(2)
-                .maxCapacity(4)
+                .minCapacity(1)
+                .maxCapacity(1)
                 .build());
 
         scalableTaskCount.scaleOnCpuUtilization("AuthMeusMacrosAutoScaling", CpuUtilizationScalingProps.builder()

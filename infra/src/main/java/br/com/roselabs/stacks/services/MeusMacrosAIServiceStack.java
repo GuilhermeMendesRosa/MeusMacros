@@ -23,12 +23,14 @@ public class MeusMacrosAIServiceStack extends Stack {
         ApplicationLoadBalancedFargateService ai = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("AIMeusMacros")
                 .cluster(cluster)           // Required
-                .cpu(512)                   // Default is 256
+                .cpu(512)     // Default is 1
+                .listenerPort(8085)                // Default is 256
                 .desiredCount(1)            // Default is 1
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
                                 .containerName("ai-meus-macros")
+                                .containerPort(8085)
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/ai-meus-macros:latest"))
                                 .environment(Map.of(
                                         "EUREKA_SERVER_URL", Fn.importValue("eureka-server-url"),
@@ -49,13 +51,13 @@ public class MeusMacrosAIServiceStack extends Stack {
 
         ai.getTargetGroup().configureHealthCheck(HealthCheck.builder()
                 .path("/actuator/health")
-                .port("traffic-port")
+                .port("8085")
                 .healthyHttpCodes("200")
                 .build());
 
         ScalableTaskCount scalableTaskCount = ai.getService().autoScaleTaskCount(EnableScalingProps.builder()
-                .minCapacity(2)
-                .maxCapacity(4)
+                .minCapacity(1)
+                .maxCapacity(1)
                 .build());
 
         scalableTaskCount.scaleOnCpuUtilization("AIMeusMacrosAutoScaling", CpuUtilizationScalingProps.builder()

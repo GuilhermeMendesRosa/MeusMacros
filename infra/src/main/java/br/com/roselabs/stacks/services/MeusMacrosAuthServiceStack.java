@@ -28,12 +28,14 @@ public class MeusMacrosAuthServiceStack extends Stack {
         ApplicationLoadBalancedFargateService auth = ApplicationLoadBalancedFargateService.Builder.create(this, "MeusMacrosService")
                 .serviceName("AuthMeusMacros")
                 .cluster(cluster)           // Required
-                .cpu(512)                   // Default is 256
+                .cpu(512)         // Default is 1
+                .listenerPort(8083)               // Default is 256
                 .desiredCount(1)            // Default is 1
                 .assignPublicIp(true)
                 .taskImageOptions(
                         ApplicationLoadBalancedTaskImageOptions.builder()
                                 .containerName("auth-meus-macros")
+                                .containerPort(8083)
                                 .image(ContainerImage.fromRegistry("guilhermemendesrosa/auth-meus-macros:latest"))
                                 .environment(autenticacao)
                                 .logDriver(LogDriver.awsLogs(AwsLogDriverProps.builder()
@@ -51,13 +53,13 @@ public class MeusMacrosAuthServiceStack extends Stack {
 
         auth.getTargetGroup().configureHealthCheck(HealthCheck.builder()
                 .path("/actuator/health")
-                .port("traffic-port")
+                .port("8083")
                 .healthyHttpCodes("200")
                 .build());
 
         ScalableTaskCount scalableTaskCount = auth.getService().autoScaleTaskCount(EnableScalingProps.builder()
-                .minCapacity(2)
-                .maxCapacity(4)
+                .minCapacity(1)
+                .maxCapacity(1)
                 .build());
 
         scalableTaskCount.scaleOnCpuUtilization("AuthMeusMacrosAutoScaling", CpuUtilizationScalingProps.builder()
