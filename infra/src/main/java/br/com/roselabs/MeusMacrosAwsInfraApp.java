@@ -2,6 +2,7 @@ package br.com.roselabs;
 
 import br.com.roselabs.stacks.*;
 import br.com.roselabs.stacks.rds.MeusMacrosAuthRdsStack;
+import br.com.roselabs.stacks.services.MeusMacrosAIServiceStack;
 import br.com.roselabs.stacks.services.MeusMacrosAuthServiceStack;
 import br.com.roselabs.stacks.MeusMacrosClusterStack;
 import br.com.roselabs.stacks.services.MeusMacrosDiscoveryServiceStack;
@@ -30,6 +31,10 @@ public class MeusMacrosAwsInfraApp {
         auth.addDependency(clusterStack);
         auth.addDependency(discovery);
         auth.addDependency(authRds);
+
+        MeusMacrosAIServiceStack ai = new MeusMacrosAIServiceStack(app, "AIService", clusterStack.getCluster());
+        ai.addDependency(clusterStack);
+        ai.addDependency(discovery);
 
         app.synth();
     }
