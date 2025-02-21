@@ -1,2 +1,2 @@
 ALTER TABLE meals
-    ADD COLUMN meal_name VARCHAR(255) NOT NULL DEFAULT 'Refeição';
+ADD COLUMN meal_name VARCHAR(255) NOT NULL DEFAULT 'Refeição';
