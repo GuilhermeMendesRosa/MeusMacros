@@ -1,7 +1,7 @@
 # Etapa 1: Build
 FROM maven:3.9.4-eclipse-temurin-17 as builder
 WORKDIR /app
-COPY . .
+COPY meus-macros-monolith/. . 
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Runtime
