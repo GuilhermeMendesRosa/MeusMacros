@@ -8,7 +8,7 @@ import {AuthenticationTokens} from '../models/AuthenticationTokens';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = 'https://meus-macros-monolith-production.up.railway.app/auth';
+  private readonly API_URL = 'https://meusmacros-production.up.railway.app/auth';
   private readonly TOKEN_KEY = 'auth_token';
 
   private _cachedUser?: User;
