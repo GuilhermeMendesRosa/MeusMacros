@@ -1,0 +1,89 @@
+# ConfigMap para variáveis de ambiente
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: meus-macros-config
+data:
+  DB_URL: "jdbc:postgresql://postgres-service:5432/meus-macros"
+  DB_USERNAME: "postgres"
+  OPENAI_API_KEY: "seu-openai-api-key" # Substitua por sua chave ou use Secret
+
+---
+# Secret para senhas (mais seguro que ConfigMap para senhas)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: meus-macros-secrets
+type: Opaque
+stringData:
+  DB_PASSWORD: "postgres" # Substitua por uma senha segura em produção
+
+---
+# PVC para PostgreSQL
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+# StatefulSet para PostgreSQL
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: "postgres"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:14
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "meus-macros"
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: meus-macros-config
+              key: DB_USERNAME
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: meus-macros-secrets
+              key: DB_PASSWORD
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+
+---
+# Service para PostgreSQL
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  clusterIP: None

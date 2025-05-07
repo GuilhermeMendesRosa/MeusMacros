@@ -7,7 +7,7 @@ import {Goal} from '../models/Goal';
   providedIn: 'root'
 })
 export class GoalService {
-  private readonly API_URL = 'https://meusmacros-production.up.railway.app/goals'
+  private readonly API_URL = 'http://localhost:8080/goals'
 
   private _cachedGoal?: Goal;
 

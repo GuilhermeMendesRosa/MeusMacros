@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meus-macros
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: meus-macros
+  template:
+    metadata:
+      labels:
+        app: meus-macros
+    spec:
+      containers:
+      - name: meus-macros
+        image: guilhermemendesrosa/meus-macros-monolith:1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: meus-macros-config
+              key: DB_URL
+        - name: DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: meus-macros-config
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: meus-macros-secrets
+              key: DB_PASSWORD
+        - name: OPENAI_API_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: meus-macros-config
+              key: OPENAI_API_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meus-macros-service
+spec:
+  selector:
+    app: meus-macros
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: LoadBalancer
