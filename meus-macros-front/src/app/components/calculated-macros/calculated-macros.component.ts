@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ApexChart, ChartComponent} from 'ng-apexcharts';
+import {ApexChart, NgApexchartsModule} from 'ng-apexcharts';
 import {CalculationService} from '../../services/calculation.service';
 import {Meal} from '../../models/Meal';
 import {FormsModule} from '@angular/forms';
@@ -10,7 +10,7 @@ import {NgForOf} from '@angular/common';
   selector: 'app-calculated-macros',
   templateUrl: './calculated-macros.component.html',
   imports: [
-    ChartComponent,
+    NgApexchartsModule,
     FormsModule,
     NgForOf
   ],
