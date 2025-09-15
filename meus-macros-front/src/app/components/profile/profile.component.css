@@ -1,0 +1,80 @@
+/* Animações customizadas para complementar o Tailwind */
+
+/* Slider personalizado */
+input[type="range"] {
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-track {
+  background: #e5e7eb;
+  height: 8px;
+  border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  background: currentColor;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb:hover {
+  transform: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Animação para os cards de macro */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplicar animação com delay */
+.macro-card:nth-child(1) {
+  animation: slideInUp 0.6s ease-out;
+}
+
+.macro-card:nth-child(2) {
+  animation: slideInUp 0.6s ease-out 0.1s;
+  animation-fill-mode: both;
+}
+
+.macro-card:nth-child(3) {
+  animation: slideInUp 0.6s ease-out 0.2s;
+  animation-fill-mode: both;
+}
+
+/* Hover effect para melhorar UX */
+details[open] summary {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+/* Smooth transition para o details */
+details summary {
+  transition: all 0.3s ease;
+}
+
+details[open] summary {
+  background-color: #f9fafb;
+}

@@ -1,0 +1,52 @@
+/* Animações de entrada */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Aplicar animação no container principal */
+.login-container {
+  animation: slideInUp 0.8s ease-out;
+}
+
+/* Animações para os campos do formulário */
+.form-field {
+  animation: fadeIn 1s ease-out;
+}
+
+.form-field:nth-child(1) { animation-delay: 0.2s; animation-fill-mode: both; }
+.form-field:nth-child(2) { animation-delay: 0.3s; animation-fill-mode: both; }
+
+/* Hover effects para inputs */
+input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Animação do logo */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.logo-container:hover {
+  animation: pulse 2s infinite;
+}

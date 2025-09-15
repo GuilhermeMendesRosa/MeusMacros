@@ -1,0 +1,83 @@
+/* Animações de entrada */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInStagger {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Aplicar animação no container principal */
+.register-container {
+  animation: slideInUp 0.8s ease-out;
+}
+
+/* Animações escalonadas para os campos */
+.form-field:nth-child(1) {
+  animation: fadeInStagger 0.6s ease-out 0.2s;
+  animation-fill-mode: both;
+}
+
+.form-field:nth-child(2) {
+  animation: fadeInStagger 0.6s ease-out 0.3s;
+  animation-fill-mode: both;
+}
+
+.form-field:nth-child(3) {
+  animation: fadeInStagger 0.6s ease-out 0.4s;
+  animation-fill-mode: both;
+}
+
+.form-field:nth-child(4) {
+  animation: fadeInStagger 0.6s ease-out 0.5s;
+  animation-fill-mode: both;
+}
+
+/* Hover effects para inputs */
+input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Grid responsivo para campos de nome */
+@media (max-width: 480px) {
+  .name-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Animação do ícone do header */
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.header-icon {
+  animation: bounceIn 1s ease-out;
+}

@@ -1,121 +1,200 @@
-<div id="webcrumbs">
-  <div class="flex justify-center pt-16 min-h-screen">
-    <div class="w-full max-w-[360px] p-4 transition-all duration-300">
-      <header class="flex items-center gap-4 mb-6 justify-center">
-        <div class="relative group">
-          <div
-            class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur">
+<div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 flex justify-center pt-16 pb-24">
+  <div class="w-full max-w-md mx-auto p-4">
+    <!-- Header -->
+    <header class="text-center mb-8">
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
+        Perfil
+      </h1>
+      <p class="text-gray-600 text-lg leading-relaxed">
+        Suas metas e configurações
+      </p>
+    </header>
+
+    <!-- User Info Card -->
+    <div class="bg-white p-6 rounded-2xl shadow-lg mb-6 hover:shadow-xl transition-all duration-300">
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <div class="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center shadow-lg">
+            <span class="material-symbols-outlined text-3xl text-white">account_circle</span>
           </div>
-          <!-- Ícone do usuário -->
-          <div class="relative w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
-            <span class="material-symbols-outlined text-4xl text-gray-500">account_circle</span>
-          </div>
+          <div class="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white"></div>
         </div>
-        <div>
-          <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+        <div class="flex-1">
+          <h2 class="text-xl font-bold text-gray-800">
             {{ user.firstName + " " + user.lastName }}
-          </h1>
-          <p class="text-gray-500">Metas Nutricionais</p>
+          </h2>
+          <p class="text-gray-500 text-sm">Acompanhando suas metas</p>
         </div>
-      </header>
-
-      <div class="space-y-4">
-        <!-- Card de Calorias Diárias -->
-        <div
-          class="bg-white/80 p-4 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md">
-          <div class="flex justify-between items-center">
-            <span class="font-semibold">Calorias Diárias</span>
-            <span class="text-green-500 font-bold">{{ goal.calories }} kcal</span>
-          </div>
+        <div class="text-right">
+          <div class="text-2xl font-bold text-primary-600">{{ goal.calories }}</div>
+          <div class="text-xs text-gray-500">kcal/dia</div>
         </div>
+      </div>
+    </div>
 
-        <!-- Cards de Macronutrientes -->
-        <div class="grid grid-cols-3 gap-3">
-          <!-- Proteínas -->
-          <div
-            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-center">
-            <div class="flex items-center justify-center w-10 h-10 mx-auto bg-blue-500 rounded-full">
-              <span class="material-symbols-outlined text-2xl text-white">egg_alt</span>
-            </div>
-            <h3 class="font-semibold mt-2">Proteína</h3>
-            <p class="text-xl font-bold mt-1">{{ proteinGrams }}g</p>
-          </div>
-
-          <!-- Carboidratos -->
-          <div
-            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-center">
-            <div class="flex items-center justify-center w-10 h-10 mx-auto bg-orange-500 rounded-full">
-              <span class="material-symbols-outlined text-2xl text-white">grain</span>
-            </div>
-            <h3 class="font-semibold mt-2">Carboidratos</h3>
-            <p class="text-xl font-bold mt-1">{{ carbsGrams }}g</p>
-          </div>
-
-          <!-- Gorduras -->
-          <div
-            class="bg-white/80 p-3 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 text-center">
-            <div class="flex items-center justify-center w-10 h-10 mx-auto bg-red-500 rounded-full">
-              <span class="material-symbols-outlined text-2xl text-white">water_drop</span>
-            </div>
-            <h3 class="font-semibold mt-2">Gorduras</h3>
-            <p class="text-xl font-bold mt-1">{{ fatsGrams }}g</p>
-          </div>
+    <!-- Macros Overview -->
+    <div class="grid grid-cols-3 gap-3 mb-6">
+      <!-- Proteínas -->
+      <div class="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-center">
+        <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3">
+          <span class="material-symbols-outlined text-lg text-white">fitness_center</span>
         </div>
+        <h3 class="font-semibold text-gray-700 text-sm mb-1">Proteína</h3>
+        <p class="text-lg font-bold text-blue-600">{{ proteinGrams }}g</p>
+        <p class="text-xs text-gray-500">{{ goal.proteinPercentage }}%</p>
+      </div>
 
-        <!-- Seção para Ajustar Metas -->
-        <!-- Adicionamos o evento (toggle) para atualizar a propriedade isAdjustMetasOpen -->
-        <details class="group" (toggle)="onToggle($event)">
-          <summary
-            class="flex items-center justify-between cursor-pointer list-none p-4 bg-white/80 rounded-xl hover:bg-white backdrop-blur-sm transition-all duration-300 shadow-sm hover:shadow-md">
-            <span class="font-semibold">Ajustar Metas</span>
-            <span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
-          </summary>
-          <div class="mt-3 space-y-4 p-4 bg-white/80 rounded-xl backdrop-blur-sm shadow-sm">
-            <div class="space-y-2">
-              <label class="block font-medium">Calorias</label>
-              <input type="range" min="500" max="15000" step="50" [value]="goal.calories"
+      <!-- Carboidratos -->
+      <div class="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-center">
+        <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-3">
+          <span class="material-symbols-outlined text-lg text-white">grain</span>
+        </div>
+        <h3 class="font-semibold text-gray-700 text-sm mb-1">Carboidratos</h3>
+        <p class="text-lg font-bold text-orange-600">{{ carbsGrams }}g</p>
+        <p class="text-xs text-gray-500">{{ goal.carbohydratesPercentage }}%</p>
+      </div>
+
+      <!-- Gorduras -->
+      <div class="bg-white p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-center">
+        <div class="w-10 h-10 bg-gradient-to-br from-red-400 to-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+          <span class="material-symbols-outlined text-lg text-white">water_drop</span>
+        </div>
+        <h3 class="font-semibold text-gray-700 text-sm mb-1">Gorduras</h3>
+        <p class="text-lg font-bold text-red-600">{{ fatsGrams }}g</p>
+        <p class="text-xs text-gray-500">{{ goal.fatPercentage }}%</p>
+      </div>
+    </div>
+
+    <!-- Adjust Goals Section -->
+    <div class="bg-white rounded-2xl shadow-lg mb-6 overflow-hidden">
+      <details class="group" (toggle)="onToggle($event)">
+        <summary class="flex items-center justify-between cursor-pointer list-none p-5 hover:bg-gray-50 transition-all duration-300 select-none">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center">
+              <span class="material-symbols-outlined text-lg text-white">tune</span>
+            </div>
+            <span class="font-semibold text-gray-800">Ajustar Metas</span>
+          </div>
+          <span class="material-symbols-outlined transition-transform group-open:rotate-180 text-gray-600">
+            expand_more
+          </span>
+        </summary>
+        
+        <div class="p-5 border-t border-gray-100 bg-gray-50">
+          <div class="space-y-6">
+            <!-- Calories Slider -->
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <label class="font-semibold text-gray-700">Calorias Diárias</label>
+                <span class="text-sm font-bold text-primary-600">{{ goal.calories }} kcal</span>
+              </div>
+              <input type="range" 
+                     min="500" max="15000" step="50" 
+                     [value]="goal.calories"
                      [(ngModel)]="goal.calories"
-                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-not-allowed accent-green-500"/>
-            </div>
-            <div class="space-y-2">
-              <label class="block font-medium">Proteína ({{ goal.proteinPercentage }}%)</label>
-              <input type="range" min="0" max="100" step="5" [(ngModel)]="goal.proteinPercentage"
-                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500"/>
-            </div>
-            <div class="space-y-2">
-              <label class="block font-medium">Carboidratos ({{ goal.carbohydratesPercentage }}%)</label>
-              <input type="range" min="0" max="100" step="5" [(ngModel)]="goal.carbohydratesPercentage"
-                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"/>
-            </div>
-            <div class="space-y-2">
-              <label class="block font-medium">Gorduras ({{ goal.fatPercentage }}%)</label>
-              <input type="range" min="0" max="100" step="5" [(ngModel)]="goal.fatPercentage"
-                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500"/>
-            </div>
-            <div class="text-center text-sm text-gray-600">
-              Total: {{ goal.proteinPercentage + goal.carbohydratesPercentage + goal.fatPercentage }}%
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-not-allowed accent-primary-500">
+              <div class="flex justify-between text-xs text-gray-500">
+                <span>500</span>
+                <span>15000</span>
+              </div>
             </div>
 
+            <!-- Protein Slider -->
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <label class="font-semibold text-gray-700">Proteína</label>
+                <span class="text-sm font-bold text-blue-600">{{ goal.proteinPercentage }}%</span>
+              </div>
+              <input type="range" 
+                     min="0" max="100" step="5" 
+                     [(ngModel)]="goal.proteinPercentage"
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-500">
+              <div class="flex justify-between text-xs text-gray-500">
+                <span>0%</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+            <!-- Carbs Slider -->
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <label class="font-semibold text-gray-700">Carboidratos</label>
+                <span class="text-sm font-bold text-orange-600">{{ goal.carbohydratesPercentage }}%</span>
+              </div>
+              <input type="range" 
+                     min="0" max="100" step="5" 
+                     [(ngModel)]="goal.carbohydratesPercentage"
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500">
+              <div class="flex justify-between text-xs text-gray-500">
+                <span>0%</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+            <!-- Fat Slider -->
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <label class="font-semibold text-gray-700">Gorduras</label>
+                <span class="text-sm font-bold text-red-600">{{ goal.fatPercentage }}%</span>
+              </div>
+              <input type="range" 
+                     min="0" max="100" step="5" 
+                     [(ngModel)]="goal.fatPercentage"
+                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500">
+              <div class="flex justify-between text-xs text-gray-500">
+                <span>0%</span>
+                <span>100%</span>
+              </div>
+            </div>
+
+            <!-- Total Percentage -->
+            <div class="bg-white p-4 rounded-xl border-l-4 border-primary-500">
+              <div class="flex justify-between items-center">
+                <span class="font-semibold text-gray-700">Total de Macros</span>
+                <span class="text-lg font-bold" 
+                      [class.text-green-600]="(goal.proteinPercentage + goal.carbohydratesPercentage + goal.fatPercentage) === 100"
+                      [class.text-red-600]="(goal.proteinPercentage + goal.carbohydratesPercentage + goal.fatPercentage) !== 100">
+                  {{ goal.proteinPercentage + goal.carbohydratesPercentage + goal.fatPercentage }}%
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">
+                Deve somar 100% para uma dieta balanceada
+              </p>
+            </div>
+
+            <!-- Save Button -->
             <button (click)="saveGoals()"
                     [disabled]="isDisabled()"
-                    class="my-button bg-primary-500 text-primary-50 font-semibold rounded-lg w-full py-3 mt-6 shadow-lg shadow-primary-500/20
-                           hover:bg-primary-600 active:bg-primary-700 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
+                    class="w-full px-6 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 rounded-xl text-white font-bold text-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">save</span>
               Salvar Metas
             </button>
-            <br>
-            <br>
-            <br>
           </div>
-        </details>
-
-        <div *ngIf="!isAdjustMetasOpen" class="pt-4">
-          <button (click)="logout()"
-                  class="my-button bg-primary-500 text-primary-50 font-semibold rounded-lg w-full py-3 mt-6 shadow-lg shadow-primary-500/20
-                 hover:bg-primary-600 active:bg-primary-700 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
-            Sair
-          </button>
         </div>
+      </details>
+    </div>
 
+    <!-- Logout Button (only when goals section is closed) -->
+    <div *ngIf="!isAdjustMetasOpen" class="space-y-4">
+      <!-- Quick Stats -->
+      <div class="bg-gradient-to-r from-green-500 to-green-600 p-5 rounded-2xl text-white shadow-lg">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-lg mb-1">Progresso de Hoje</h3>
+            <p class="text-green-100 text-sm">Continue assim!</p>
+          </div>
+          <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl">trending_up</span>
+          </div>
+        </div>
       </div>
+
+      <!-- Logout Button -->
+      <button (click)="logout()"
+              class="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 rounded-xl text-white font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">logout</span>
+        Sair da Conta
+      </button>
+    </div>
   </div>
 </div>

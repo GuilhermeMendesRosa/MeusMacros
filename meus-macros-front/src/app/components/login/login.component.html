@@ -1,50 +1,97 @@
-<div id="webcrumbs">
-  <div
-    class="w-full h-screen bg-white shadow-lg rounded-none p-10 flex items-center justify-center animate-pulse-on-mount">
-    <div class="w-[400px]">
-      <h1 class="text-3xl font-title font-bold text-neutral-950 mb-8 text-center">Meus Macros</h1>
-      <form class="space-y-6" (submit)="onSubmit()">
-        <div>
-          <label for="email" class="block text-neutral-700 font-medium mb-2">Email</label>
+<div class="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 flex items-center justify-center p-4">
+  <div class="w-full max-w-md mx-auto bg-white rounded-3xl shadow-xl p-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div class="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+        <span class="material-symbols-outlined text-3xl text-white">restaurant</span>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">
+        Meus Macros
+      </h1>
+      <p class="text-gray-600 text-lg leading-relaxed">
+        Entre para acompanhar suas refeições
+      </p>
+    </div>
+
+    <!-- Login Form -->
+    <form class="space-y-6" (submit)="onSubmit()">
+      <!-- Email Field -->
+      <div class="space-y-2">
+        <label for="email" class="block text-sm font-semibold text-gray-700">
+          Email
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-gray-400 text-xl">mail</span>
+          </div>
           <input
             type="email"
             id="email"
             placeholder="Digite seu email"
-            class="w-full py-3 px-4 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
+            class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent hover:border-gray-300 transition-all duration-300 bg-white shadow-sm"
             [(ngModel)]="user.email"
             name="email"
             required
           />
         </div>
-        <div>
-          <label for="password" class="block text-neutral-700 font-medium mb-2">Senha</label>
+      </div>
+
+      <!-- Password Field -->
+      <div class="space-y-2">
+        <label for="password" class="block text-sm font-semibold text-gray-700">
+          Senha
+        </label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span class="material-symbols-outlined text-gray-400 text-xl">lock</span>
+          </div>
           <input
             type="password"
             id="password"
             placeholder="Digite sua senha"
-            class="w-full py-3 px-4 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-300"
+            class="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent hover:border-gray-300 transition-all duration-300 bg-white shadow-sm"
             [(ngModel)]="user.password"
             name="password"
             required
           />
         </div>
-        <button
-          type="submit"
-          class="w-full bg-primary-500 text-primary-50 py-3 rounded-md font-bold text-lg hover:bg-primary-600 active:scale-95 transform transition-all duration-300"
-        >
-          Entrar
-        </button>
-        <div class="flex flex-col items-center gap-4 mt-6">
-          <span class="text-neutral-500">ou</span>
-          <button
-            type="button"
-            (click)="goToRegister()"
-            class="w-full bg-transparent border-2 border-primary-500 text-primary-500 py-3 rounded-md font-bold text-lg hover:bg-primary-50 active:scale-95 transform transition-all duration-300"
-          >
-            Criar conta
-          </button>
+      </div>
+
+      <!-- Login Button -->
+      <button
+        type="submit"
+        class="w-full px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 rounded-xl text-white font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+      >
+        <span class="material-symbols-outlined">login</span>
+        Entrar
+      </button>
+
+      <!-- Divider -->
+      <div class="relative flex items-center justify-center my-6">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-300"></div>
         </div>
-      </form>
+        <div class="relative bg-white px-4 text-sm text-gray-500">
+          ou
+        </div>
+      </div>
+
+      <!-- Register Button -->
+      <button
+        type="button"
+        (click)="goToRegister()"
+        class="w-full px-8 py-4 bg-white border-2 border-primary-500 text-primary-600 rounded-xl font-bold text-lg hover:bg-primary-50 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+      >
+        <span class="material-symbols-outlined">person_add</span>
+        Criar conta
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="mt-8 text-center">
+      <p class="text-xs text-gray-500">
+        Monitore suas refeições e atinja seus objetivos nutricionais
+      </p>
     </div>
   </div>
 </div>
